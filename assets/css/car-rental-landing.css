@@ -448,17 +448,31 @@ body.admin-bar.annam-car-rental-landing-page {
 
 .annam-cr-form select {
 	width: 100%;
+	box-sizing: border-box;
 	min-height: var(--component-field-height, 46px);
-	padding: 10px 12px;
+	height: var(--component-field-height, 46px);
+	padding: 10px 36px 10px 12px;
 	border: 1px solid rgb(var(--color-border-strong));
 	border-radius: var(--cr-radius);
-	font-size: 0.9375rem;
-	background: #fff;
+	font-family: inherit;
+	font-size: 1rem;
+	line-height: 1.25;
+	color: rgb(var(--color-text-dark));
+	background-color: #fff;
+	color-scheme: light;
+	-webkit-appearance: none;
+	appearance: none;
+	touch-action: manipulation;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
 }
 
 .annam-cr-form input[type="text"],
 .annam-cr-form input[type="tel"] {
 	width: 100%;
+	box-sizing: border-box;
 	min-height: var(--component-field-height, 46px);
 	border: 1px solid rgb(var(--color-border-strong));
 	border-radius: var(--cr-radius);
