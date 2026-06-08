@@ -6,7 +6,7 @@
 
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/YOUR_CPANEL_USERNAME/public_html/wp-content/themes/generatepress_child
+    - export DEPLOYPATH=/home/cizuzaxe/public_html/wp-content/themes/generatepress_child
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH/
     - /bin/cp -R inc $DEPLOYPATH/
