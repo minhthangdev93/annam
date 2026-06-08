@@ -95,69 +95,30 @@ function annam_cabin_landing_process_booking( array $input ) {
 		'double'        => 'Cabin đôi',
 	);
 
-	$page_url = isset( $input['annam_cabin_page_url'] ) ? esc_url_raw( (string) $input['annam_cabin_page_url'] ) : '';
-	if ( '' === $page_url ) {
-		$page_url = get_permalink() ? get_permalink() : home_url( '/' );
-	}
-
-	$from_label = isset( $labels[ $from_place ] ) ? $labels[ $from_place ] : $from_place;
-	$to_label   = isset( $labels[ $to_place ] ) ? $labels[ $to_place ] : $to_place;
+	$from_label  = isset( $labels[ $from_place ] ) ? $labels[ $from_place ] : $from_place;
+	$to_label    = isset( $labels[ $to_place ] ) ? $labels[ $to_place ] : $to_place;
 	$cabin_label = isset( $cabin_labels[ $cabin_type ] ) ? $cabin_labels[ $cabin_type ] : $cabin_type;
-	$submitted_at = wp_date( 'd/m/Y H:i' );
-
-	$lead = array(
-		'page'       => get_the_title(),
-		'page_url'   => $page_url,
-		'from'       => $from_label,
-		'to'         => $to_label,
-		'date'       => $travel_date,
-		'time'       => $dep_time,
-		'cabin'      => $cabin_label,
-		'guests'     => (string) $guests,
-		'name'       => $name,
-		'phone'      => $phone,
-		'ip'         => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
-		'submitted'  => gmdate( 'c' ),
-	);
 
 	$subject = sprintf(
-		'Lead đặt vé Cabin VIP - %s đi %s - %s %s',
+		'[CABIN VIP] Giữ chỗ — %s → %s — %s — %s',
 		$from_label,
 		$to_label,
-		$travel_date,
-		$dep_time
+		$name,
+		$phone
 	);
 
-	$body = implode(
-		"\n",
-		array(
-			__( 'Yêu cầu giữ chỗ cabin VIP mới', 'generatepress_child' ),
-			'',
-			__( 'Họ tên:', 'generatepress_child' ) . ' ' . $name,
-			__( 'Số điện thoại / Zalo:', 'generatepress_child' ) . ' ' . $phone,
-			__( 'Điểm đón:', 'generatepress_child' ) . ' ' . $from_label,
-			__( 'Điểm trả:', 'generatepress_child' ) . ' ' . $to_label,
-			__( 'Ngày đi:', 'generatepress_child' ) . ' ' . $travel_date,
-			__( 'Giờ đi:', 'generatepress_child' ) . ' ' . $dep_time,
-			__( 'Loại cabin:', 'generatepress_child' ) . ' ' . $cabin_label,
-			__( 'Số khách:', 'generatepress_child' ) . ' ' . $guests,
-			'',
-			__( 'URL trang:', 'generatepress_child' ) . ' ' . $page_url,
-			__( 'Thời gian gửi:', 'generatepress_child' ) . ' ' . $submitted_at,
-			'',
-			'IP: ' . $lead['ip'],
-		)
+	$body_lines = array(
+		__( 'Điểm đón:', 'generatepress_child' ) . ' ' . $from_label,
+		__( 'Điểm trả:', 'generatepress_child' ) . ' ' . $to_label,
+		__( 'Ngày đi:', 'generatepress_child' ) . ' ' . $travel_date,
+		__( 'Giờ đi:', 'generatepress_child' ) . ' ' . $dep_time,
+		__( 'Loại cabin:', 'generatepress_child' ) . ' ' . $cabin_label,
+		__( 'Số lượng khách:', 'generatepress_child' ) . ' ' . (string) $guests,
+		__( 'Họ tên:', 'generatepress_child' ) . ' ' . $name,
+		__( 'Số điện thoại / Zalo:', 'generatepress_child' ) . ' ' . $phone,
 	);
 
-	$headers  = array( 'Content-Type: text/plain; charset=UTF-8' );
-	$recipients = annam_cabin_landing_get_lead_recipient_emails();
-	$sent     = false;
-
-	foreach ( $recipients as $to ) {
-		if ( wp_mail( $to, $subject, $body, $headers ) ) {
-			$sent = true;
-		}
-	}
+	$sent = annam_lead_send_notification( annam_lead_get_recipient_emails(), $subject, $body_lines );
 
 	if ( function_exists( 'annam_rate_limit_increment' ) ) {
 		annam_rate_limit_increment( 'annam_cabin_booking', ANNAM_CABIN_LANDING_RATE_MINUTES );

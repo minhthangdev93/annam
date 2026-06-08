@@ -7,6 +7,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once get_stylesheet_directory() . '/inc/annam-lead-mail.php';
+
 if ( ! defined( 'ANNAM_CABIN_LANDING_SETTINGS_OPTION' ) ) {
 	define( 'ANNAM_CABIN_LANDING_SETTINGS_OPTION', 'annam_cabin_landing_settings' );
 }

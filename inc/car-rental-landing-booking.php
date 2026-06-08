@@ -14,12 +14,9 @@ const ANNAM_CAR_RENTAL_RATE_MINUTES = 10;
  * @return string[]
  */
 function annam_car_rental_get_lead_recipient_emails() {
-	if ( function_exists( 'annam_cabin_landing_get_lead_recipient_emails' ) ) {
-		return annam_cabin_landing_get_lead_recipient_emails();
-	}
-	$cta = annam_car_rental_get_cta();
-	$email = isset( $cta['email'] ) ? sanitize_email( $cta['email'] ) : '';
-	return $email ? array( $email ) : array( get_option( 'admin_email' ) );
+	return function_exists( 'annam_lead_get_recipient_emails' )
+		? annam_lead_get_recipient_emails()
+		: array( get_option( 'admin_email' ) );
 }
 
 /**
@@ -59,7 +56,6 @@ function annam_car_rental_process_booking( array $input ) {
 	$round_trip  = ! empty( $input['annam_cr_round_trip'] );
 	$travel_date = isset( $input['annam_cr_date'] ) ? sanitize_text_field( (string) $input['annam_cr_date'] ) : '';
 	$vehicle     = isset( $input['annam_cr_vehicle'] ) ? sanitize_key( (string) $input['annam_cr_vehicle'] ) : '';
-	$name        = isset( $input['annam_cr_name'] ) ? sanitize_text_field( (string) $input['annam_cr_name'] ) : '';
 	$phone       = isset( $input['annam_cr_phone'] ) ? sanitize_text_field( (string) $input['annam_cr_phone'] ) : '';
 	$today       = wp_date( 'Y-m-d' );
 
@@ -91,47 +87,52 @@ function annam_car_rental_process_booking( array $input ) {
 	$types         = annam_car_rental_get_vehicle_types();
 	$vehicle_label = 'unknown' === $vehicle ? __( 'Chưa biết, cần tư vấn', 'generatepress_child' ) : ( $types[ $vehicle ]['label'] ?? $vehicle );
 
-	$page_url = isset( $input['annam_cr_page_url'] ) ? esc_url_raw( (string) $input['annam_cr_page_url'] ) : '';
-	if ( '' === $page_url ) {
-		$page_url = get_permalink() ? get_permalink() : home_url( '/' );
-	}
+	$is_compact_form = ! array_key_exists( 'annam_cr_dropoff', $input )
+		&& ! array_key_exists( 'annam_cr_round_trip', $input )
+		&& ! array_key_exists( 'annam_cr_date', $input )
+		&& ! array_key_exists( 'annam_cr_vehicle', $input );
 
-	$subject = sprintf(
-		'Lead thuê xe hợp đồng - %s - %s',
-		$vehicle_label,
-		$phone
-	);
+	$body_lines = array();
 
-	$body = implode(
-		"\n",
-		array_filter(
-			array(
-				__( 'Yêu cầu báo giá thuê xe mới', 'generatepress_child' ),
-				'',
-				__( 'Họ tên:', 'generatepress_child' ) . ' ' . ( $name ?: '—' ),
-				__( 'Số điện thoại / Zalo:', 'generatepress_child' ) . ' ' . $phone,
-				__( 'Loại xe:', 'generatepress_child' ) . ' ' . $vehicle_label,
-				__( 'Điểm đón:', 'generatepress_child' ) . ' ' . ( $pickup ?: '—' ),
-				__( 'Điểm đến:', 'generatepress_child' ) . ' ' . ( $dropoff ?: '—' ),
-				$route_label ? __( 'Hành trình chọn:', 'generatepress_child' ) . ' ' . $route_label : '',
-				$source_note ? __( 'Ghi chú nguồn:', 'generatepress_child' ) . ' ' . $source_note : '',
-				__( 'Thuê 2 chiều:', 'generatepress_child' ) . ' ' . ( $round_trip ? __( 'Có', 'generatepress_child' ) : __( 'Không / 1 chiều', 'generatepress_child' ) ),
-				$travel_date ? __( 'Ngày đi:', 'generatepress_child' ) . ' ' . $travel_date : '',
-				'',
-				__( 'URL trang:', 'generatepress_child' ) . ' ' . $page_url,
-				__( 'Thời gian gửi:', 'generatepress_child' ) . ' ' . wp_date( 'd/m/Y H:i' ),
-				'',
-				'IP: ' . ( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' ),
-			)
-		)
-	);
-
-	$sent = false;
-	foreach ( annam_car_rental_get_lead_recipient_emails() as $to ) {
-		if ( wp_mail( $to, $subject, $body, array( 'Content-Type: text/plain; charset=UTF-8' ) ) ) {
-			$sent = true;
+	if ( $is_compact_form ) {
+		$body_lines[] = __( 'Điểm đón & Điểm đến:', 'generatepress_child' ) . ' ' . $pickup;
+		if ( '' !== trim( $route_label ) ) {
+			$body_lines[] = __( 'Hành trình:', 'generatepress_child' ) . ' ' . $route_label;
 		}
+		$body_lines[] = __( 'Số điện thoại / Zalo:', 'generatepress_child' ) . ' ' . $phone;
+
+		$subject = sprintf(
+			'[THUÊ XE] Báo giá nhanh — %s — %s',
+			$pickup,
+			$phone
+		);
+	} else {
+		$body_lines = array(
+			__( 'Điểm đón:', 'generatepress_child' ) . ' ' . $pickup,
+			__( 'Điểm đến:', 'generatepress_child' ) . ' ' . ( '' !== trim( $dropoff ) ? $dropoff : '—' ),
+			__( 'Thuê xe 2 chiều:', 'generatepress_child' ) . ' ' . ( $round_trip ? __( 'Có', 'generatepress_child' ) : __( 'Không / 1 chiều', 'generatepress_child' ) ),
+			__( 'Ngày đi:', 'generatepress_child' ) . ' ' . ( '' !== $travel_date ? $travel_date : '—' ),
+			__( 'Loại xe:', 'generatepress_child' ) . ' ' . $vehicle_label,
+			__( 'Số điện thoại / Zalo:', 'generatepress_child' ) . ' ' . $phone,
+		);
+
+		if ( '' !== trim( $route_label ) ) {
+			$body_lines[] = __( 'Hành trình:', 'generatepress_child' ) . ' ' . $route_label;
+		}
+		if ( '' !== trim( $source_note ) ) {
+			$body_lines[] = __( 'Ghi chú:', 'generatepress_child' ) . ' ' . $source_note;
+		}
+
+		$subject = sprintf(
+			'[THUÊ XE] Báo giá — %s — %s → %s — %s',
+			$vehicle_label,
+			$pickup,
+			'' !== trim( $dropoff ) ? $dropoff : '—',
+			$phone
+		);
 	}
+
+	$sent = annam_lead_send_notification( annam_car_rental_get_lead_recipient_emails(), $subject, $body_lines );
 
 	if ( function_exists( 'annam_rate_limit_increment' ) ) {
 		annam_rate_limit_increment( 'annam_car_rental_booking', ANNAM_CAR_RENTAL_RATE_MINUTES );
