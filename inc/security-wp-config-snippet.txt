@@ -1,0 +1,18 @@
+# Snippet bảo mật WordPress — chép thủ công vào wp-config.php (sau khi backup).
+
+# Chặn sửa theme/plugin trong trình soạn thảo admin:
+# define( 'DISALLOW_FILE_EDIT', true );
+
+# (Tùy chọn) Tắt sửa file plugin/theme qua cài đặt — cẩn thận với workflow deploy:
+# define( 'DISALLOW_FILE_MODS', true );
+
+# Nginx: chặn PHP trong thư mục uploads (ví dụ):
+# location ~* ^/wp-content/uploads/.*\.(php|phtml|phps)$ { deny all; }
+
+# Apache: child theme cố gắng tạo wp-content/uploads/.htaccess một lần (admin_init).
+# Nếu không ghi được, thêm quy tắc tương tự trong cấu hình server.
+
+# XML-RPC / Jetpack: nếu cần Jetpack, trong code child theme thêm:
+# add_filter( 'annam_security_disable_xmlrpc', '__return_false' );
+
+# REST users cho khách: nếu plugin cần đọc /wp/v2/users, thêm filter tùy chỉnh hoặc tạm tắt module security-hardening.php.

@@ -1,0 +1,48 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Backup & temp
+*.bak
+*.tmp
+*.log
+debug.log
+
+# Env & secrets (không commit credential)
+.env
+.env.*
+!.env.example
+
+# Build / deps (nếu sau này thêm toolchain)
+node_modules/
+vendor/
+package-lock.json
+yarn.lock
+composer.lock
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# WordPress local only
+wp-config-local.php
+
+# Font TTF không dùng (theme chỉ dùng woff2 trong be-vietnam-pro, noto-serif)
+assets/font/Noto_Sans/
+
+# Gói deploy local (script tạo ZIP trong dist/)
+dist/
+deploy/cpanel.env

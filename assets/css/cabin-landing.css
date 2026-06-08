@@ -1,0 +1,2090 @@
+/**
+ * Landing Cabin VIP — conversion-first, mobile-first.
+ */
+
+body.annam-cabin-landing-page .site-content {
+	padding-top: 0;
+}
+
+body.annam-cabin-landing-page .entry-content {
+	margin: 0;
+	max-width: none;
+}
+
+.annam-cabin-landing {
+	--cabin-radius: 16px;
+	--cabin-radius-lg: 20px;
+	--cabin-shadow: 0 12px 40px rgba(15, 76, 76, 0.12);
+	--cabin-shadow-sm: 0 4px 16px rgba(15, 76, 76, 0.08);
+	padding-bottom: 92px;
+}
+
+.annam-cabin-container {
+	width: min(1140px, 100% - 32px);
+	margin-inline: auto;
+}
+
+/* Anchor */
+.annam-cabin-anchor {
+	position: sticky;
+	top: 0;
+	z-index: 40;
+	background: rgba(255, 255, 255, 0.97);
+	backdrop-filter: blur(8px);
+	border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.annam-cabin-anchor__inner {
+	display: flex;
+	gap: 8px;
+	overflow-x: auto;
+	padding: 10px 0;
+	scrollbar-width: none;
+}
+
+.annam-cabin-anchor__inner::-webkit-scrollbar {
+	display: none;
+}
+
+.annam-cabin-anchor__link {
+	flex: 0 0 auto;
+	padding: 8px 16px;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: rgb(var(--color-primary));
+	background: rgb(var(--color-surface-muted));
+	border-radius: 999px;
+	text-decoration: none;
+}
+
+/* Hero */
+.annam-cabin-hero {
+	padding: 24px 0 36px;
+	background: linear-gradient(160deg, rgba(15, 76, 76, 0.1) 0%, rgb(var(--color-bg)) 50%, #fff 100%);
+}
+
+.annam-cabin-hero__grid {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.annam-cabin-hero__eyebrow {
+	margin: 0 0 6px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: rgb(var(--color-secondary));
+}
+
+.annam-cabin-hero__title {
+	margin: 0 0 10px;
+	font-size: clamp(1.45rem, 5vw, 2.35rem);
+	line-height: 1.15;
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-hero__subtitle {
+	margin: 0 0 14px;
+	font-size: 1.05rem;
+	line-height: 1.45;
+	color: rgb(var(--color-neutral));
+	font-weight: 500;
+}
+
+.annam-cabin-hero__price {
+	margin: 0 0 16px;
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.annam-cabin-hero__price-label {
+	font-size: 0.9rem;
+	color: rgb(var(--color-muted));
+}
+
+.annam-cabin-hero__price strong {
+	font-size: 1.75rem;
+	font-weight: 800;
+	color: rgb(var(--color-tertiary));
+}
+
+.annam-cabin-hero__price-unit {
+	font-size: 0.9rem;
+	color: rgb(var(--color-muted));
+}
+
+.annam-cabin-hero__badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 18px;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-cabin-hero__badge {
+	padding: 6px 12px;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: rgb(var(--color-primary));
+	background: #fff;
+	border: 1px solid rgba(15, 76, 76, 0.15);
+	border-radius: 999px;
+	box-shadow: var(--cabin-shadow-sm);
+}
+
+.annam-cabin-hero__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.annam-cabin-hero__ctas--desktop {
+	display: none;
+}
+
+.annam-cabin-hero__ctas--mobile {
+	margin-bottom: 12px;
+}
+
+/* Form card */
+.annam-cabin-form-wrap {
+	background: #fff;
+	border: 1px solid rgba(15, 76, 76, 0.1);
+	border-radius: var(--cabin-radius-lg);
+	box-shadow: var(--cabin-shadow);
+	padding: 22px 20px 24px;
+	position: relative;
+}
+
+.annam-cabin-form-wrap::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	border-radius: var(--cabin-radius-lg) var(--cabin-radius-lg) 0 0;
+	background: linear-gradient(90deg, rgb(var(--color-primary)), rgb(var(--color-secondary)));
+}
+
+.annam-cabin-form__title {
+	margin: 0 0 4px;
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-form__subtitle {
+	margin: 0 0 18px;
+	font-size: 0.875rem;
+	color: rgb(var(--color-muted));
+	line-height: 1.45;
+}
+
+.annam-cabin-form__row {
+	display: grid;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.annam-cabin-form__row--2 {
+	grid-template-columns: 1fr;
+}
+
+.annam-cabin-form__field label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: rgb(var(--color-neutral));
+}
+
+.annam-cabin-form__field input,
+.annam-cabin-form__field select {
+	width: 100%;
+	padding: 11px 13px;
+	border: 1px solid rgb(var(--color-border));
+	border-radius: 10px;
+	font-size: 1rem;
+	background: #fff;
+	color: rgb(var(--color-neutral));
+}
+
+.annam-cabin-form__field input:focus,
+.annam-cabin-form__field select:focus {
+	outline: 2px solid rgb(var(--color-secondary));
+	outline-offset: 1px;
+	border-color: rgb(var(--color-secondary));
+}
+
+.annam-cabin-req {
+	color: #ea580c;
+}
+
+.annam-cabin-form__hp {
+	position: absolute;
+	left: -9999px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.annam-cabin-form__actions .annam-cabin-btn {
+	width: 100%;
+	padding: 14px 20px;
+	font-size: 1rem;
+}
+
+.annam-cabin-form__note {
+	margin: 14px 0 0;
+	font-size: 0.8125rem;
+	line-height: 1.45;
+	color: rgb(var(--color-muted));
+	text-align: center;
+}
+
+.annam-cabin-notice {
+	padding: 12px 14px;
+	border-radius: 10px;
+	margin-bottom: 14px;
+	font-size: 0.875rem;
+}
+
+.annam-cabin-notice--success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+}
+
+.annam-cabin-notice--error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+}
+
+/* Buttons */
+.annam-cabin-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 22px;
+	font-size: 0.9375rem;
+	font-weight: 700;
+	line-height: 1.2;
+	border-radius: 12px;
+	border: 2px solid transparent;
+	cursor: pointer;
+	text-decoration: none;
+	transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+
+.annam-cabin-btn:active {
+	transform: scale(0.98);
+}
+
+.annam-cabin-btn--block {
+	width: 100%;
+}
+
+.annam-cabin-btn--primary {
+	background: rgb(var(--color-tertiary));
+	color: #fff;
+	border-color: rgb(var(--color-tertiary));
+	box-shadow: 0 4px 14px var(--color-tertiary-glow);
+}
+
+.annam-cabin-btn--primary:hover {
+	background: rgb(var(--color-tertiary-hover));
+	border-color: rgb(var(--color-tertiary-hover));
+	color: #fff;
+}
+
+.annam-cabin-btn--zalo {
+	background: #0068ff;
+	color: #fff;
+	border-color: #0068ff;
+}
+
+.annam-cabin-btn--zalo:hover {
+	background: #0056d6;
+	color: #fff;
+}
+
+.annam-cabin-btn--outline {
+	background: #fff;
+	color: rgb(var(--color-primary));
+	border-color: rgb(var(--color-primary));
+}
+
+.annam-cabin-btn--outline:hover {
+	background: rgba(15, 76, 76, 0.06);
+}
+
+/* Sections */
+.annam-cabin-section {
+	padding: 44px 0;
+}
+
+.annam-cabin-section--alt {
+	background: rgb(var(--color-surface-muted));
+}
+
+.annam-cabin-section__title {
+	margin: 0 0 24px;
+	font-size: clamp(1.2rem, 3.5vw, 1.65rem);
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+	text-align: center;
+}
+
+.annam-cabin-section__note {
+	margin: 20px auto 0;
+	max-width: 640px;
+	font-size: 0.875rem;
+	color: rgb(var(--color-muted));
+	text-align: center;
+	line-height: 1.5;
+}
+
+.annam-cabin-section__cta-row {
+	text-align: center;
+	margin-top: 20px;
+}
+
+/* Tabs */
+.annam-cabin-tabs__nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: center;
+	margin-bottom: 22px;
+}
+
+.annam-cabin-tabs__nav--wrap .annam-cabin-tabs__btn {
+	font-size: 0.75rem;
+	padding: 8px 12px;
+}
+
+.annam-cabin-tabs__btn {
+	padding: 10px 20px;
+	border: 2px solid rgb(var(--color-border));
+	background: #fff;
+	border-radius: 999px;
+	font-weight: 700;
+	font-size: 0.875rem;
+	color: rgb(var(--color-neutral));
+	cursor: pointer;
+}
+
+.annam-cabin-tabs__btn.is-active {
+	background: rgb(var(--color-primary));
+	border-color: rgb(var(--color-primary));
+	color: #fff;
+}
+
+.annam-cabin-tabs__panel {
+	display: none;
+}
+
+.annam-cabin-tabs__panel.is-active {
+	display: block;
+}
+
+/* Price grid */
+.annam-cabin-price-grid {
+	display: grid;
+	gap: 16px;
+}
+
+.annam-cabin-price-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	background: #fff;
+	border: 1px solid rgb(var(--color-border));
+	border-radius: var(--cabin-radius);
+	box-shadow: var(--cabin-shadow-sm);
+}
+
+.annam-cabin-price-card--highlight {
+	border-color: rgb(var(--color-tertiary));
+	box-shadow: 0 8px 28px rgba(245, 130, 32, 0.2);
+}
+
+.annam-cabin-price-card__badge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	padding: 4px 10px;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	background: rgb(var(--color-tertiary));
+	color: #fff;
+	border-radius: 999px;
+}
+
+.annam-cabin-price-card__name {
+	margin: 0 0 6px;
+	padding-right: 72px;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-price-card__price {
+	margin: 0 0 8px;
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: rgb(var(--color-tertiary));
+}
+
+.annam-cabin-price-card__desc {
+	margin: 0 0 16px;
+	flex: 1;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: rgb(var(--color-muted));
+}
+
+/* Schedule times — fix empty appearance */
+.annam-cabin-time-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 10px;
+}
+
+.annam-cabin-time-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 48px;
+	padding: 10px 8px;
+	border: 2px solid rgb(var(--color-border));
+	background: #fff;
+	border-radius: 10px;
+	cursor: pointer;
+	color: rgb(var(--color-primary));
+	font: inherit;
+}
+
+.annam-cabin-time-btn__label {
+	font-size: 0.9375rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-time-btn:hover,
+.annam-cabin-time-btn.is-selected {
+	border-color: rgb(var(--color-secondary));
+	background: rgba(46, 159, 159, 0.12);
+	box-shadow: inset 0 0 0 1px rgb(var(--color-secondary));
+}
+
+.annam-cabin-time-btn.is-selected .annam-cabin-time-btn__label {
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-time-btn.is-disabled,
+.annam-cabin-time-btn:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.annam-cabin-time-btn[hidden] {
+	display: none !important;
+}
+
+.annam-cabin-form__ajax-notice {
+	margin-bottom: 14px;
+}
+
+.annam-cabin-form__hint {
+	margin: 0 0 12px;
+	padding: 10px 12px;
+	font-size: 0.8125rem;
+	line-height: 1.45;
+	border-radius: 10px;
+	background: #fff8e6;
+	color: #92400e;
+	border: 1px solid #fde68a;
+}
+
+.annam-cabin-form__hint[hidden] {
+	display: none !important;
+}
+
+.annam-cabin-schedule-hint {
+	margin: 0 0 12px;
+	font-size: 0.875rem;
+	color: rgb(var(--color-muted));
+	text-align: center;
+}
+
+.annam-cabin-schedule-hint[hidden] {
+	display: none !important;
+}
+
+/* Cabin type cards */
+.annam-cabin-cabin-grid {
+	display: grid;
+	gap: 20px;
+}
+
+.annam-cabin-cabin-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border: 1px solid rgb(var(--color-border));
+	border-radius: var(--cabin-radius);
+	overflow: hidden;
+	box-shadow: var(--cabin-shadow-sm);
+}
+
+.annam-cabin-cabin-card--featured {
+	border: 2px solid rgb(var(--color-tertiary));
+	box-shadow: 0 12px 36px rgba(245, 130, 32, 0.22);
+	transform: scale(1);
+}
+
+.annam-cabin-cabin-card__tag {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 2;
+	padding: 5px 12px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	background: rgb(var(--color-tertiary));
+	color: #fff;
+	border-radius: 999px;
+}
+
+.annam-cabin-cabin-card__media {
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: rgb(var(--color-surface-muted));
+}
+
+.annam-cabin-cabin-card__media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.annam-cabin-cabin-card__body {
+	padding: 18px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.annam-cabin-cabin-card__title {
+	margin: 0 0 6px;
+	font-size: 1.1rem;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-cabin-card__price {
+	margin: 0 0 8px;
+	font-weight: 800;
+	color: rgb(var(--color-tertiary));
+}
+
+.annam-cabin-cabin-card__desc {
+	margin: 0 0 14px;
+	flex: 1;
+	font-size: 0.875rem;
+	color: rgb(var(--color-muted));
+	line-height: 1.5;
+}
+
+/* Pickup — Điểm đón & trả */
+.annam-cabin-section--pickup {
+	padding: clamp(56px, 8vw, 72px) 0;
+	background: linear-gradient(180deg, #f0f5f6 0%, #e8eef0 100%);
+}
+
+.annam-cabin-pickup-wrap {
+	width: min(1160px, 100% - 32px);
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+.annam-cabin-pickup-wrap__title {
+	margin-bottom: 22px;
+}
+
+.annam-cabin-tabs--pickup {
+	margin-bottom: 0;
+}
+
+.annam-cabin-tabs__nav--pickup {
+	margin-bottom: 20px;
+}
+
+.annam-cabin-tabs__btn--pickup {
+	border-color: rgba(15, 76, 76, 0.22);
+	color: rgb(var(--color-primary));
+	background: #fff;
+}
+
+.annam-cabin-tabs__btn--pickup.is-active {
+	background: rgb(var(--color-primary));
+	border-color: rgb(var(--color-primary));
+	color: #fff;
+}
+
+.annam-cabin-pickup-panel__heading {
+	margin: 0 auto 22px;
+	max-width: 36rem;
+	font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+	font-weight: 600;
+	color: rgb(var(--color-neutral));
+	text-align: center;
+	line-height: 1.5;
+}
+
+.annam-cabin-pickup-cards {
+	display: grid;
+	gap: 20px;
+	align-items: stretch;
+}
+
+.annam-cabin-pickup-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: #fff;
+	border-radius: 20px;
+	box-shadow: 0 8px 32px rgba(15, 76, 76, 0.08), 0 2px 8px rgba(15, 76, 76, 0.04);
+	overflow: hidden;
+}
+
+.annam-cabin-pickup-card__head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0;
+	padding: 16px 20px;
+	background: linear-gradient(135deg, #0f4c4c 0%, #0a3d3d 100%);
+}
+
+.annam-cabin-pickup-card__accent {
+	flex-shrink: 0;
+	width: 4px;
+	height: 22px;
+	border-radius: 2px;
+	background: rgb(var(--color-secondary));
+}
+
+.annam-cabin-pickup-card__title {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 700;
+	color: #fff;
+	line-height: 1.35;
+}
+
+.annam-cabin-pickup-card__list {
+	flex: 1;
+	margin: 0;
+	padding: 18px 20px 22px;
+	list-style: none;
+}
+
+.annam-cabin-pickup-card__item {
+	position: relative;
+	padding: 0 0 0 1.35rem;
+	font-size: 0.9rem;
+	line-height: 1.65;
+	color: rgb(var(--color-neutral));
+}
+
+.annam-cabin-pickup-card__item + .annam-cabin-pickup-card__item {
+	margin-top: 10px;
+}
+
+.annam-cabin-pickup-card__item::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.55em;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: rgb(var(--color-secondary));
+	transform: translateY(-50%);
+}
+
+.annam-cabin-pickup-footer {
+	margin-top: 28px;
+	text-align: center;
+}
+
+.annam-cabin-pickup-footer__note {
+	margin: 0 auto 16px;
+	max-width: 46rem;
+	font-size: 0.875rem;
+	color: rgb(var(--color-muted));
+	line-height: 1.55;
+}
+
+.annam-cabin-pickup-footer__cta {
+	margin: 0;
+}
+
+.annam-cabin-btn--pickup-cta {
+	min-width: min(100%, 280px);
+	padding-inline: 28px;
+}
+
+/* Gallery — Hình ảnh xe */
+.annam-cabin-section--gallery {
+	padding: clamp(48px, 7vw, 64px) 0;
+	background: linear-gradient(180deg, #fff 0%, #f4f8f9 100%);
+}
+
+.annam-cabin-gallery-wrap {
+	width: min(1160px, 100% - 32px);
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+.annam-cabin-gallery-wrap__title {
+	margin-bottom: 28px;
+}
+
+.annam-cabin-gallery__layout {
+	display: grid;
+	gap: 14px;
+}
+
+.annam-cabin-gallery__main,
+.annam-cabin-gallery__item {
+	margin: 0;
+	min-width: 0;
+}
+
+.annam-cabin-gallery__side {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 14px;
+}
+
+.annam-cabin-gallery__trigger {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	padding: 0;
+	border: none;
+	background: #e8eef0;
+	cursor: zoom-in;
+	border-radius: 18px;
+	overflow: hidden;
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.annam-cabin-gallery__trigger::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 1px rgba(15, 76, 76, 0.06);
+	pointer-events: none;
+}
+
+.annam-cabin-gallery__trigger:hover,
+.annam-cabin-gallery__trigger:focus-visible {
+	box-shadow: 0 12px 32px rgba(15, 76, 76, 0.14);
+	transform: translateY(-1px);
+}
+
+.annam-cabin-gallery__trigger img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.35s ease;
+}
+
+.annam-cabin-gallery__trigger:hover img,
+.annam-cabin-gallery__trigger:focus-visible img {
+	transform: scale(1.03);
+}
+
+.annam-cabin-gallery__main .annam-cabin-gallery__trigger {
+	height: clamp(220px, 56vw, 300px);
+}
+
+.annam-cabin-gallery__item .annam-cabin-gallery__trigger {
+	height: clamp(140px, 42vw, 180px);
+}
+
+.annam-cabin-gallery__caption {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	margin: 0;
+	padding: 28px 14px 12px;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	line-height: 1.35;
+	color: #fff;
+	text-align: left;
+	background: linear-gradient(180deg, transparent 0%, rgba(8, 40, 40, 0.72) 100%);
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.annam-cabin-gallery__trigger,
+	.annam-cabin-gallery__trigger img {
+		transition: none;
+	}
+
+	.annam-cabin-gallery__trigger:hover,
+	.annam-cabin-gallery__trigger:focus-visible {
+		transform: none;
+	}
+
+	.annam-cabin-gallery__trigger:hover img,
+	.annam-cabin-gallery__trigger:focus-visible img {
+		transform: none;
+	}
+}
+
+/* Lightbox */
+.annam-cabin-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(15, 23, 42, 0.92);
+	padding: 16px;
+}
+
+.annam-cabin-lightbox[hidden] {
+	display: none !important;
+}
+
+.annam-cabin-lightbox__figure {
+	margin: 0;
+	max-width: min(960px, 100%);
+	text-align: center;
+}
+
+.annam-cabin-lightbox__img {
+	max-width: 100%;
+	max-height: 75vh;
+	border-radius: 8px;
+}
+
+.annam-cabin-lightbox__caption {
+	margin-top: 12px;
+	color: #fff;
+	font-size: 0.9rem;
+}
+
+.annam-cabin-lightbox__close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 44px;
+	height: 44px;
+	border: none;
+	background: rgba(255, 255, 255, 0.15);
+	color: #fff;
+	font-size: 1.75rem;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.annam-cabin-lightbox__nav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 48px;
+	height: 48px;
+	border: none;
+	background: rgba(255, 255, 255, 0.15);
+	color: #fff;
+	font-size: 1.75rem;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.annam-cabin-lightbox__nav--prev {
+	left: 12px;
+}
+
+.annam-cabin-lightbox__nav--next {
+	right: 12px;
+}
+
+/* Why cards */
+.annam-cabin-why-grid {
+	display: grid;
+	gap: 14px;
+}
+
+.annam-cabin-why-card {
+	padding: 18px;
+	background: #fff;
+	border: 1px solid rgb(var(--color-border));
+	border-radius: var(--cabin-radius);
+	box-shadow: var(--cabin-shadow-sm);
+}
+
+.annam-cabin-why-card__title {
+	margin: 0 0 8px;
+	font-size: 1rem;
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-why-card p {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: rgb(var(--color-muted));
+}
+
+/* Amenities */
+.annam-cabin-amenity-grid {
+	display: grid;
+	gap: 12px;
+}
+
+.annam-cabin-amenity {
+	padding: 16px;
+	background: #fff;
+	border-radius: var(--cabin-radius);
+	border: 1px solid rgb(var(--color-border));
+}
+
+.annam-cabin-amenity__title {
+	margin: 0 0 6px;
+	font-size: 0.95rem;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-amenity p {
+	margin: 0;
+	font-size: 0.8125rem;
+	color: rgb(var(--color-muted));
+}
+
+/* Steps — Đặt vé 3 bước */
+.annam-cabin-section--steps {
+	padding: clamp(56px, 8vw, 72px) 0;
+	background: linear-gradient(
+		180deg,
+		rgba(46, 159, 159, 0.14) 0%,
+		rgba(15, 76, 76, 0.08) 100%
+	);
+}
+
+.annam-cabin-steps-wrap {
+	width: min(1160px, 100% - 32px);
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+.annam-cabin-steps-wrap__title {
+	margin-bottom: 32px;
+}
+
+.annam-cabin-steps-flow {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-cabin-steps-flow__connector {
+	display: none;
+}
+
+.annam-cabin-steps-flow__step {
+	margin: 0;
+	min-width: 0;
+}
+
+.annam-cabin-step-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 28px 24px 26px;
+	background: #fff;
+	border: 1px solid rgba(15, 76, 76, 0.08);
+	border-radius: 20px;
+	box-shadow: 0 8px 28px rgba(15, 76, 76, 0.07);
+}
+
+.annam-cabin-step-card--featured {
+	background: linear-gradient(180deg, #f3faf9 0%, #fff 100%);
+	border-color: rgba(46, 159, 159, 0.35);
+	box-shadow: 0 10px 32px rgba(15, 76, 76, 0.1);
+}
+
+.annam-cabin-step-card__num {
+	display: block;
+	margin-bottom: 12px;
+	font-size: clamp(2rem, 5vw, 2.5rem);
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: -0.02em;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-step-card--featured .annam-cabin-step-card__num {
+	color: rgb(var(--color-tertiary));
+}
+
+.annam-cabin-step-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin-bottom: 14px;
+	border-radius: 12px;
+	background: rgba(15, 76, 76, 0.06);
+	color: rgb(var(--color-secondary));
+}
+
+.annam-cabin-step-card--featured .annam-cabin-step-card__icon {
+	background: rgba(46, 159, 159, 0.12);
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-step-card__icon svg {
+	display: block;
+}
+
+.annam-cabin-step-card__title {
+	margin: 0 0 10px;
+	font-size: 1.05rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-step-card__text {
+	margin: 0;
+	flex: 1;
+	font-size: 0.9rem;
+	line-height: 1.55;
+	color: rgb(var(--color-muted));
+}
+
+.annam-cabin-steps-footer {
+	margin-top: 32px;
+	text-align: center;
+}
+
+.annam-cabin-btn--steps-cta {
+	min-width: min(100%, 320px);
+	padding: 16px 36px;
+	font-size: 1rem;
+	font-weight: 700;
+	box-shadow: 0 8px 24px var(--color-tertiary-glow);
+}
+
+.annam-cabin-btn--steps-cta:hover {
+	box-shadow: 0 10px 28px rgba(232, 93, 44, 0.35);
+}
+
+/* Promises — Cam kết khi đặt vé */
+.annam-cabin-section--promises {
+	padding: clamp(56px, 8vw, 72px) 0;
+	background: rgb(var(--color-surface-muted));
+}
+
+.annam-cabin-promises-wrap {
+	width: min(1160px, 100% - 32px);
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+.annam-cabin-promises-wrap__title {
+	margin-bottom: 32px;
+}
+
+.annam-cabin-promises-layout {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.annam-cabin-promises-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 18px;
+}
+
+.annam-cabin-promise-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 22px 20px;
+	background: #fff;
+	border: 1px solid rgba(15, 76, 76, 0.08);
+	border-radius: 20px;
+	box-shadow: 0 6px 24px rgba(15, 76, 76, 0.06);
+	transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.annam-cabin-promise-card:hover {
+	box-shadow: 0 10px 32px rgba(15, 76, 76, 0.1);
+	transform: translateY(-2px);
+}
+
+.annam-cabin-promise-card--lead {
+	padding: 28px 24px;
+	background: linear-gradient(160deg, #f3faf9 0%, #fff 55%);
+	border-color: rgba(46, 159, 159, 0.28);
+	box-shadow: 0 10px 36px rgba(15, 76, 76, 0.09);
+}
+
+.annam-cabin-promise-card--lead:hover {
+	box-shadow: 0 14px 40px rgba(15, 76, 76, 0.12);
+}
+
+.annam-cabin-promise-card__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin-bottom: 14px;
+	border-radius: 14px;
+	background: rgba(46, 159, 159, 0.1);
+	color: rgb(var(--color-primary));
+	flex-shrink: 0;
+}
+
+.annam-cabin-promise-card--lead .annam-cabin-promise-card__icon {
+	width: 56px;
+	height: 56px;
+	background: rgba(15, 76, 76, 0.08);
+	color: rgb(var(--color-secondary));
+}
+
+.annam-cabin-promise-card__icon svg {
+	display: block;
+}
+
+.annam-cabin-promise-card__title {
+	margin: 0 0 8px;
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.4;
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-promise-card--lead .annam-cabin-promise-card__title {
+	font-size: 1.125rem;
+}
+
+.annam-cabin-promise-card__text {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.55;
+	color: rgb(var(--color-muted));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.annam-cabin-promise-card {
+		transition: none;
+	}
+
+	.annam-cabin-promise-card:hover {
+		transform: none;
+	}
+}
+
+/* FAQ */
+.annam-cabin-section--faq {
+	padding: clamp(48px, 7vw, 64px) 0;
+	background: #fff;
+}
+
+.annam-cabin-faq-wrap {
+	width: min(1160px, 100% - 32px);
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+.annam-cabin-faq-wrap__title {
+	margin-bottom: 28px;
+}
+
+.annam-cabin-faq-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.annam-cabin-faq-col {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	min-width: 0;
+}
+
+.annam-cabin-faq__item {
+	border: 1px solid rgba(15, 76, 76, 0.1);
+	border-radius: 18px;
+	background: #fff;
+	box-shadow: 0 4px 18px rgba(15, 76, 76, 0.06);
+	overflow: hidden;
+}
+
+.annam-cabin-faq__item[open] {
+	box-shadow: 0 6px 22px rgba(15, 76, 76, 0.09);
+	border-color: rgba(46, 159, 159, 0.25);
+}
+
+.annam-cabin-faq__q {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 14px 16px;
+	font-weight: 600;
+	font-size: 0.9375rem;
+	line-height: 1.45;
+	color: rgb(var(--color-primary));
+	cursor: pointer;
+	list-style: none;
+}
+
+.annam-cabin-faq__q::-webkit-details-marker {
+	display: none;
+}
+
+.annam-cabin-faq__q::after {
+	content: "+";
+	flex-shrink: 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: rgba(46, 159, 159, 0.12);
+	color: rgb(var(--color-primary));
+	font-size: 1.125rem;
+	font-weight: 700;
+	line-height: 1;
+	transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.annam-cabin-faq__item[open] .annam-cabin-faq__q::after {
+	content: "−";
+	background: rgb(var(--color-primary));
+	color: #fff;
+}
+
+.annam-cabin-faq__a {
+	padding: 0 16px 14px;
+	font-size: 0.875rem;
+	color: rgb(var(--color-muted));
+	line-height: 1.55;
+}
+
+.annam-cabin-faq__a p {
+	margin: 0;
+}
+
+/* Final CTA */
+.annam-cabin-cta-final {
+	position: relative;
+	padding: clamp(52px, 8vw, 72px) 0;
+	background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, #0c3e3e 100%);
+	color: #fff;
+	text-align: center;
+	overflow: hidden;
+}
+
+.annam-cabin-cta-final--has-image::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background-image: var(--annam-cta-final-bg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.annam-cabin-cta-final__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background: linear-gradient(
+		135deg,
+		rgba(8, 40, 40, 0.82) 0%,
+		rgba(12, 62, 62, 0.78) 50%,
+		rgba(8, 40, 40, 0.85) 100%
+	);
+	pointer-events: none;
+}
+
+.annam-cabin-cta-final__inner {
+	position: relative;
+	z-index: 2;
+}
+
+.annam-cabin-cta-final__title {
+	margin: 0 0 10px;
+	font-size: clamp(1.25rem, 3vw, 1.75rem);
+	color: #fff;
+	text-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
+}
+
+.annam-cabin-cta-final__desc {
+	margin: 0 auto 28px;
+	max-width: 520px;
+	font-size: 1rem;
+	line-height: 1.55;
+	color: rgba(255, 255, 255, 0.94);
+	text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.annam-cabin-cta-final__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	justify-content: center;
+	gap: 12px;
+	max-width: 960px;
+	margin-inline: auto;
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn {
+	flex: 1 1 100%;
+	min-height: 48px;
+	min-width: 0;
+	max-width: 100%;
+	padding: 12px 20px;
+	border-width: 2px;
+	line-height: 1.2;
+	font-weight: 700;
+	box-sizing: border-box;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+	transform: none;
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn:hover,
+.annam-cabin-cta-final__actions .annam-cabin-btn:focus-visible,
+.annam-cabin-cta-final__actions .annam-cabin-btn:active {
+	transform: none;
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn--zalo {
+	background: #0068ff;
+	border-color: #0068ff;
+	color: #fff;
+	box-shadow: 0 4px 16px rgba(0, 104, 255, 0.35);
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn--zalo:hover,
+.annam-cabin-cta-final__actions .annam-cabin-btn--zalo:focus-visible {
+	background: #0056d6;
+	border-color: #0056d6;
+	color: #fff;
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn--primary {
+	background: rgb(var(--color-tertiary));
+	border-color: rgb(var(--color-tertiary));
+	color: #fff;
+	box-shadow: 0 4px 16px var(--color-tertiary-glow);
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn--primary:hover,
+.annam-cabin-cta-final__actions .annam-cabin-btn--primary:focus-visible {
+	background: rgb(var(--color-tertiary-hover));
+	border-color: rgb(var(--color-tertiary-hover));
+	color: #fff;
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark {
+	background: #fff;
+	border-color: rgb(var(--color-primary));
+	color: rgb(var(--color-primary));
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark:hover,
+.annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark:focus-visible {
+	background: rgb(var(--color-primary));
+	border-color: rgb(var(--color-primary));
+	color: #fff;
+}
+
+@media (min-width: 640px) {
+	.annam-cabin-cta-final__actions .annam-cabin-btn {
+		flex: 1 1 calc(33.333% - 8px);
+		min-width: 180px;
+		max-width: 280px;
+	}
+}
+
+@media (min-width: 900px) {
+	.annam-cabin-cta-final__actions {
+		flex-wrap: nowrap;
+		gap: 14px;
+	}
+
+	.annam-cabin-cta-final__actions .annam-cabin-btn {
+		flex: 1 1 0;
+		max-width: none;
+	}
+}
+
+/* Tour / combo Sapa — slider như trang chủ (home-product-sections.css) */
+.annam-cabin-section--tours {
+	padding: clamp(48px, 7vw, 64px) 0;
+	background: #fff;
+}
+
+.annam-cabin-tours-wrap .annam-cabin-tours-home-section {
+	margin: 0;
+}
+
+.annam-cabin-tours-wrap .annam-home-product-section__inner {
+	max-width: 100%;
+}
+
+/* Nội dung mở rộng — từ editor page */
+.annam-cabin-page-content {
+	padding: clamp(40px, 6vw, 56px) 0 clamp(48px, 7vw, 64px);
+	background: linear-gradient(180deg, #f4f8f9 0%, #eef3f4 100%);
+}
+
+.annam-cabin-page-content__card {
+	width: 100%;
+	padding: clamp(22px, 4vw, 32px);
+	background: #fff;
+	border: 1px solid rgba(15, 76, 76, 0.08);
+	border-radius: 20px;
+	box-shadow: 0 8px 32px rgba(15, 76, 76, 0.07);
+}
+
+.annam-cabin-page-content__heading {
+	margin: 0 0 18px;
+	font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+	text-align: center;
+}
+
+.annam-cabin-page-content__body-wrap {
+	position: relative;
+}
+
+.annam-cabin-page-content__body {
+	width: 100%;
+	max-width: none;
+	font-size: 0.9375rem;
+	line-height: 1.65;
+	color: rgb(var(--color-neutral));
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+body.annam-cabin-landing-page .annam-cabin-page-content__body.entry-content > * {
+	max-width: none;
+	width: auto;
+}
+
+body.annam-cabin-landing-page .annam-cabin-page-content__body.entry-content > .alignwide {
+	max-width: none;
+	width: 100%;
+}
+
+body.annam-cabin-landing-page .annam-cabin-page-content__body.entry-content > .alignfull {
+	max-width: none;
+	width: 100%;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.annam-cabin-page-content__body > *:first-child {
+	margin-top: 0;
+}
+
+.annam-cabin-page-content__body > *:last-child {
+	margin-bottom: 0;
+}
+
+.annam-cabin-page-content__body h1,
+.annam-cabin-page-content__body h2,
+.annam-cabin-page-content__body h3,
+.annam-cabin-page-content__body h4,
+.annam-cabin-page-content__body h5,
+.annam-cabin-page-content__body h6 {
+	margin: 1.35em 0 0.5em;
+	font-weight: 700;
+	line-height: 1.35;
+	color: rgb(var(--color-primary));
+	text-align: left;
+}
+
+.annam-cabin-page-content__body h1:first-child,
+.annam-cabin-page-content__body h2:first-child,
+.annam-cabin-page-content__body h3:first-child {
+	margin-top: 0;
+}
+
+.annam-cabin-page-content__body p {
+	margin: 0 0 0.85em;
+}
+
+.annam-cabin-page-content__body ul,
+.annam-cabin-page-content__body ol {
+	margin: 0 0 1em;
+	padding-left: 1.35em;
+}
+
+.annam-cabin-page-content__body li {
+	margin-bottom: 0.35em;
+}
+
+.annam-cabin-page-content__body a {
+	color: rgb(var(--color-secondary));
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.annam-cabin-page-content__body a:hover,
+.annam-cabin-page-content__body a:focus-visible {
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-page-content:not(.is-expanded) .annam-cabin-page-content__body {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 8;
+	overflow: hidden;
+}
+
+.annam-cabin-page-content:not(.is-expanded):not(.annam-cabin-page-content--no-toggle) .annam-cabin-page-content__body-wrap::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 56px;
+	pointer-events: none;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 88%);
+}
+
+.annam-cabin-page-content.is-expanded .annam-cabin-page-content__body-wrap::after {
+	display: none;
+}
+
+.annam-cabin-page-content--no-toggle .annam-cabin-page-content__body {
+	display: block;
+	overflow: visible;
+	-webkit-line-clamp: unset;
+}
+
+.annam-cabin-page-content__toggle {
+	display: flex;
+	width: fit-content;
+	max-width: 100%;
+	align-items: center;
+	justify-content: center;
+	margin: 18px auto 0;
+	padding: 10px 22px;
+	font-size: 0.875rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: rgb(var(--color-primary));
+	background: #fff;
+	border: 2px solid rgba(15, 76, 76, 0.2);
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.annam-cabin-page-content__toggle:hover,
+.annam-cabin-page-content__toggle:focus-visible {
+	background: rgba(46, 159, 159, 0.08);
+	border-color: rgb(var(--color-secondary));
+	color: rgb(var(--color-primary));
+}
+
+.annam-cabin-page-content--no-toggle .annam-cabin-page-content__toggle {
+	display: none;
+}
+
+/* Sticky bar */
+.annam-cabin-sticky {
+	display: flex;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 90;
+	background: #fff;
+	border-top: 1px solid rgb(var(--color-border));
+	box-shadow: 0 -6px 24px rgba(15, 76, 76, 0.15);
+	padding: 10px 8px;
+	gap: 8px;
+	padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+
+.annam-cabin-sticky__btn {
+	flex: 1;
+	padding: 13px 6px;
+	font-size: 0.8125rem;
+	font-weight: 800;
+	text-align: center;
+	border-radius: 10px;
+	border: none;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.annam-cabin-sticky__btn--call {
+	background: rgb(var(--color-tertiary));
+	color: #fff;
+}
+
+.annam-cabin-sticky__btn--zalo {
+	background: #0068ff;
+	color: #fff;
+}
+
+.annam-cabin-sticky__btn--form {
+	background: rgb(var(--color-primary));
+	color: #fff;
+}
+
+@media (min-width: 640px) {
+	.annam-cabin-form__row--2 {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.annam-cabin-time-grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.annam-cabin-price-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.annam-cabin-why-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.annam-cabin-pickup-cards {
+		grid-template-columns: 1fr 1fr;
+		gap: 24px;
+	}
+
+	.annam-cabin-gallery__layout {
+		grid-template-columns: 1.1fr 1fr;
+		gap: 16px;
+		align-items: stretch;
+	}
+
+	.annam-cabin-gallery__main .annam-cabin-gallery__trigger {
+		height: 420px;
+	}
+
+	.annam-cabin-gallery__side {
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-rows: repeat(2, 202px);
+		gap: 16px;
+		height: 420px;
+	}
+
+	.annam-cabin-gallery__item .annam-cabin-gallery__trigger {
+		height: 100%;
+	}
+
+	.annam-cabin-steps-flow {
+		flex-direction: row;
+		align-items: stretch;
+		justify-content: center;
+		gap: 0;
+	}
+
+	.annam-cabin-steps-flow__connector {
+		display: flex;
+		flex: 0 0 auto;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		padding-top: 48px;
+		color: rgb(var(--color-secondary));
+	}
+
+	.annam-cabin-steps-flow__arrow {
+		display: block;
+		opacity: 0.65;
+	}
+
+	.annam-cabin-steps-flow__step {
+		flex: 1 1 0;
+		max-width: 340px;
+	}
+
+	.annam-cabin-step-card {
+		padding: 30px 26px 28px;
+	}
+
+	.annam-cabin-promises-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+		gap: 20px;
+		align-items: stretch;
+	}
+
+	.annam-cabin-promise-card--lead {
+		grid-row: 1 / -1;
+		padding: 32px 28px;
+		justify-content: center;
+	}
+
+	.annam-cabin-promises-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+
+	.annam-cabin-faq-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 24px;
+		align-items: start;
+	}
+
+	.annam-cabin-faq-col {
+		gap: 16px;
+	}
+}
+
+@media (min-width: 900px) {
+	.annam-cabin-hero__grid {
+		display: grid;
+		grid-template-columns: 1fr min(420px, 42%);
+		gap: 32px;
+		align-items: start;
+	}
+
+	.annam-cabin-hero__ctas--desktop {
+		display: flex;
+	}
+
+	.annam-cabin-hero__ctas--mobile {
+		display: none;
+	}
+
+	.annam-cabin-cabin-grid {
+		grid-template-columns: repeat(3, 1fr);
+		align-items: stretch;
+	}
+
+	.annam-cabin-cabin-card--featured {
+		transform: translateY(-6px);
+	}
+
+	.annam-cabin-amenity-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.annam-cabin-sticky {
+		display: none;
+	}
+
+	.annam-cabin-landing {
+		padding-bottom: 0;
+	}
+}
+
+@media (min-width: 1024px) {
+	.annam-cabin-price-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.annam-cabin-why-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.annam-cabin-time-grid {
+		grid-template-columns: repeat(6, 1fr);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Chống override GeneratePress / plugin (button { color:#fff; background:#555 })
+   Chỉ áp dụng trong landing — dùng đúng class thực tế trên markup.
+   ------------------------------------------------------------------------- */
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn {
+	-webkit-appearance: none;
+	appearance: none;
+	box-shadow: none;
+	text-shadow: none;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+/* Nút chọn giờ — class: .annam-cabin-time-btn > .annam-cabin-time-btn__label */
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn:not(:disabled):not(.is-disabled):not([hidden]) {
+	opacity: 1 !important;
+	background-color: #fff !important;
+	background-image: none !important;
+	border: 2px solid rgb(var(--color-border)) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn:not(:disabled):not(.is-disabled):not([hidden]) .annam-cabin-time-btn__label {
+	opacity: 1 !important;
+	color: rgb(var(--color-primary)) !important;
+	visibility: visible !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn:not(:disabled):not(.is-disabled):not([hidden]):hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn:not(:disabled):not(.is-disabled):not([hidden]):focus,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn:not(:disabled):not(.is-disabled):not([hidden]):focus-visible {
+	opacity: 1 !important;
+	background-color: rgba(46, 159, 159, 0.12) !important;
+	border-color: rgb(var(--color-secondary)) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn.is-selected:not(:disabled):not([hidden]) {
+	opacity: 1 !important;
+	background-color: rgba(46, 159, 159, 0.18) !important;
+	border-color: rgb(var(--color-secondary)) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-time-btn.is-selected .annam-cabin-time-btn__label {
+	color: rgb(var(--color-primary)) !important;
+}
+
+/* Tab lịch / giá / điểm đón — class: .annam-cabin-tabs__btn */
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn {
+	opacity: 1 !important;
+	background-color: #fff !important;
+	background-image: none !important;
+	border: 2px solid rgb(var(--color-border)) !important;
+	color: rgb(var(--color-neutral)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn:focus,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn:focus-visible {
+	opacity: 1 !important;
+	background-color: rgb(var(--color-surface-muted)) !important;
+	color: rgb(var(--color-primary)) !important;
+	border-color: rgb(var(--color-border)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn.is-active,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn.is-active:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn.is-active:focus {
+	opacity: 1 !important;
+	background-color: rgb(var(--color-primary)) !important;
+	border-color: rgb(var(--color-primary)) !important;
+	color: #fff !important;
+}
+
+/* Tab điểm đón — .annam-cabin-tabs__btn--pickup */
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn--pickup:not(.is-active) {
+	background-color: #fff !important;
+	border-color: rgba(15, 76, 76, 0.22) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn--pickup:not(.is-active):hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-tabs__btn--pickup:not(.is-active):focus {
+	background-color: rgba(15, 76, 76, 0.05) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--pickup-cta:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--pickup-cta:focus {
+	background-color: rgba(15, 76, 76, 0.06) !important;
+	border-color: rgb(var(--color-primary)) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+/* Gallery trigger — không bị GP đè nền xám */
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-gallery__trigger {
+	background-color: #e8eef0 !important;
+	background-image: none !important;
+	color: inherit !important;
+	opacity: 1 !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-gallery__trigger:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-gallery__trigger:focus {
+	background-color: #e8eef0 !important;
+	color: inherit !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--steps-cta,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--steps-cta:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--steps-cta:focus {
+	background-color: rgb(var(--color-tertiary)) !important;
+	border-color: rgb(var(--color-tertiary)) !important;
+	color: #fff !important;
+	opacity: 1 !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--steps-cta:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--steps-cta:focus {
+	background-color: rgb(var(--color-tertiary-hover)) !important;
+	border-color: rgb(var(--color-tertiary-hover)) !important;
+}
+
+/* CTA — class: .annam-cabin-btn (+ modifier) */
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-btn,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn,
+body.annam-cabin-landing-page .annam-cabin-landing a.annam-cabin-btn {
+	opacity: 1 !important;
+	text-decoration: none !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--primary,
+body.annam-cabin-landing-page .annam-cabin-landing a.annam-cabin-btn--primary {
+	background-color: rgb(var(--color-tertiary)) !important;
+	border-color: rgb(var(--color-tertiary)) !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--primary:hover,
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--primary:focus,
+body.annam-cabin-landing-page .annam-cabin-landing a.annam-cabin-btn--primary:hover {
+	background-color: rgb(var(--color-tertiary-hover)) !important;
+	border-color: rgb(var(--color-tertiary-hover)) !important;
+	color: #fff !important;
+	opacity: 1 !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--outline,
+body.annam-cabin-landing-page .annam-cabin-landing a.annam-cabin-btn--outline {
+	background-color: #fff !important;
+	border-color: rgb(var(--color-primary)) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--outline:hover,
+body.annam-cabin-landing-page .annam-cabin-landing a.annam-cabin-btn--outline:hover {
+	background-color: rgba(15, 76, 76, 0.06) !important;
+	color: rgb(var(--color-primary)) !important;
+	opacity: 1 !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing button.annam-cabin-btn--zalo,
+body.annam-cabin-landing-page .annam-cabin-landing a.annam-cabin-btn--zalo {
+	background-color: #0068ff !important;
+	border-color: #0068ff !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-sticky__btn {
+	opacity: 1 !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-sticky__btn--call {
+	background-color: rgb(var(--color-tertiary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-sticky__btn--zalo {
+	background-color: #0068ff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-sticky__btn--form {
+	background-color: rgb(var(--color-primary)) !important;
+}
+
+/* CTA cuối trang — override GP, không lệch nút khi hover */
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn {
+	transform: none !important;
+	opacity: 1 !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn:hover,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn:focus,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn:focus-visible,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn:active {
+	transform: none !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions a.annam-cabin-btn--zalo,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions button.annam-cabin-btn--zalo {
+	background-color: #0068ff !important;
+	border-color: #0068ff !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions a.annam-cabin-btn--zalo:hover,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions a.annam-cabin-btn--zalo:focus-visible {
+	background-color: #0056d6 !important;
+	border-color: #0056d6 !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions a.annam-cabin-btn--primary {
+	background-color: rgb(var(--color-tertiary)) !important;
+	border-color: rgb(var(--color-tertiary)) !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions a.annam-cabin-btn--primary:hover,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions a.annam-cabin-btn--primary:focus-visible {
+	background-color: rgb(var(--color-tertiary-hover)) !important;
+	border-color: rgb(var(--color-tertiary-hover)) !important;
+	color: #fff !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark {
+	background-color: #fff !important;
+	border-color: rgb(var(--color-primary)) !important;
+	color: rgb(var(--color-primary)) !important;
+}
+
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark:hover,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark:focus,
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-cta-final__actions .annam-cabin-btn--outline-on-dark:focus-visible {
+	background-color: rgb(var(--color-primary)) !important;
+	border-color: rgb(var(--color-primary)) !important;
+	color: #fff !important;
+}
+
+/* Nút chọn vé trong bảng giá */
+body.annam-cabin-landing-page .annam-cabin-landing .annam-cabin-price-card button.annam-cabin-btn--primary {
+	background-color: rgb(var(--color-tertiary)) !important;
+	color: #fff !important;
+}

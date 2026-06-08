@@ -1,0 +1,485 @@
+/**
+ * Annam design tokens: palette + typography (GeneratePress child).
+ * Pair with fonts-local.css (self-hosted Be Vietnam Pro).
+ */
+
+:root {
+	--font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+	--font-heading: var(--font-sans);
+	--font-body: var(--font-sans);
+	--font-label: var(--font-sans);
+
+	--color-primary: 1, 170, 144;
+	--color-primary-hover: 0, 150, 125;
+	--color-primary-dark: 15, 76, 76;
+	--color-primary-dark-hover: 12, 62, 62;
+	--color-secondary: 46, 159, 159;
+	--color-secondary-hover: 35, 144, 144;
+	--color-tertiary: 245, 130, 32;
+	--color-tertiary-hover: 224, 119, 28;
+	--color-accent: 250, 165, 25;
+	--color-accent-hover: 215, 159, 18;
+	--color-accent-strong: 217, 119, 6;
+	--color-background-alt: 227, 255, 251;
+	--color-body-bg: 236, 253, 250;
+
+	--color-primary-rgb: 1, 170, 144;
+	--color-secondary-rgb: 46, 159, 159;
+	--color-tertiary-rgb: 245, 130, 32;
+	--color-accent-rgb: 250, 165, 25;
+
+	--color-white: 255, 255, 255;
+	--color-transparent: transparent;
+	--color-bg: 248, 249, 250;
+	--color-bg-hover: 238, 242, 247;
+	--color-bg-section: 241, 245, 249;
+	--color-bg-card: 255, 255, 255;
+	--color-surface: 255, 255, 255;
+	--color-surface-muted: 241, 245, 249;
+	--color-surface-soft: 255, 247, 237;
+	--color-border-light: 226, 232, 240;
+	--color-border-dashed: 203, 213, 225;
+	--color-border-strong: 203, 213, 225;
+	--color-border: 226, 232, 240;
+	--color-border-rgb: 226, 232, 240;
+
+	--color-neutral: 30, 41, 59;
+	--color-neutral-rgb: 30, 41, 59;
+	--color-muted: 100, 116, 139;
+	--color-text-body: 51, 65, 85;
+	--color-text-muted: 100, 116, 139;
+	--color-text-light: 148, 163, 184;
+	--color-text-secondary: 71, 85, 105;
+	--color-text-tertiary: 100, 116, 139;
+	--color-text-dark: 30, 41, 59;
+	--color-text-heading: 15, 76, 76;
+	--color-on-primary: 255, 255, 255;
+	--color-primary-soft: 230, 251, 247;
+
+	--color-success: 22, 163, 74;
+	--color-success-dark: 20, 83, 45;
+	--color-danger: 220, 38, 38;
+	--color-warning: 245, 158, 11;
+	--color-info: 2, 132, 199;
+
+	--color-price: 245, 130, 32;
+	--color-price-discount: 220, 38, 38;
+	--color-price-original: 100, 116, 139;
+	--color-price-secondary: 10, 130, 131;
+
+	--color-hero-grad-start: 1, 170, 144;
+	--color-hero-grad-end: 46, 159, 159;
+	--color-overlay-40: 15, 23, 42;
+	--color-overlay-60: 15, 23, 42;
+
+	/* Legacy aliases retained during RGB-token migration. */
+	--color-body: var(--color-text-body);
+	--color-text: var(--color-text-body);
+	--color-shadow-soft: rgba(var(--color-primary-dark), 0.08);
+	--color-shadow-card: rgba(var(--color-primary-dark), 0.12);
+	--color-shadow-elevated: rgba(var(--color-primary-dark), 0.18);
+	--color-tertiary-glow: rgba(var(--color-tertiary), 0.35);
+
+	--shadow-primary-glow: 0 4px 16px rgba(1, 170, 144, 0.1);
+	--shadow-btn-hover: 0 4px 12px rgba(15, 23, 42, 0.15);
+	--shadow-card-sm: 0 2px 8px rgba(1, 170, 144, 0.08);
+	--shadow-card-md: 0 2px 8px rgba(1, 170, 144, 0.1);
+	--shadow-card-hover: 0 4px 16px rgba(1, 170, 144, 0.12);
+	--shadow-focus-ring: 0 0 0 3px rgba(1, 170, 144, 0.2);
+
+	--text-xs: 12px;
+	--text-sm: 13px;
+	--text-base: 14px;
+	--text-md: 15px;
+	--text-lg: 16px;
+	--text-xl: 18px;
+	--text-2xl: 20px;
+	--text-3xl: 22px;
+	--text-4xl: 24px;
+	--text-5xl: 28px;
+
+	--font-weight-regular: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--font-weight-bold: 700;
+	--font-weight-extrabold: 800;
+
+	--line-height-tight: 1.2;
+	--line-height-snug: 1.4;
+	--line-height-normal: 1.6;
+	--line-height-relaxed: 1.8;
+
+	--radius-xs: 4px;
+	--radius-sm: 6px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--radius-2xl: 24px;
+	--radius-full: 9999px;
+
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-8: 32px;
+	--space-10: 40px;
+	--space-12: 48px;
+	--space-16: 64px;
+	--space-24: 96px;
+
+	--space-2xs: var(--space-1);
+	--space-xs: var(--space-2);
+	--space-sm: var(--space-3);
+	--space-md: var(--space-4);
+	--space-lg: var(--space-5);
+	--space-xl: var(--space-6);
+	--space-2xl: var(--space-8);
+	--space-3xl: var(--space-10);
+	--space-4xl: var(--space-12);
+	--space-5xl: var(--space-16);
+	--space-6xl: var(--space-24);
+
+	--duration-fast: 0.2s;
+	--duration-base: 0.3s;
+	--easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-base: all var(--duration-base) var(--easing-standard);
+	--layout-content-max: 1180px;
+	--layout-prose-max: 1040px;
+	--layout-gutter-desktop: 20px;
+	--layout-gutter-mobile: 16px;
+	--layout-gutter: var(--layout-gutter-desktop);
+	--section-space-compact: var(--space-8);
+	--section-space-default: var(--space-12);
+	--section-space-feature: var(--space-16);
+	--component-card-radius: var(--radius-xl);
+	--component-card-radius-tight: var(--radius-lg);
+	--component-card-radius-dialog: 20px;
+	--component-card-padding: 20px;
+	--component-card-padding-compact: 16px;
+	--component-card-shadow: 0 8px 24px rgba(15, 76, 76, 0.08);
+	--component-card-shadow-hover: 0 14px 32px rgba(15, 76, 76, 0.12);
+	--component-button-radius: var(--radius-full);
+	--component-button-radius-compact: var(--radius-md);
+	--component-button-height: 48px;
+	--component-button-height-compact: 40px;
+	--component-button-padding-inline: 24px;
+	--component-button-padding-block: 14px;
+	--component-button-font-size: 1rem;
+	--component-button-font-weight: var(--font-weight-semibold);
+	--component-field-height: 46px;
+	--component-field-height-compact: 42px;
+	--component-field-radius: var(--radius-md);
+	--component-field-padding-x: 12px;
+	--component-field-padding-block: 10px;
+	--component-badge-radius: var(--radius-full);
+	--component-badge-padding-y: 6px;
+	--component-badge-padding-x: 12px;
+	--component-badge-font-size: var(--text-xs);
+	--component-badge-font-weight: var(--font-weight-semibold);
+	--component-chip-radius: var(--radius-full);
+	--component-chip-padding-y: 8px;
+	--component-chip-padding-x: 14px;
+	--component-chip-font-size: var(--text-sm);
+	--component-chip-font-weight: var(--font-weight-semibold);
+	--component-dialog-padding: clamp(1.25rem, 4vw, 2rem);
+	--component-dialog-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+	--component-focus-ring-secondary: 0 0 0 3px rgba(46, 159, 159, 0.2);
+	--component-commerce-title-size: clamp(22px, 2.4vw, 30px);
+	--component-commerce-title-weight: var(--font-weight-bold);
+	--component-commerce-grid-gap: 20px;
+	--component-carousel-nav-size: 44px;
+	--component-carousel-nav-radius: var(--radius-full);
+	--component-carousel-nav-shadow: 0 1px 3px var(--color-shadow-soft);
+	--component-carousel-nav-shadow-hover: 0 4px 14px var(--color-shadow-card);
+	--component-carousel-mobile-edge: 16px;
+	--component-overlay-scrim: rgba(15, 23, 42, 0.55);
+	--component-overlay-scrim-strong: rgba(15, 23, 42, 0.88);
+	--component-lightbox-control-size: 44px;
+	--component-lightbox-control-radius: var(--radius-lg);
+	--component-lightbox-control-bg: rgba(255, 255, 255, 0.12);
+	--component-lightbox-control-bg-hover: rgba(255, 255, 255, 0.22);
+	--ui-selection-bg: rgba(46, 159, 159, 0.24);
+	--ui-selection-text: rgb(var(--color-primary-dark));
+	--ui-scrollbar-size: 10px;
+	--ui-scrollbar-track: transparent;
+	--ui-scrollbar-thumb: rgba(var(--color-secondary), 0.52);
+	--ui-scrollbar-thumb-hover: rgba(var(--color-primary), 0.68);
+	--ui-link-underline: rgba(var(--color-secondary), 0.35);
+	--ui-surface-tint: linear-gradient(180deg, rgba(var(--color-white), 0.18) 0%, rgba(var(--color-primary), 0.02) 100%);
+	--ui-page-atmosphere:
+		radial-gradient(circle at top right, rgba(var(--color-secondary), 0.07) 0, rgba(var(--color-secondary), 0) 34%),
+		radial-gradient(circle at top left, rgba(var(--color-primary), 0.05) 0, rgba(var(--color-primary), 0) 28%);
+	--annam-hero-top-space: clamp(4.5rem, 8vw, 6.5rem);
+	--annam-hero-top-space-mobile: clamp(3.5rem, 10vw, 5rem);
+}
+
+@media (max-width: 768px) {
+	:root {
+		--layout-gutter: var(--layout-gutter-mobile);
+		--annam-hero-top-space: var(--annam-hero-top-space-mobile);
+	}
+}
+
+html {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	scrollbar-color: var(--ui-scrollbar-thumb) var(--ui-scrollbar-track);
+	scrollbar-gutter: stable;
+}
+
+body {
+	font-family: var(--font-body);
+	color: rgb(var(--color-text-dark));
+	background-color: rgb(var(--color-bg));
+	background-image: var(--ui-page-atmosphere);
+	background-repeat: no-repeat;
+}
+
+button,
+input,
+select,
+textarea {
+	font-family: inherit;
+}
+
+body,
+body button,
+body input,
+body select,
+body textarea,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
+body .entry-title,
+body .site-title,
+body .main-title,
+body .site-description,
+body .main-navigation a,
+body .widget-title {
+	font-family: var(--font-sans) !important;
+}
+
+::selection {
+	background: var(--ui-selection-bg);
+	color: var(--ui-selection-text);
+}
+
+::-moz-selection {
+	background: var(--ui-selection-bg);
+	color: var(--ui-selection-text);
+}
+
+*::-webkit-scrollbar {
+	width: var(--ui-scrollbar-size);
+	height: var(--ui-scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+	background: var(--ui-scrollbar-track);
+	border-radius: var(--radius-full);
+}
+
+*::-webkit-scrollbar-track-piece {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background: var(--ui-scrollbar-thumb);
+	border: 2px solid transparent;
+	border-radius: var(--radius-full);
+	background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background: var(--ui-scrollbar-thumb-hover);
+	border: 2px solid transparent;
+	background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-button {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+*::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+a {
+	text-decoration-thickness: 0.08em;
+	text-underline-offset: 0.16em;
+	text-decoration-color: transparent;
+	transition:
+		color var(--duration-fast) var(--easing-standard),
+		text-decoration-color var(--duration-fast) var(--easing-standard),
+		box-shadow var(--duration-fast) var(--easing-standard),
+		background-color var(--duration-fast) var(--easing-standard);
+}
+
+a:hover,
+a:focus-visible {
+	text-decoration-color: var(--ui-link-underline);
+}
+
+:where(
+	button,
+	input,
+	select,
+	textarea,
+	summary,
+	[role="button"],
+	.button,
+	a[class*="btn"],
+	a.button
+):focus-visible {
+	outline: none;
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+.annam-surface-panel,
+.annam-surface-panel--soft {
+	position: relative;
+	overflow: clip;
+}
+
+.annam-surface-panel::before,
+.annam-surface-panel--soft::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: var(--ui-surface-tint);
+}
+
+/* Full-bleed hero utility: dùng cho các hero đầu trang cần tràn toàn viewport. */
+.annam-full-bleed-hero {
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	width: 100vw;
+	max-width: 100vw;
+}
+
+.annam-shell-content {
+	width: min(100% - (var(--layout-gutter) * 2), var(--layout-content-max));
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+.annam-shell-prose {
+	width: min(100% - (var(--layout-gutter) * 2), var(--layout-prose-max));
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+.woocommerce .star-rating,
+.woocommerce .star-rating::before,
+.woocommerce .star-rating span,
+.woocommerce .star-rating span::before {
+	font-family: star !important;
+}
+
+.annam-woo-category-page .annam-category-intro__heading,
+.annam-woo-category-page .woocommerce-products-header__title {
+	font-family: var(--font-heading);
+	color: rgb(var(--color-primary));
+	font-weight: 700;
+}
+
+.annam-woo-category-page .annam-category-intro__desc,
+.annam-woo-category-page .term-description {
+	font-family: var(--font-body);
+	color: rgb(var(--color-muted));
+}
+
+.annam-woo-category-page .annam-category-intro__desc strong {
+	color: rgb(var(--color-text-dark));
+}
+
+.single-product .annam-tour-breadcrumb,
+.single-product .annam-tour-breadcrumb a,
+.single-product .woocommerce-breadcrumb {
+	color: rgb(var(--color-muted));
+	font-family: var(--font-label);
+	font-weight: 500;
+}
+
+.single-product .annam-tour-breadcrumb a:hover {
+	color: rgb(var(--color-secondary));
+}
+
+.single-product .annam-tour-title,
+.single-product .product_title.entry-title {
+	font-family: var(--font-heading);
+	color: rgb(var(--color-primary));
+	font-weight: 700;
+}
+
+.single-product .annam-tour-content,
+.single-product .annam-tour-content .woocommerce-product-details__short-description,
+.single-product .annam-tour-content .product-description {
+	font-family: var(--font-body);
+	color: rgb(var(--color-text-dark));
+	line-height: 1.65;
+}
+
+.single-product .annam-tour-booking-card__title {
+	font-family: var(--font-heading);
+	color: rgb(var(--color-primary));
+}
+
+.single-product .annam-tour-booking-card__info-label {
+	font-family: var(--font-label);
+	font-weight: 600;
+	color: rgb(var(--color-muted));
+	font-size: 0.8125rem;
+	letter-spacing: 0.02em;
+}
+
+.single-product .annam-tour-booking-card__note,
+.single-product .annam-tour-lead-form .screen-reader-text {
+	font-family: var(--font-label);
+}
+
+.single-product .annam-tour-booking-card__note {
+	color: rgb(var(--color-muted));
+}
+
+.annam-tour-related__title {
+	font-family: var(--font-heading);
+	color: rgb(var(--color-primary));
+}
+
+.woocommerce .star-rating,
+.woocommerce .star-rating span,
+.woocommerce .star-rating::before,
+.woocommerce .star-rating span::before,
+.comment-text .star-rating,
+.comment-text .star-rating span,
+.comment-text .star-rating::before,
+.comment-text .star-rating span::before,
+.annam-woocommerce-reviews .star-rating,
+.annam-woocommerce-reviews .star-rating span,
+.annam-woocommerce-reviews .star-rating::before,
+.annam-woocommerce-reviews .star-rating span::before,
+.woocommerce-Reviews .star-rating,
+.woocommerce-Reviews .star-rating span,
+.woocommerce-Reviews .star-rating::before,
+.woocommerce-Reviews .star-rating span::before {
+	color: #f59e0b !important;
+}
+
+.annam-review-stars {
+	color: #f59e0b;
+}

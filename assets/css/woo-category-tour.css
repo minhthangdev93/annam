@@ -1,0 +1,1532 @@
+/**
+ * Tour-style shop / category / tag archives — scoped to .annam-woo-category-page and descendants.
+ */
+
+.annam-woo-category-page {
+	box-sizing: border-box;
+}
+
+.separate-containers .site-main>.annam-woo-category-page,
+.separate-containers .site-main>article.annam-woo-category-page,
+.separate-containers .site-main>section.annam-woo-category-page {
+	background: transparent !important;
+}
+
+body.post-type-archive-product.separate-containers .site-main,
+body.tax-product_cat.separate-containers .site-main,
+body.tax-product_tag.separate-containers .site-main,
+body.woocommerce.separate-containers .content-area,
+body.woocommerce.separate-containers .site-content {
+	background: transparent !important;
+}
+
+.separate-containers .site-main:has(> .annam-woo-category-page),
+.separate-containers .content-area:has(.annam-woo-category-page),
+.separate-containers .site-content:has(.annam-woo-category-page) {
+	background: transparent !important;
+}
+
+.annam-woo-category-page *,
+.annam-woo-category-page *::before,
+.annam-woo-category-page *::after {
+	box-sizing: inherit;
+}
+
+/**
+ * Width aligns with GeneratePress header: .grid-container (Customizer → Layout → Container width).
+ * .annam-container keeps a stable hook for scoped rules; do not set max-width here.
+ */
+.annam-woo-category-page .annam-container.grid-container {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* -------------------------------------------------------------------------
+ * Category hero (product_cat)
+ * ------------------------------------------------------------------------- */
+.annam-category-hero-outer {
+	margin-bottom: 0;
+}
+
+.annam-category-hero {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 12px;
+	min-height: 400px;
+	margin-top: 20px;
+}
+
+.annam-category-hero--no-image .annam-category-hero__image {
+	display: none;
+}
+
+.annam-category-hero__image {
+	position: absolute;
+	inset: 0;
+	min-height: 400px;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.annam-category-hero__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background: linear-gradient(90deg,
+			rgba(var(--color-neutral-rgb), 0.82) 0%,
+			rgba(var(--color-neutral-rgb), 0.45) 45%,
+			rgba(var(--color-neutral-rgb), 0.22) 100%);
+}
+
+.annam-category-hero__content {
+	position: relative;
+	z-index: 2;
+	min-height: 400px;
+	display: flex;
+	align-items: flex-end;
+	/* Đáy lớn hơn một chút → cụm nội dung (chữ + CTA) nổi cao hơn, bố cục thoáng hơn */
+	padding: 28px 24px clamp(44px, 5.5vw, 56px);
+	pointer-events: none;
+}
+
+.annam-category-hero__inner {
+	pointer-events: auto;
+	max-width: 640px;
+}
+
+/* Neo góc trên trái khung hero (cùng lớp với ảnh/overlay), không nằm cùng cụm chữ đáy */
+.annam-category-hero__breadcrumb {
+	position: absolute;
+	top: 28px;
+	left: 24px;
+	right: auto;
+	z-index: 3;
+	max-width: calc(100% - 48px);
+	margin: 0;
+	text-align: left;
+	pointer-events: auto;
+}
+
+.annam-category-hero__breadcrumb-nav,
+.annam-category-hero__breadcrumb .woocommerce-breadcrumb,
+.annam-category-hero__breadcrumb .rank-math-breadcrumb,
+.annam-category-hero__breadcrumb .rank-math-breadcrumb p {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-label);
+	font-size: 12px;
+	line-height: 1.4;
+	color: rgba(var(--color-white), 0.85);
+	font-weight: 500;
+}
+
+.annam-category-hero__breadcrumb-nav a,
+.annam-category-hero__breadcrumb .woocommerce-breadcrumb a,
+.annam-category-hero__breadcrumb .rank-math-breadcrumb a {
+	color: rgba(var(--color-white), 0.95);
+	text-decoration: none;
+}
+
+.annam-category-hero__breadcrumb-nav a:hover,
+.annam-category-hero__breadcrumb .woocommerce-breadcrumb a:hover,
+.annam-category-hero__breadcrumb .rank-math-breadcrumb a:hover {
+	text-decoration: underline;
+}
+
+.annam-category-hero__bc-sep {
+	margin: 0 0.35em;
+	opacity: 0.7;
+}
+
+.annam-category-hero__title {
+	margin: 0 0 8px;
+	font-family: var(--font-heading);
+	font-size: clamp(26px, 3.2vw, 40px);
+	line-height: 1.15;
+	font-weight: 700;
+	color: rgb(var(--color-on-primary));
+	letter-spacing: -0.02em;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.annam-category-hero__subtitle {
+	margin: 0 0 14px;
+	font-family: var(--font-heading);
+	font-size: clamp(15px, 1.6vw, 18px);
+	line-height: 1.35;
+	font-weight: 600;
+	color: rgba(var(--color-white), 0.92);
+}
+
+.annam-category-hero__badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 18px;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-category-hero__badge {
+	margin: 0;
+	padding: var(--component-badge-padding-y) var(--component-badge-padding-x);
+	border-radius: var(--component-badge-radius);
+	font-family: var(--font-label);
+	font-size: var(--component-badge-font-size);
+	font-weight: var(--component-badge-font-weight);
+	color: rgb(var(--color-primary));
+	background: rgba(var(--color-white), 0.92);
+	box-shadow: 0 1px 2px var(--color-shadow-soft);
+}
+
+.annam-category-hero__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: center;
+}
+
+.annam-category-hero__cta {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 46px;
+	padding: 0 22px;
+	border-radius: 10px;
+	font-family: var(--font-label);
+	font-size: 15px;
+	font-weight: 700;
+	text-decoration: none;
+	transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.annam-category-hero__cta--primary {
+	color: rgb(var(--color-on-primary));
+	background: rgb(var(--color-tertiary));
+	box-shadow: 0 4px 14px var(--color-tertiary-glow);
+}
+
+.annam-category-hero__cta--primary:hover,
+.annam-category-hero__cta--primary:focus-visible {
+	color: rgb(var(--color-on-primary));
+	background: rgb(var(--color-tertiary-hover));
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px var(--color-tertiary-glow);
+}
+
+.annam-category-hero__cta--secondary {
+	color: rgb(var(--color-primary));
+	background: rgb(var(--color-surface));
+	border: 2px solid rgba(var(--color-white), 0.95);
+}
+
+.annam-category-hero__cta--secondary:hover,
+.annam-category-hero__cta--secondary:focus-visible {
+	background: rgba(var(--color-white), 0.92);
+}
+
+.annam-category-hero-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 16px 0 8px;
+	margin: 0;
+}
+
+.annam-category-hero-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--component-chip-padding-y) var(--component-chip-padding-x);
+	border-radius: var(--component-chip-radius);
+	font-size: var(--component-chip-font-size);
+	font-weight: var(--component-chip-font-weight);
+	color: rgb(var(--color-primary));
+	background: rgb(var(--color-surface-muted));
+	border: 1px solid rgb(var(--color-border));
+	font-family: var(--font-label);
+	text-decoration: none;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.annam-category-hero-chip:hover,
+.annam-category-hero-chip:focus-visible {
+	background: rgb(var(--color-border));
+	border-color: rgb(var(--color-secondary));
+	color: rgb(var(--color-primary));
+}
+
+.annam-category-intro--no-heading {
+	padding-top: 16px;
+}
+
+.annam-category-intro__heading {
+	margin: 0 0 16px;
+	font-family: var(--font-heading);
+	font-size: 28px;
+	line-height: 1.3;
+	font-weight: 700;
+	color: rgb(var(--color-primary));
+	text-align: left;
+	max-width: 52em;
+}
+
+.annam-category-intro__desc-wrap {
+	position: relative;
+	max-width: 52em;
+}
+
+.annam-category-intro__desc {
+	margin: 0;
+	font-family: var(--font-body);
+	font-size: 15px;
+	line-height: 1.65;
+	color: rgb(var(--color-muted));
+}
+
+.annam-category-intro__desc.annam-category-description__content {
+	font-size: var(--text-lg);
+	line-height: var(--line-height-normal);
+	color: rgb(var(--color-text-body));
+	background: transparent;
+}
+
+.annam-category-intro__desc.annam-category-description__content p,
+.annam-category-intro__desc.annam-category-description__content li {
+	font-size: inherit;
+	line-height: inherit;
+	color: inherit;
+}
+
+.annam-category-intro__desc.annam-category-description__content h1,
+.annam-category-intro__desc.annam-category-description__content h2,
+.annam-category-intro__desc.annam-category-description__content h3,
+.annam-category-intro__desc.annam-category-description__content h4,
+.annam-category-intro__desc.annam-category-description__content h5,
+.annam-category-intro__desc.annam-category-description__content h6 {
+	margin: 0 0 0.75rem;
+	font-family: var(--font-heading);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-snug);
+	letter-spacing: -0.01em;
+	color: rgb(var(--color-text-heading));
+	text-wrap: balance;
+}
+
+.annam-category-intro__desc.annam-category-description__content h1,
+.annam-category-intro__desc.annam-category-description__content h2 {
+	font-size: clamp(var(--text-3xl), 2vw, var(--text-5xl));
+}
+
+.annam-category-intro__desc.annam-category-description__content h3 {
+	font-size: var(--text-2xl);
+}
+
+.annam-category-intro__desc.annam-category-description__content h4,
+.annam-category-intro__desc.annam-category-description__content h5,
+.annam-category-intro__desc.annam-category-description__content h6 {
+	font-size: var(--text-xl);
+}
+
+.annam-category-intro__desc>*:first-child {
+	margin-top: 0;
+}
+
+.annam-category-intro__desc>*:last-child {
+	margin-bottom: 0;
+}
+
+.annam-category-intro:not(.is-expanded) .annam-category-intro__desc {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 4;
+	overflow: hidden;
+}
+
+.annam-category-intro:not(.is-expanded):not(.annam-category-intro--no-toggle) .annam-category-intro__desc-wrap::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 48px;
+	pointer-events: none;
+	background: linear-gradient(180deg,
+			rgba(var(--color-body-bg), 0) 0%,
+			rgba(var(--color-body-bg), 0.88) 88%);
+}
+
+.annam-category-intro.is-expanded .annam-category-intro__desc-wrap::after {
+	display: none;
+}
+
+.annam-category-intro--no-toggle .annam-category-intro__desc {
+	-webkit-line-clamp: unset;
+	display: block;
+	overflow: visible;
+}
+
+.annam-category-intro button.annam-category-intro__toggle {
+	display: flex;
+	width: fit-content;
+	max-width: 100%;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	margin: 18px auto 0;
+	padding: var(--space-2) var(--component-button-padding-inline);
+	font-family: var(--font-label);
+	font-size: var(--text-md);
+	font-weight: var(--component-button-font-weight);
+	line-height: 1.3;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	-webkit-appearance: none;
+	appearance: none;
+	/* Override theme default buttons (dark fill) — pill nhẹ, dễ đọc */
+	background-color: rgb(var(--color-surface));
+	background-image: none;
+	color: rgb(var(--color-primary));
+	border: 1px solid rgb(var(--color-secondary));
+	border-radius: var(--component-button-radius);
+	box-shadow: var(--component-carousel-nav-shadow);
+	transition:
+		color 0.15s ease,
+		background-color 0.15s ease,
+		border-color 0.15s ease,
+		box-shadow 0.15s ease;
+}
+
+.annam-category-intro button.annam-category-intro__toggle:hover {
+	color: rgb(var(--color-secondary));
+	background-color: rgb(var(--color-surface-muted));
+	border-color: rgb(var(--color-primary));
+	box-shadow: var(--component-carousel-nav-shadow-hover);
+}
+
+.annam-category-intro button.annam-category-intro__toggle:focus-visible {
+	outline: none;
+	box-shadow: var(--component-carousel-nav-shadow-hover), var(--component-focus-ring-secondary);
+}
+
+.annam-category-intro button.annam-category-intro__toggle:active {
+	transform: translateY(1px);
+	box-shadow: 0 1px 2px var(--color-shadow-soft);
+}
+
+.annam-category-intro button.annam-category-intro__toggle::after {
+	content: "";
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid currentColor;
+	transition: transform 0.2s ease;
+}
+
+.annam-category-intro.is-expanded button.annam-category-intro__toggle::after {
+	transform: rotate(180deg);
+}
+
+.annam-category-intro--no-toggle button.annam-category-intro__toggle {
+	display: none;
+}
+
+/* Mô tả dài archive tour: cùng bề rộng lưới (~1180px), căn đều desktop */
+@media (min-width: 769px) {
+	.annam-woo-category-page .annam-category-intro__desc-wrap {
+		width: min(100% - (var(--layout-gutter) * 2), var(--layout-content-max));
+		max-width: var(--layout-content-max);
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.annam-woo-category-page .annam-category-intro__heading {
+		width: min(100% - (var(--layout-gutter) * 2), var(--layout-content-max));
+		max-width: var(--layout-content-max);
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content p,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content li {
+		text-align: justify;
+		text-justify: inter-word;
+	}
+
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content h1,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content h2,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content h3,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content h4,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content h5,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content h6 {
+		text-align: left;
+	}
+}
+
+@media (max-width: 768px) {
+	.annam-woo-category-page .annam-category-intro__desc-wrap {
+		width: 100%;
+		max-width: 100%;
+		padding-left: var(--layout-gutter);
+		padding-right: var(--layout-gutter);
+		box-sizing: border-box;
+	}
+
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content p,
+	.annam-woo-category-page .annam-category-intro__desc.annam-category-description__content li {
+		text-align: left;
+	}
+
+	.annam-category-intro__desc.annam-category-description__content {
+		font-size: var(--text-lg);
+		line-height: 1.7;
+	}
+
+	.annam-category-intro__desc.annam-category-description__content h1,
+	.annam-category-intro__desc.annam-category-description__content h2 {
+		font-size: var(--text-3xl);
+		line-height: var(--line-height-snug);
+		margin-bottom: 0.65rem;
+	}
+
+	.annam-category-intro__desc.annam-category-description__content h3 {
+		font-size: var(--text-xl);
+	}
+
+	.annam-category-intro__desc.annam-category-description__content h4,
+	.annam-category-intro__desc.annam-category-description__content h5,
+	.annam-category-intro__desc.annam-category-description__content h6 {
+		font-size: var(--text-lg);
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Product grid
+ * ------------------------------------------------------------------------- */
+.annam-category-products {
+	overflow-x: clip;
+}
+
+.annam-category-products>.annam-container {
+	background: transparent;
+}
+
+.annam-category-products__toolbar {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+	margin-bottom: var(--space-5);
+	min-width: 0;
+	max-width: 100%;
+	margin: var(--space-3) var(--space-3);
+}
+
+.annam-category-products__section-title {
+	margin: 0;
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: var(--component-commerce-title-size);
+	font-weight: var(--component-commerce-title-weight);
+	line-height: 1.3;
+	color: rgb(var(--color-primary));
+	text-wrap: balance;
+}
+
+.annam-category-products__section-title--placeholder {
+	display: none;
+}
+
+.annam-category-products__sort-wrap {
+	flex: 0 1 auto;
+	min-width: 0;
+	max-width: min(200px, 42%);
+	margin-left: auto;
+}
+
+.annam-category-products__sort {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	max-width: 200px;
+	padding: var(--space-2) 32px var(--space-2) var(--component-field-padding-x);
+	font-family: var(--font-label);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-medium);
+	line-height: 1.3;
+	color: rgb(var(--color-primary));
+	background-color: rgb(var(--color-surface));
+	border: 1px solid rgb(var(--color-border));
+	border-radius: var(--component-field-radius);
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M1.41 0 6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 10px center;
+	background-size: 12px 8px;
+}
+
+.annam-category-products__sort:hover,
+.annam-category-products__sort:focus-visible {
+	border-color: rgb(var(--color-secondary));
+	outline: none;
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+.annam-category-products__loop.is-loading {
+	position: relative;
+	min-height: 120px;
+	pointer-events: none;
+}
+
+.annam-category-products__loop.is-loading::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	background: rgba(248, 249, 250, 0.65);
+}
+
+.annam-category-products--loading .annam-category-products__sort {
+	opacity: 0.65;
+	cursor: wait;
+}
+
+.annam-category-products__loop {
+	margin: var(--space-3)
+}
+
+.annam-category-products ul.products,
+.annam-category-products__loop ul.products {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--component-commerce-grid-gap);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-category-products ul.products::before,
+.annam-category-products ul.products::after,
+.annam-category-products__loop ul.products::before,
+.annam-category-products__loop ul.products::after {
+	display: none;
+}
+
+.annam-category-products ul.products li.product,
+.annam-category-products__loop ul.products li.product {
+	width: 100% !important;
+	max-width: none !important;
+	float: none !important;
+	margin: 0 !important;
+}
+
+.annam-category-products .woocommerce-pagination {
+	margin-top: var(--space-6);
+	display: flex;
+	justify-content: center;
+}
+
+.annam-category-products .woocommerce-pagination .page-numbers {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border: 0;
+	box-shadow: none;
+	background: transparent;
+}
+
+.annam-category-products .woocommerce-pagination li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-category-products .woocommerce-pagination a.page-numbers,
+.annam-category-products .woocommerce-pagination span.page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: var(--component-button-height-compact);
+	height: var(--component-button-height-compact);
+	padding: 0 var(--space-3);
+	border-radius: var(--component-button-radius);
+	text-decoration: none;
+	font-family: var(--font-label, sans-serif);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1;
+	color: rgb(var(--color-primary-dark));
+	border: 1px solid rgb(var(--color-border));
+	background: rgb(var(--color-surface));
+	box-shadow: var(--component-card-shadow);
+}
+
+.annam-category-products .woocommerce-pagination a.page-numbers:hover,
+.annam-category-products .woocommerce-pagination a.page-numbers:focus-visible {
+	color: rgb(var(--color-on-primary));
+	background: rgb(var(--color-secondary));
+	border-color: rgb(var(--color-secondary));
+	outline: none;
+	box-shadow: var(--component-card-shadow), var(--component-focus-ring-secondary);
+}
+
+.annam-category-products .woocommerce-pagination span.page-numbers.current {
+	color: rgb(var(--color-on-primary));
+	background: rgb(var(--color-primary));
+	border-color: rgb(var(--color-primary));
+}
+
+.annam-category-products .woocommerce-pagination span.page-numbers.dots {
+	min-width: auto;
+	height: auto;
+	padding: 0 4px;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	color: rgb(var(--color-muted));
+}
+
+.annam-category-products .woocommerce-pagination .prev .page-numbers,
+.annam-category-products .woocommerce-pagination .next .page-numbers {
+	min-width: auto;
+	padding-inline: var(--space-3);
+}
+
+@media (max-width: 640px) {
+	.annam-category-products .woocommerce-pagination {
+		margin-top: var(--space-5);
+	}
+
+	.annam-category-products .woocommerce-pagination .page-numbers {
+		gap: 6px;
+	}
+
+	.annam-category-products .woocommerce-pagination a.page-numbers,
+	.annam-category-products .woocommerce-pagination span.page-numbers {
+		min-width: 36px;
+		height: 36px;
+		padding: 0 10px;
+		font-size: 12px;
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Tour card
+ * ------------------------------------------------------------------------- */
+.annam-tour-card-wrap {
+	margin: 0;
+	width: 100%;
+}
+
+.annam-tour-card__surface {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+	height: 100%;
+	border-radius: 5px;
+	overflow: hidden;
+	background-color: rgb(var(--color-surface));
+	border: 1px solid rgb(var(--color-border));
+	box-shadow: var(--component-card-shadow);
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+	isolation: isolate;
+}
+
+.annam-tour-card__surface:hover,
+.annam-tour-card__surface:focus-within {
+	box-shadow: var(--component-card-shadow-hover);
+	transform: translateY(-2px);
+}
+
+.annam-tour-card__media-link {
+	display: block;
+	line-height: 0;
+	text-decoration: none;
+	color: inherit;
+}
+
+.annam-tour-card__title-link {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	word-break: break-word;
+	color: rgb(var(--color-primary));
+	text-decoration: none;
+	font: inherit;
+	text-transform: inherit;
+	letter-spacing: inherit;
+}
+
+.annam-tour-card__title-link:hover,
+.annam-tour-card__title-link:focus-visible {
+	text-decoration: underline;
+}
+
+.annam-tour-card__foot-link {
+	display: block;
+	margin-top: auto;
+	padding-top: 2px;
+	text-decoration: none;
+	color: inherit;
+}
+
+.annam-tour-card__foot-placeholder {
+	display: inline-block;
+	font-family: var(--font-label);
+	font-size: 12px;
+	font-weight: 600;
+	color: rgb(var(--color-secondary));
+	text-decoration: underline;
+}
+
+.annam-tour-card__foot-link:hover .annam-tour-card__foot-placeholder,
+.annam-tour-card__foot-link:focus-visible .annam-tour-card__foot-placeholder {
+	text-decoration: underline;
+}
+
+.annam-tour-card__rating-sep,
+.annam-tour-card__rating-max {
+	font-weight: 600;
+	color: rgb(var(--color-muted));
+}
+
+.annam-tour-card__rating-count--link {
+	color: rgb(var(--color-secondary));
+	font-weight: 600;
+	text-decoration: underline;
+}
+
+.annam-tour-card__rating-count--link:hover,
+.annam-tour-card__rating-count--link:focus-visible {
+	text-decoration: underline;
+}
+
+.annam-tour-card {
+	margin: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.annam-tour-card__image {
+	position: relative;
+	display: grid;
+	grid-template: 1fr / 1fr;
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background-color: rgb(var(--color-border));
+	border-radius: 10px;
+}
+
+.annam-tour-card__image img {
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	min-width: 0;
+	display: block;
+	object-fit: cover;
+	object-position: center;
+}
+
+.annam-tour-card__sale-badge {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 2;
+	max-width: calc(100% - 20px);
+	padding: 5px 9px;
+	border-radius: var(--radius-sm);
+	font-family: var(--font-label);
+	font-size: var(--component-badge-font-size);
+	font-weight: var(--font-weight-bold);
+	line-height: 1.2;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #fff;
+	background: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+	pointer-events: none;
+}
+
+/*
+ * WooCommerce: `ul.products li.product a img` — margin-bottom + `height: auto`
+ * thắng `height: 100%` trên `.annam-tour-card__image img` → ảnh thấp hơn ô 4:3, lộ khoảng trống.
+ */
+.woocommerce ul.products li.product .annam-tour-card__media-link img,
+.woocommerce ul.products li.product .annam-tour-card__image img,
+.woocommerce-page ul.products li.product .annam-tour-card__media-link img,
+.woocommerce-page ul.products li.product .annam-tour-card__image img,
+ul.products li.product .annam-tour-card__media-link img,
+ul.products li.product .annam-tour-card__image img {
+	margin: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
+	object-fit: cover !important;
+	object-position: center !important;
+	display: block !important;
+}
+
+
+.annam-tour-card__body {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	margin: -28px 6px 6px;
+	padding: 14px 14px 12px;
+	gap: 7px;
+	background: linear-gradient(
+		180deg,
+		rgba(var(--color-surface), 0.62) 0%,
+		rgba(var(--color-surface), 0.82) 24%,
+		rgba(var(--color-surface), 0.96) 100%
+	);
+	border-radius: 16px;
+	box-shadow: 0 5px 10px rgba(var(--color-primary), 0.12);
+	-webkit-backdrop-filter: blur(10px) saturate(1.05);
+	backdrop-filter: blur(10px) saturate(1.05);
+}
+
+.annam-tour-card__title {
+	margin: 0;
+	font-family: var(--font-heading);
+	font-size: 1.1rem;
+	line-height: 1.24;
+	font-weight: var(--font-weight-semibold);
+	color: rgb(var(--color-primary));
+	text-transform: none;
+	letter-spacing: -0.012em;
+	text-wrap: pretty;
+}
+
+.annam-tour-card__rating {
+	line-height: 1.15;
+	min-height: 0;
+	order: 4;
+	margin-top: 0;
+	opacity: 0.72;
+}
+
+.annam-tour-card__rating-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 3px 6px;
+	min-width: 0;
+}
+
+.annam-tour-card__stars {
+	position: relative;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 1;
+	letter-spacing: 0.08em;
+	flex-shrink: 0;
+	vertical-align: middle;
+}
+
+.annam-tour-card__stars-bg {
+	color: rgb(var(--color-border));
+	opacity: 0.55;
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.annam-tour-card__stars-fg {
+	position: absolute;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	color: #f59e0b;
+	width: 0;
+	max-width: 100%;
+	line-height: 1;
+}
+
+.annam-tour-card__stars--muted .annam-tour-card__stars-bg {
+	opacity: 0.35;
+}
+
+.annam-tour-card__rating-meta {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 4px;
+	flex-wrap: wrap;
+	min-width: 0;
+	font-family: var(--font-label);
+	font-size: 11px;
+	line-height: 1.15;
+	color: rgb(var(--color-muted));
+}
+
+.annam-tour-card__rating-score {
+	font-weight: var(--font-weight-semibold);
+	color: rgb(var(--color-muted));
+	white-space: nowrap;
+}
+
+.annam-tour-card__rating-count {
+	color: rgb(var(--color-muted));
+	font-weight: var(--font-weight-medium);
+	white-space: nowrap;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.annam-tour-card__rating-count--only {
+	font-family: var(--font-label);
+	font-size: 11px;
+	color: rgb(var(--color-muted));
+	font-weight: var(--font-weight-medium);
+	opacity: 0.9;
+}
+
+.annam-tour-card__rating-empty-text {
+	font-family: var(--font-label);
+	font-size: 11px;
+	color: rgb(var(--color-muted));
+	font-weight: var(--font-weight-medium);
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	opacity: 0.9;
+}
+
+.annam-tour-card__rating--empty .annam-tour-card__rating-row {
+	display: none;
+}
+.annam-tour-card__rating--no-stars .annam-tour-card__rating-count--only {
+	line-height: 1.2;
+}
+
+.annam-tour-card__price {
+	font-family: var(--font-label);
+	font-size: 12px;
+	line-height: 1.25;
+	color: rgb(var(--color-tertiary));
+	min-width: 0;
+	order: 2;
+	padding-top: 0;
+}
+
+/* Card (trang chủ, archive, related…): một hàng khi đủ chỗ; co font nhỏ hơn trước trên mobile */
+.annam-tour-card__price .tour-price {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: baseline;
+	column-gap: 0.28rem;
+	row-gap: 0.1rem;
+	min-width: 0;
+	max-width: 100%;
+	font-size: 12px;
+}
+
+.annam-tour-card__price .tour-price:has(.tour-price__regular) {
+	flex-wrap: wrap;
+	row-gap: 0.2rem;
+}
+
+.annam-tour-card__price .tour-price__label {
+	flex-shrink: 0;
+	color: rgb(var(--color-muted));
+	font-weight: var(--font-weight-semibold);
+}
+
+.annam-tour-card__price .tour-price__regular {
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.annam-tour-card__price .tour-price__tail {
+	flex-shrink: 1;
+	min-width: 0;
+}
+
+.annam-tour-card__price .tour-price__sale {
+	font-size: 0.96rem;
+	font-weight: var(--font-weight-bold);
+	min-width: 0;
+}
+
+.annam-tour-card__price .tour-price__unit,
+.annam-tour-card__price .tour-price__tail {
+	color: rgb(var(--color-neutral));
+}
+
+.annam-tour-card__foot-link {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+	order: 3;
+	margin-top: 0;
+	padding-top: 0;
+}
+
+.annam-tour-card__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	margin-top: auto;
+	padding-top: 7px;
+	border-top: 1px solid rgba(var(--color-border), 0.9);
+	font-family: var(--font-label);
+	font-size: 12px;
+	font-weight: var(--font-weight-medium);
+	color: rgb(var(--color-muted));
+	order: 4;
+}
+
+.annam-tour-card__meta-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 7px;
+	min-width: 0;
+}
+
+.annam-tour-card__meta-text {
+	min-width: 0;
+	word-break: break-word;
+	overflow-wrap: anywhere;
+	line-height: 1.25;
+}
+
+.annam-tour-card__meta-icon {
+	flex-shrink: 0;
+	width: 13px;
+	height: 13px;
+	margin-top: 1px;
+	background-color: rgb(var(--color-secondary));
+	opacity: 0.82;
+}
+
+.annam-tour-card__meta-icon--clock {
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'/%3E%3C/svg%3E") center / contain no-repeat;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.annam-tour-card__meta-icon--calendar {
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z'/%3E%3C/svg%3E") center / contain no-repeat;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+
+/* -------------------------------------------------------------------------
+ * Breakpoints
+ * ------------------------------------------------------------------------- */
+@media (min-width: 769px) {
+	.annam-category-products__toolbar {
+		align-items: flex-end;
+		gap: var(--space-4);
+	}
+
+	.annam-category-products__section-title {
+		max-width: 16ch;
+	}
+
+	.annam-category-hero,
+	.annam-category-hero__image,
+	.annam-category-hero__content {
+		min-height: 420px;
+	}
+
+	.annam-category-hero__content {
+		padding: 26px 28px clamp(48px, 4.5vw, 60px);
+	}
+
+	.annam-category-hero__breadcrumb {
+		top: 26px;
+		left: 28px;
+	}
+
+	.annam-tour-card__surface {
+		background: transparent;
+		border-color: transparent;
+		box-shadow: none;
+	}
+
+	.annam-tour-card {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+	}
+
+	.annam-tour-card__image {
+		aspect-ratio: 8 / 6;
+		background: rgb(var(--color-surface-muted));
+	}
+
+	.annam-tour-card__title {
+		font-size: 1rem;
+		line-height: 1.22;
+	}
+
+	.annam-tour-card__title-link {
+		-webkit-line-clamp: 2;
+	}
+
+	.annam-tour-card__meta {
+		gap: 4px;
+		padding-top: 5px;
+	}
+
+	.annam-tour-card__meta-icon {
+		width: 12px;
+		height: 12px;
+	}
+}
+
+@media (max-width: 1024px) {
+
+	.annam-category-products ul.products,
+	.annam-category-products__loop ul.products {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px;
+	}
+}
+
+@media (max-width: 768px) {
+	.annam-category-hero-outer {
+		margin-left: calc(50% - 50vw);
+		margin-right: calc(50% - 50vw);
+	}
+
+	.annam-category-hero,
+	.annam-category-hero__image,
+	.annam-category-hero__content {
+		min-height: 280px;
+	}
+
+	.annam-category-hero {
+		margin-top: 0;
+		border-radius: 0;
+	}
+
+	.annam-category-hero__content {
+		padding: 14px 14px clamp(22px, 7vw, 30px);
+		align-items: flex-end;
+	}
+
+	.annam-category-hero__breadcrumb {
+		position: static;
+		display: block;
+		max-width: 100%;
+		margin: 0 0 10px;
+		padding-right: 8px;
+	}
+
+	.annam-category-hero__inner {
+		max-width: 100%;
+	}
+
+	.annam-category-hero__breadcrumb-nav,
+	.annam-category-hero__breadcrumb .woocommerce-breadcrumb,
+	.annam-category-hero__breadcrumb .rank-math-breadcrumb,
+	.annam-category-hero__breadcrumb .rank-math-breadcrumb p {
+		display: block;
+		font-size: 11px;
+		line-height: 1.25;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		opacity: 0.88;
+	}
+
+	.annam-category-hero__title {
+		font-size: clamp(20px, 5.8vw, 28px);
+		margin-bottom: 4px;
+	}
+
+	.annam-category-hero__subtitle {
+		font-size: 13px;
+		margin-bottom: 10px;
+	}
+
+	.annam-category-hero__badges {
+		gap: 5px;
+		margin-bottom: 10px;
+	}
+
+	.annam-category-hero__badge {
+		font-size: 10px;
+		padding: 4px 9px;
+	}
+
+	.annam-category-hero__ctas {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.annam-category-hero__cta {
+		width: auto;
+		min-height: 40px;
+		padding: 0 16px;
+		font-size: 14px;
+		border-radius: 8px;
+		flex: 0 0 auto;
+	}
+
+	.annam-category-hero-chips {
+		gap: 8px;
+		padding: 12px 10px 6px 10px;
+	}
+
+	.annam-category-hero-chip {
+		font-size: 12px;
+		padding: 8px 12px;
+	}
+
+	.annam-category-intro {
+		padding: 0 10px;
+	}
+	.woocommerce .woocommerce-breadcrumb{
+		padding: 5px 10px 0 10px!important;
+
+	}
+
+	.annam-category-intro--no-heading {
+		padding-top: 14px;
+	}
+
+	.annam-category-intro__heading {
+		font-size: 28px;
+		line-height: 1.28;
+	}
+
+	.annam-category-intro__desc {
+		font-size: 17px;
+		line-height: 1.7;
+	}
+
+	.annam-category-intro:not(.is-expanded) .annam-category-intro__desc {
+		-webkit-line-clamp: 4;
+	}
+
+	.annam-category-products__toolbar {
+		flex-wrap: wrap;
+	}
+
+	.annam-category-products__sort-wrap {
+		flex: 0 1 auto;
+		max-width: min(200px, 100%);
+		margin-left: auto;
+	}
+
+	.annam-category-products__sort {
+		max-width: 100%;
+	}
+
+	.annam-category-products ul.products,
+	.annam-category-products__loop ul.products {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+
+	.annam-tour-card__surface {
+		position: relative;
+		border-radius: var(--component-card-radius-tight);
+		overflow: hidden;
+		background: transparent;
+		border-color: transparent;
+		box-shadow: none;
+	}
+
+	.annam-tour-card {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+	}
+
+	.annam-tour-card__media-link {
+		display: block;
+		width: 100%;
+	}
+
+	.annam-tour-card__image {
+		height: auto;
+		min-height: 0;
+		aspect-ratio: 8/ 6;
+		background: rgb(var(--color-surface-muted));
+	}
+
+	.annam-tour-card__body {
+		margin: -22px 8px 8px;
+		padding: 11px 11px 10px;
+		gap: 6px;
+		border-radius: 14px;
+		box-shadow: 0 10px 24px rgba(15, 76, 76, 0.1);
+	}
+
+	/* 
+	.annam-tour-card__body::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		border: 1px solid transparent;
+		background:
+			linear-gradient(
+				135deg,
+				rgba(var(--color-white), 0.9) 0%,
+				rgba(var(--color-white), 0.45) 22%,
+				rgba(var(--color-white), 0.16) 48%,
+				rgba(var(--color-secondary), 0.12) 72%,
+				rgba(var(--color-secondary), 0.04) 100%
+			) border-box;
+		box-shadow:
+			inset 1px 1px 0 rgba(var(--color-white), 0.38),
+			inset -1px -1px 0 rgba(var(--color-secondary), 0.08);
+		opacity: 1;
+	} */
+
+	.annam-tour-card__title {
+		font-size: 1rem;
+		line-height: 1.18;
+	}
+
+	.annam-tour-card__title-link {
+		-webkit-line-clamp: 2;
+	}
+
+	.annam-tour-card__sale-badge {
+		top: 8px;
+		left: 8px;
+		max-width: calc(100% - 16px);
+		padding: 4px 8px;
+		font-size: 10px;
+	}
+
+	.annam-tour-card__stars {
+		font-size: 11px;
+		letter-spacing: 0.06em;
+	}
+
+	.annam-tour-card__rating-row {
+		gap: 3px 6px;
+	}
+
+	.annam-tour-card__rating-meta,
+	.annam-tour-card__rating-empty-text,
+	.annam-tour-card__rating-count--only {
+		font-size: 11px;
+	}
+
+	.annam-tour-card__price .tour-price {
+		font-size: 12px;
+		row-gap: 0.1rem;
+	}
+
+	.annam-tour-card__price .tour-price__sale {
+		font-size: 0.92rem;
+	}
+
+	.annam-tour-card__meta {
+		font-size: 12px;
+		gap: 4px;
+		padding-top: 5px;
+	}
+
+	.annam-tour-card__meta-item {
+		gap: 7px;
+	}
+
+	.annam-tour-card__meta-icon {
+		width: 13px;
+		height: 13px;
+	}
+
+	.woocommerce ul.products li.product .annam-tour-card__media-link img,
+	.woocommerce ul.products li.product .annam-tour-card__image img,
+	.woocommerce-page ul.products li.product .annam-tour-card__media-link img,
+	.woocommerce-page ul.products li.product .annam-tour-card__image img,
+	ul.products li.product .annam-tour-card__media-link img,
+	ul.products li.product .annam-tour-card__image img {
+		object-fit: cover !important;
+		object-position: center center !important;
+		background: rgb(var(--color-surface-muted));
+	}
+}
+
+@media (max-width: 480px) {
+
+	.annam-category-hero,
+	.annam-category-hero__image,
+	.annam-category-hero__content {
+		min-height: 280px;
+	}
+
+	.annam-category-hero__breadcrumb {
+		margin-bottom: 8px;
+	}
+
+	.annam-category-hero__breadcrumb-nav,
+	.annam-category-hero__breadcrumb .woocommerce-breadcrumb,
+	.annam-category-hero__breadcrumb .rank-math-breadcrumb,
+	.annam-category-hero__breadcrumb .rank-math-breadcrumb p {
+		font-size: 10px;
+	}
+
+	.annam-category-products ul.products,
+	.annam-category-products__loop ul.products {
+		gap: 15px;
+	}
+
+	.annam-tour-card__price .tour-price {
+		font-size: clamp(9px, 2.7vw, 12px);
+	}
+
+	.annam-tour-card__price .tour-price__sale {
+		font-size: clamp(0.65rem, 2.4vw, 0.85rem);
+	}
+}
+
+@media (max-width: 390px) {
+
+	.annam-category-products ul.products,
+	.annam-category-products__loop ul.products {
+		gap: 14px;
+	}
+
+}
+
+@media (max-width: 360px) {
+
+	.annam-category-products ul.products,
+	.annam-category-products__loop ul.products {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+
+	.annam-tour-card__body {
+		margin: -20px 8px 8px;
+		padding: 10px 10px 9px;
+	}
+
+	.annam-tour-card__title {
+		font-size: 0.94rem;
+	}
+
+}

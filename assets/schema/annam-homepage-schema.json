@@ -1,0 +1,204 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["TravelAgency", "Organization", "LocalBusiness"],
+      "@id": "https://annamdiscovery.vn/#travel-agency",
+      "name": "An Nam Discovery",
+      "url": "https://annamdiscovery.vn/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://annamdiscovery.vn/wp-content/uploads/2026/05/logo.png"
+      },
+      "image": ["https://annamdiscovery.vn/wp-content/uploads/2026/05/logo.png"],
+      "description": "An Nam Discovery cung cấp tour du lịch, combo nghỉ dưỡng, du thuyền, vé xe, khách sạn và dịch vụ tư vấn lịch trình trọn gói cho khách cá nhân, gia đình, nhóm bạn và khách đoàn. Đơn vị tập trung tư vấn hành trình phù hợp, thông tin rõ ràng, hỗ trợ đặt dịch vụ nhanh và tối ưu chi phí cho từng nhu cầu du lịch. Đơn vị có kinh nghiệm tư vấn và tổ chức nhiều loại hình dịch vụ du lịch trong nước và định hướng mở rộng tour quốc tế. Giấy phép kinh doanh dịch vụ lữ hành quốc tế (số 01-3006/2025/CDL-GVN-GP LHQT).",
+      "email": "annamdiscoveryvn@gmail.com",
+      "telephone": "+841908164",
+      "taxID": "0111205475",
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "name": "Giấy phép kinh doanh dịch vụ lữ hành quốc tế",
+        "credentialCategory": "license",
+        "identifier": "01-3006/2025/CDL-GVN-GP LHQT"
+      },
+      "slogan": "Tư vấn du lịch trọn gói — linh hoạt, rõ ràng, tối ưu chi phí",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "name": "Tổng đài",
+          "telephone": "+841908164",
+          "availableLanguage": ["Vietnamese", "English"],
+          "areaServed": "VN"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "name": "Hotline",
+          "telephone": "+84942471111",
+          "availableLanguage": ["Vietnamese", "English"],
+          "areaServed": "VN"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "annamdiscoveryvn@gmail.com",
+          "availableLanguage": ["Vietnamese", "English"],
+          "areaServed": "VN"
+        }
+      ],
+      "address": [
+        {
+          "@type": "PostalAddress",
+          "name": "Văn phòng Tú Mỡ",
+          "streetAddress": "23 Tú Mỡ",
+          "addressLocality": "Phường Yên Hòa",
+          "addressRegion": "Hà Nội",
+          "addressCountry": "VN",
+          "hasMap": "https://maps.app.goo.gl/dLFtc2s8LSYchXQa6"
+        },
+        {
+          "@type": "PostalAddress",
+          "name": "Văn phòng Trần Quang Khải",
+          "streetAddress": "214 Đ. Trần Quang Khải",
+          "addressLocality": "Hoàn Kiếm",
+          "addressRegion": "Hà Nội",
+          "addressCountry": "VN",
+          "hasMap": "https://maps.app.goo.gl/3DmmAdysHTtu7pPu9"
+        }
+      ],
+      "areaServed": [
+        { "@type": "Country", "name": "Vietnam" },
+        { "@type": "AdministrativeArea", "name": "International" }
+      ],
+      "knowsAbout": [
+        "Tour du lịch",
+        "Combo nghỉ dưỡng",
+        "Du thuyền",
+        "Vé xe du lịch",
+        "Khách sạn",
+        "Tư vấn lịch trình trọn gói",
+        "Du lịch khách đoàn",
+        "Du lịch gia đình"
+      ],
+      "audience": [
+        { "@type": "Audience", "audienceType": "Khách cá nhân" },
+        { "@type": "Audience", "audienceType": "Gia đình" },
+        { "@type": "Audience", "audienceType": "Nhóm bạn" },
+        { "@type": "Audience", "audienceType": "Khách đoàn" },
+        { "@type": "Audience", "audienceType": "Doanh nghiệp" }
+      ],
+      "sameAs": [
+        "https://web.facebook.com/AnNamDiscovery/",
+        "https://x.com/annamdiscovery",
+        "https://www.youtube.com/@AnNamDiscovery",
+        "https://www.instagram.com/annamdiscovery/"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Dịch vụ du lịch An Nam Discovery",
+        "hasPart": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Tour du lịch",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Tour du lịch",
+                  "description": "Tư vấn và đặt tour trong nước, lựa chọn lịch trình phù hợp từng nhóm khách. Giá linh hoạt theo dịch vụ và lịch trình.",
+                  "provider": { "@id": "https://annamdiscovery.vn/#travel-agency" }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Combo nghỉ dưỡng",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Combo nghỉ dưỡng",
+                  "description": "Gói nghỉ dưỡng kết hợp lưu trú và trải nghiệm, tối ưu theo ngân sách và thời gian lưu trú. Giá linh hoạt theo dịch vụ và lịch trình.",
+                  "provider": { "@id": "https://annamdiscovery.vn/#travel-agency" }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Du thuyền",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Du thuyền",
+                  "description": "Tư vấn đặt du thuyền, hành trình và dịch vụ trên tàu theo nhu cầu nhóm hoặc đoàn. Giá linh hoạt theo dịch vụ và lịch trình.",
+                  "provider": { "@id": "https://annamdiscovery.vn/#travel-agency" }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Vé xe du lịch / limousine",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Vé xe du lịch / limousine",
+                  "description": "Hỗ trợ đặt vé xe, limousine và di chuyển liên tỉnh phục vụ hành trình du lịch. Giá linh hoạt theo dịch vụ và lịch trình.",
+                  "provider": { "@id": "https://annamdiscovery.vn/#travel-agency" }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Khách sạn và lưu trú",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Khách sạn và lưu trú",
+                  "description": "Gợi ý và đặt phòng khách sạn, resort phù hợp hành trình và số lượng khách. Giá linh hoạt theo dịch vụ và lịch trình.",
+                  "provider": { "@id": "https://annamdiscovery.vn/#travel-agency" }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Tư vấn lịch trình cho khách đoàn",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Tư vấn lịch trình cho khách đoàn",
+                  "description": "Thiết kế lịch trình trọn gói cho đoàn công ty, trường học và nhóm đông người; phối hợp dịch vụ theo yêu cầu. Giá linh hoạt theo dịch vụ và lịch trình.",
+                  "provider": { "@id": "https://annamdiscovery.vn/#travel-agency" }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://annamdiscovery.vn/#website",
+      "url": "https://annamdiscovery.vn/",
+      "name": "An Nam Discovery",
+      "description": "An Nam Discovery cung cấp tour du lịch, combo nghỉ dưỡng, du thuyền, vé xe, khách sạn và dịch vụ tư vấn lịch trình trọn gói cho khách cá nhân, gia đình, nhóm bạn và khách đoàn.",
+      "publisher": { "@id": "https://annamdiscovery.vn/#travel-agency" },
+      "inLanguage": "vi-VN"
+    }
+  ]
+}

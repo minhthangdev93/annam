@@ -1,0 +1,211 @@
+/**
+ * “Tour đã xem gần đây” — desktop grid/carousel + mobile horizontal snap.
+ * Reuses .annam-category-products card rules from woo-category-tour.css.
+ */
+
+.annam-recently-viewed {
+}
+
+.annam-recently-viewed__inner.annam-container,
+.annam-recently-viewed__inner.annam-container.grid-container {
+	width:  clamp(1000px, 80vw, 1500px);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.annam-recently-viewed__header { margin: 0 0 var(--space-5); }
+
+.annam-recently-viewed__title {
+	margin: var(--space-3);
+	font-size: var(--component-commerce-title-size);
+	line-height: 1.25;
+	font-weight: var(--component-commerce-title-weight);
+	color: rgb(var(--color-primary));
+	text-wrap: balance;
+}
+
+.annam-recently-viewed__slider {
+	display: block;
+}
+
+/* Desktop: 4 columns when not carousel */
+@media (min-width: 769px) {
+	.annam-recently-viewed__title {
+		max-width: 16ch;
+	}
+
+	.annam-recently-viewed:not(.annam-recently-viewed--carousel) .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products {
+		grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+		gap: var(--component-commerce-grid-gap) !important;
+	}
+}
+
+/* Desktop: carousel (>4) */
+@media (min-width: 769px) {
+	.annam-recently-viewed--carousel .annam-recently-viewed__slider {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+
+	.annam-recently-viewed--carousel .annam-recently-viewed__viewport {
+		flex: 1;
+		min-width: 0;
+		container-type: inline-size;
+		container-name: annam-rv;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.annam-recently-viewed--carousel .annam-recently-viewed__viewport::-webkit-scrollbar {
+		display: none;
+	}
+
+	.annam-recently-viewed--carousel .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products {
+		display: flex !important;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: var(--component-commerce-grid-gap);
+		width: max-content;
+		min-width: 100%;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.annam-recently-viewed--carousel .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products::before,
+	.annam-recently-viewed--carousel .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products::after {
+		display: none;
+	}
+
+	.annam-recently-viewed--carousel .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products > li.product {
+		float: none !important;
+		margin: 0 !important;
+		width: auto !important;
+		max-width: none !important;
+		flex: 0 0 calc((100cqi - 60px) / 4);
+		min-width: 0;
+	}
+
+	@supports not (width: 1cqi) {
+		.annam-recently-viewed--carousel .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products > li.product {
+			flex: 0 0 calc(25% - 15px);
+		}
+	}
+
+	.annam-recently-viewed__nav {
+		flex-shrink: 0;
+		width: var(--component-carousel-nav-size);
+		height: var(--component-carousel-nav-size);
+		padding: 0;
+		border: 1px solid rgb(var(--color-border));
+		border-radius: var(--component-carousel-nav-radius);
+		background: rgb(var(--color-surface));
+		box-shadow: var(--component-carousel-nav-shadow);
+		cursor: pointer;
+		color: rgb(var(--color-primary));
+		transition: box-shadow 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+	}
+
+	.annam-recently-viewed__nav:hover:not(:disabled) {
+		box-shadow: var(--component-carousel-nav-shadow-hover);
+		border-color: rgb(var(--color-secondary));
+	}
+
+	.annam-recently-viewed__nav:disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+
+	.annam-recently-viewed__nav:focus-visible {
+		outline: none;
+		box-shadow: var(--component-carousel-nav-shadow-hover), var(--component-focus-ring-secondary);
+	}
+
+	.annam-recently-viewed__nav--prev::before,
+	.annam-recently-viewed__nav--next::before {
+		content: "";
+		display: block;
+		width: 10px;
+		height: 10px;
+		margin: 0 auto;
+		border-left: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+	}
+
+	.annam-recently-viewed__nav--prev::before {
+		transform: rotate(45deg);
+		margin-left: calc(50% - 3px);
+	}
+
+	.annam-recently-viewed__nav--next::before {
+		transform: rotate(-135deg);
+		margin-left: calc(50% - 7px);
+	}
+}
+
+/* Mobile: horizontal snap, first card ~full width, ~⅓ of next visible */
+@media (max-width: 768px) {
+	.annam-recently-viewed .annam-recently-viewed__nav {
+		display: none !important;
+	}
+
+	.annam-recently-viewed__title {
+		max-width: none;
+	}
+
+	.annam-recently-viewed--carousel .annam-recently-viewed__slider {
+		display: block;
+	}
+
+	.annam-recently-viewed .annam-recently-viewed__viewport {
+		overflow-x: auto;
+		overflow-y: hidden;
+		-webkit-overflow-scrolling: touch;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--component-carousel-mobile-edge);
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		padding-bottom: 6px;
+	}
+
+	.annam-recently-viewed .annam-recently-viewed__viewport::-webkit-scrollbar {
+		display: none;
+	}
+
+	.annam-recently-viewed .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products {
+		display: flex !important;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: 0;
+		width: max-content;
+		margin: 0;
+		padding: 0 var(--component-carousel-mobile-edge);
+		list-style: none;
+		grid-template-columns: unset !important;
+	}
+
+	.annam-recently-viewed .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products::before,
+	.annam-recently-viewed .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products::after {
+		display: none;
+	}
+
+	/* ~72vw first card → ~28vw remainder shows part of next (≈⅓ of a same-width card) */
+	.annam-recently-viewed .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products > li.product {
+		float: none !important;
+		margin: 0 12px 0 0 !important;
+		padding: 0;
+		scroll-snap-align: start;
+		flex: 0 0 min(72vw, 340px);
+		width: min(72vw, 340px);
+		max-width: min(72vw, 340px);
+		box-sizing: border-box;
+	}
+
+	.annam-recently-viewed .annam-recently-viewed__viewport .annam-recently-viewed__grid ul.products > li.product:last-child {
+		margin-right: var(--component-carousel-mobile-edge) !important;
+	}
+}

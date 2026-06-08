@@ -1,0 +1,29 @@
+/*
+ Theme Name:   An Nam Discovery
+ Theme URI:    https://annamdiscovery.com
+ Description:  Child theme GeneratePress cho annamdiscovery.com — WooCommerce tour, landing cabin VIP, thuê xe hợp đồng, blog, liên hệ.
+ Author:       An Nam Discovery
+ Author URI:   https://github.com/minhthangdev93/annam
+ Template:     generatepress
+ Version:      1.0.0
+ Text Domain:  generatepress_child
+ Requires at least: 6.0
+ Requires PHP: 8.0
+*/
+html{
+    font-size: 16px;
+}
+.inside-article{
+    margin:0 !important;
+    padding:0 !important;    
+}
+
+.separate-containers .site-main{
+    margin:0 !important;
+    padding:0 !important;    
+    background-color: transparent !important;
+}
+.separate-containers .inside-article{
+    background-color: transparent !important;
+}
+

@@ -1,0 +1,335 @@
+/**
+ * Admin: An Nam Settings — slider, Giới thiệu, Hệ sinh thái.
+ */
+
+.annam-admin-wrap .nav-tab-wrapper {
+	margin: 1rem 0 0;
+}
+
+.annam-admin-tab-panel {
+	margin-top: 1.25rem;
+	max-width: 1100px;
+}
+
+.annam-admin-tab-panel[hidden] {
+	display: none !important;
+}
+
+.annam-admin-section-title {
+	margin: 1.75rem 0 0.75rem;
+	padding-bottom: 0.35rem;
+	border-bottom: 1px solid #c3c4c7;
+	font-size: 1.05rem;
+}
+
+.annam-admin-section-title:first-of-type {
+	margin-top: 0.5rem;
+}
+
+.annam-about-image-field {
+	margin-bottom: 1.25rem;
+	max-width: 360px;
+}
+
+.annam-about-image-field__label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+
+.annam-about-service-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 1rem 1.25rem;
+	margin-bottom: 0.5rem;
+}
+
+/* Landing Cabin VIP — ảnh */
+.annam-cabin-images-wrap {
+	max-width: 1200px;
+}
+
+.annam-cabin-images-intro {
+	margin: 1rem 0 1.25rem;
+	padding: 12px 16px;
+}
+
+.annam-cabin-section-note {
+	margin: -0.35rem 0 1rem;
+	max-width: 720px;
+}
+
+.annam-cabin-images-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 1.25rem 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.annam-cabin-image-field {
+	max-width: none;
+	padding: 14px 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.annam-cabin-image-field__placement {
+	margin: 0 0 8px;
+	font-size: 13px;
+	color: #50575e;
+}
+
+.annam-cabin-image-field__specs {
+	margin: 0 0 10px;
+	padding-left: 1.15rem;
+	font-size: 12px;
+	line-height: 1.55;
+	color: #1d2327;
+}
+
+.annam-cabin-image-field__specs li {
+	margin-bottom: 2px;
+}
+
+.annam-cabin-image-field__current {
+	margin: 0 0 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #2271b1;
+}
+
+.annam-cabin-image-field__preview {
+	min-height: 120px;
+}
+
+.annam-gallery-sortable {
+	list-style: none;
+	margin: 0 0 1rem;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	max-width: 900px;
+}
+
+.annam-gallery-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	cursor: default;
+}
+
+.annam-gallery-handle {
+	cursor: grab;
+	color: #787c82;
+	font-size: 14px;
+	user-select: none;
+	line-height: 1;
+}
+
+/* Car rental trust gallery meta box */
+.annam-cr-trust-gallery-admin__specs {
+	margin: 0 0 16px;
+	max-width: 720px;
+}
+
+.annam-cr-trust-gallery-admin__list {
+	list-style: none;
+	margin: 0 0 12px;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	max-width: 560px;
+}
+
+.annam-cr-trust-gallery-admin__item {
+	align-items: flex-start;
+}
+
+.annam-cr-trust-gallery-admin__item-body {
+	flex: 1;
+	min-width: 0;
+}
+
+.annam-cr-trust-gallery-admin__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 8px 0;
+}
+
+.annam-cr-trust-gallery-admin__count {
+	margin-left: 8px;
+}
+
+.annam-cr-landing-images-admin__sep {
+	margin: 24px 0;
+	border: 0;
+	border-top: 1px solid #c3c4c7;
+}
+
+.annam-cr-landing-images-admin__heading {
+	margin: 0 0 12px;
+	font-size: 1.05rem;
+}
+
+.annam-cr-landing-image-field {
+	margin-bottom: 0;
+}
+
+.annam-cabin-images-grid--journeys {
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.annam-gallery-thumb-wrap {
+	display: flex;
+	width: 80px;
+	height: 80px;
+	overflow: hidden;
+	border-radius: 3px;
+	background: #f0f0f1;
+}
+
+.annam-gallery-thumb-wrap img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.annam-gallery-remove {
+	font-size: 12px;
+	margin-left: 4px;
+}
+
+.annam-home-sliders-rows {
+	max-width: 960px;
+}
+
+.annam-slide-card {
+	border: 1px solid #c3c4c7;
+	background: #fff;
+	border-radius: 4px;
+	margin-bottom: 16px;
+	padding: 0;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.annam-slide-card__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 14px;
+	border-bottom: 1px solid #dcdcde;
+	background: #f6f7f7;
+}
+
+.annam-slide-card__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 14px 18px;
+	padding: 14px;
+}
+
+.annam-slide-card__field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.annam-slide-card__field--inline label {
+	font-weight: 600;
+}
+
+.annam-slide-card__field--inline label input {
+	margin-right: 6px;
+}
+
+.annam-media-preview {
+	min-height: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f0f0f1;
+	border: 1px dashed #c3c4c7;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	overflow: hidden;
+}
+
+.annam-media-preview img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	max-height: 140px;
+	object-fit: contain;
+}
+
+.annam-media-placeholder {
+	color: #646970;
+	font-size: 12px;
+	text-align: center;
+	padding: 8px;
+}
+
+.annam-slide-card__field--media .button {
+	margin-right: 6px;
+	margin-top: 0;
+}
+
+/* Tab Hệ sinh thái — repeater thương hiệu */
+.annam-ecosystem-rows {
+	max-width: 960px;
+}
+
+.annam-ecosystem-card {
+	border: 1px solid #c3c4c7;
+	background: #fff;
+	border-radius: 4px;
+	margin-bottom: 16px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.annam-ecosystem-card__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 14px;
+	border-bottom: 1px solid #dcdcde;
+	background: #f6f7f7;
+}
+
+.annam-ecosystem-card__grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	gap: 14px 18px;
+	padding: 14px;
+}
+
+.annam-ecosystem-card__field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+.annam-ecosystem-card__field--inline label {
+	font-weight: 600;
+}
+
+.annam-ecosystem-card__field--inline label input {
+	margin-right: 6px;
+}
+
+.annam-ecosystem-card__field--media .button {
+	margin-right: 6px;
+	margin-top: 0;
+}

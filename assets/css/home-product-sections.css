@@ -1,0 +1,416 @@
+/**
+ * Trang chủ: section sản phẩm theo product_cat (template Trang chủ tĩnh).
+ * Card tour dùng chung woo-category-tour.css; file này chỉ layout section + lưới/slider.
+ */
+
+.annam-home-product-sections {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+	margin-top: var(--section-space-compact);
+	margin-bottom: var(--section-space-compact);
+	align-items: center;
+}
+
+.annam-home-product-section {
+	width: 100%;
+	max-width: 1500px;
+	border-radius: var(--component-card-radius);
+}
+
+.annam-home-product-section__inner {
+	max-width: 100%;
+}
+
+.annam-home-product-section__header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px 16px;
+	margin: var(--space-5);
+	
+}
+
+.annam-home-product-section__title {
+	margin: 0;
+	flex: 1 1 auto;
+	min-width: min(100%, 200px);
+	font-family: var(--font-heading);
+	font-size: clamp(20px, 2.4vw, 28px);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: rgb(var(--color-primary));
+}
+
+.annam-home-product-section__view-all {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--component-button-height-compact);
+	padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
+	margin: -6px -4px -6px 0;
+	font-family: var(--font-label);
+	font-size: var(--text-sm);
+	font-weight: var(--font-weight-semibold);
+	color: rgb(var(--color-secondary));
+	text-decoration: none;
+	white-space: nowrap;
+	border-radius: var(--component-button-radius-compact);
+	transition: color 0.15s ease, background 0.15s ease;
+}
+
+.annam-home-product-section__view-all:hover,
+.annam-home-product-section__view-all:focus-visible {
+	color: rgb(var(--color-primary));
+	background: rgba(255, 255, 255, 0.55);
+	outline: none;
+}
+
+.annam-home-product-section__desc {
+	margin: var(--space-4);
+	max-width: 72ch;
+	font-family: var(--font-body);
+	font-size: var(--text-md);
+	line-height: 1.6;
+	color: rgb(var(--color-muted));
+}
+
+.annam-home-product-section__slider {
+	position: relative;
+}
+
+/* -------------------------------------------------------------------------
+ * Product list: mobile = luôn slider ngang + snap
+ * ------------------------------------------------------------------------- */
+.annam-home-product-section__viewport {
+	width: 100%;
+	margin-left: var(--space-5);
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: 0;
+	scrollbar-width: thin;
+}
+
+.annam-home-product-section__viewport::-webkit-scrollbar {
+	height: 6px;
+}
+
+.annam-home-product-section__viewport::-webkit-scrollbar-thumb {
+	background: rgba(var(--color-primary-rgb), 0.22);
+	border-radius: 999px;
+}
+
+.annam-home-product-section__grid {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	gap: 12px;
+	margin: 0;
+	list-style: none;
+	width: max-content;
+	min-width: 100%;
+	box-sizing: border-box;
+}
+
+.annam-home-product-section__grid::before,
+.annam-home-product-section__grid::after {
+	display: none;
+}
+
+.annam-home-product-section__grid > li.product {
+	flex: 0 0 min(74vw, 340px);
+	width: min(74vw, 340px);
+	max-width: none !important;
+	float: none !important;
+	margin: 0 !important;
+	scroll-snap-align: start;
+	scroll-snap-stop: normal;
+}
+
+.annam-home-product-section__nav {
+	display: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Desktop: grid 4 cột (≤4 SP) hoặc carousel (nav + 4 card/viewport)
+ * ------------------------------------------------------------------------- */
+@media (min-width: 782px) {
+
+	.annam-home-product-sections {
+		gap: var(--space-8);
+		margin-top: var(--section-space-default);
+		margin-bottom: var(--section-space-default);
+	}
+	.annam-home-product-section{
+		padding: var(--space-5);
+	}
+
+	.annam-home-product-section__desc {
+		font-size: var(--text-base);
+		margin-bottom: var(--space-5);
+	}
+
+	/* --- Chế độ lưới: 4 cột, không cuộn ngang --- */
+	.annam-home-product-section--grid .annam-home-product-section__viewport {
+		overflow: visible;
+		scroll-snap-type: none;
+	}
+
+	.annam-home-product-section--grid .annam-home-product-section__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 20px;
+		width: 100%;
+		min-width: 0;
+		padding-bottom: 0;
+	}
+
+	.annam-home-product-section--grid .annam-home-product-section__grid > li.product {
+		width: 100% !important;
+		flex: none;
+		scroll-snap-align: unset;
+	}
+
+	/* --- Carousel: 4 card / lần xem, nút trái/phải --- */
+	.annam-home-product-section--carousel .annam-home-product-section__slider {
+		padding-left: 44px;
+		padding-right: 44px;
+	}
+
+	.annam-home-product-section--carousel .annam-home-product-section__viewport {
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		/* % flex-basis trên track cần độ rộng vùng cuộn — dùng cqi */
+		container-type: inline-size;
+		container-name: annam-home-carousel;
+	}
+
+	.annam-home-product-section--carousel .annam-home-product-section__grid {
+		gap: 20px;
+		padding-bottom: 4px;
+		width: max-content;
+		min-width: 100%;
+	}
+
+	.annam-home-product-section--carousel .annam-home-product-section__grid > li.product {
+		width: auto !important;
+		max-width: 280px !important;
+		flex: 0 0 min(280px, calc((100cqi - 40px) / 3));
+		min-width: 0;
+		scroll-snap-align: start;
+	}
+
+	@supports not (width: 1cqi) {
+		.annam-home-product-section--carousel .annam-home-product-section__grid > li.product {
+			flex: 0 0 min(280px, calc((100% - 40px) / 3));
+		}
+	}
+
+	.annam-home-product-section__nav {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		z-index: 2;
+		width: var(--component-carousel-nav-size);
+		height: var(--component-carousel-nav-size);
+		margin: 0;
+		padding: 0;
+		border: 1px solid rgb(var(--color-border));
+		border-radius: var(--component-carousel-nav-radius);
+		background: rgb(var(--color-surface));
+		color: rgb(var(--color-primary));
+		font-size: 22px;
+		line-height: 1;
+		cursor: pointer;
+		box-shadow: var(--component-carousel-nav-shadow);
+		transition: background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+	}
+
+	.annam-home-product-section__nav:hover,
+	.annam-home-product-section__nav:focus-visible {
+		background: rgba(var(--color-primary-rgb), 0.08);
+		box-shadow: var(--component-carousel-nav-shadow-hover), var(--component-focus-ring-secondary);
+		outline: none;
+	}
+
+	.annam-home-product-section__nav:disabled {
+		opacity: 0.35;
+		cursor: default;
+		box-shadow: none;
+	}
+
+	.annam-home-product-section__nav--prev {
+		left: 0;
+	}
+
+	.annam-home-product-section__nav--next {
+		right: 0;
+	}
+}
+
+@media (min-width: 1180px) {
+	.annam-home-product-section--carousel .annam-home-product-section__grid > li.product {
+		flex-basis: min(280px, calc((100cqi - 60px) / 4));
+	}
+
+	@supports not (width: 1cqi) {
+		.annam-home-product-section--carousel .annam-home-product-section__grid > li.product {
+			flex-basis: min(280px, calc((100% - 60px) / 4));
+		}
+	}
+}
+
+@media (min-width: 782px) and (max-width: 1100px) {
+	.annam-home-product-section--grid .annam-home-product-section__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * Home feature carousel: hero rail with active slide + side previews
+ * ------------------------------------------------------------------------- */
+.annam-home-product-section--feature-carousel {
+	--annam-home-feature-width: min(82vw, 360px);
+	--annam-home-feature-gutter: max(16px, calc(50% - (var(--annam-home-feature-width) / 2)));
+	--annam-home-scrollbar-width: 18%;
+	--annam-home-scrollbar-left: 0%;
+	padding: var(--space-4) 0 var(--space-5);
+	overflow: clip;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__header {
+	margin: 0 0 var(--space-3);
+	padding: 0 var(--space-4);
+	align-items: flex-end;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__desc {
+	margin: 0 0 var(--space-4);
+	padding: 0 var(--space-4);
+	max-width: 58ch;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__slider {
+	padding: 0;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__viewport {
+	margin-left: 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: 50%;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__viewport::-webkit-scrollbar {
+	display: none;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__grid {
+	gap: 14px;
+	min-width: 100%;
+	padding: 0 var(--annam-home-feature-gutter);
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__grid > li.product {
+	flex: 0 0 var(--annam-home-feature-width);
+	width: var(--annam-home-feature-width) !important;
+	max-width: none !important;
+	min-width: 0;
+	float: none !important;
+	scroll-snap-align: center;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__progress {
+	position: relative;
+	height: 3px;
+	margin: var(--space-4) var(--space-4) 0;
+	background: rgba(var(--color-white), 0.14);
+	overflow: hidden;
+}
+
+.annam-home-product-section--feature-carousel .annam-home-product-section__progress-bar {
+	display: block;
+	width: var(--annam-home-scrollbar-width);
+	height: 100%;
+	margin-left: var(--annam-home-scrollbar-left);
+	background: rgb(var(--color-primary));
+	transition:
+		width 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+		margin-left 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 782px) {
+	.annam-home-product-section--feature-carousel {
+		--annam-home-feature-width: clamp(280px, 20vw, 340px);
+		padding: var(--space-5) 0 var(--space-8);
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__header,
+	.annam-home-product-section--feature-carousel .annam-home-product-section__desc {
+		padding-left: clamp(28px, 3.2vw, 44px);
+		padding-right: clamp(28px, 3.2vw, 44px);
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__slider {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__viewport {
+		overflow-x: auto;
+		scroll-padding-inline: 50%;
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__grid {
+		gap: 18px;
+		padding-bottom: 0;
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__grid > li.product {
+		flex-basis: var(--annam-home-feature-width);
+		width: var(--annam-home-feature-width) !important;
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__nav {
+		top: calc(50% - 18px);
+		width: 54px;
+		height: 54px;
+		border-radius: 999px;
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__nav--prev {
+		left: clamp(10px, 1.8vw, 24px);
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__nav--next {
+		right: clamp(10px, 1.8vw, 24px);
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__progress {
+		margin-left: clamp(28px, 3.2vw, 44px);
+		margin-right: clamp(28px, 3.2vw, 44px);
+		margin-top: var(--space-5);
+	}
+}
+
+@media (max-width: 781px) {
+	.annam-home-product-section--feature-carousel .annam-home-product-section__slider {
+		--annam-home-rail-fade-width: clamp(28px, 10vw, 48px);
+	}
+
+	.annam-home-product-section--feature-carousel .annam-home-product-section__grid {
+		gap: 12px;
+	}
+}

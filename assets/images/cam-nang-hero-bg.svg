@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="640" viewBox="0 0 1920 640" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="h">
+  <title id="h">C�m nang du l�ch</title>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f4c4c"/>
+      <stop offset="100%" stop-color="#1a6b6b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="640" fill="url(#g)"/>
+  <circle cx="300" cy="120" r="180" fill="#ffffff" opacity="0.06"/>
+  <circle cx="1700" cy="520" r="220" fill="#ffffff" opacity="0.05"/>
+</svg>

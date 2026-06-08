@@ -1,0 +1,929 @@
+/**
+ * Trang Giới thiệu An Nam Discovery (template).
+ */
+
+body.annam-about-page {
+	--ann-ab-primary: rgb(var(--color-primary));
+	--ann-ab-secondary: rgb(var(--color-secondary));
+	--ann-ab-cta: rgb(var(--color-tertiary));
+	--ann-ab-cta-hover: rgb(var(--color-tertiary-hover));
+	--ann-ab-text: var(--color-body, #1e293b);
+	--ann-ab-muted: var(--color-muted, #64748b);
+	--ann-ab-border: var(--color-border, #e2e8f0);
+	--ann-ab-bg: var(--color-bg, #f8f9fa);
+	--ann-ab-surface: var(--color-surface, #fff);
+	--ann-ab-max: var(--layout-content-max);
+	--ann-ab-pad-x: var(--layout-gutter);
+	--ann-ab-radius: var(--component-card-radius);
+	--ann-ab-radius-tight: var(--component-card-radius-tight);
+	--ann-ab-shadow: var(--component-card-shadow);
+	--ann-ab-shadow-hover: var(--component-card-shadow-hover);
+	--ann-ab-section-space: var(--section-space-default);
+	--ann-ab-section-space-compact: var(--section-space-compact);
+}
+
+body.annam-about-page #primary {
+	width: 100%;
+	max-width: none;
+	padding-left: 0;
+	padding-right: 0;
+	float: none;
+}
+
+body.annam-about-page .site-main {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+body.annam-about-page .inside-article {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+body.annam-about-page .featured-image,
+body.annam-about-page .page-header-image,
+body.annam-about-page .page-header-image-single,
+body.annam-about-page .post-image {
+	display: none !important;
+}
+
+.annam-about-container {
+	width: min(100% - 2 * var(--ann-ab-pad-x), var(--ann-ab-max));
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+/* Hero */
+.annam-about-hero {
+	position: relative;
+	color: rgb(var(--color-on-primary));
+	margin-bottom: var(--ann-ab-section-space-compact);
+}
+
+.annam-about-hero__bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	background-color: var(--ann-ab-primary);
+}
+
+.annam-about-hero__overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(15, 76, 76, 0.78) 0%, rgba(15, 76, 76, 0.55) 50%, rgba(15, 76, 76, 0.82) 100%);
+}
+
+.annam-about-hero__inner {
+	position: relative;
+	z-index: 1;
+	padding: clamp(2rem, 5vw, 3.25rem) var(--ann-ab-pad-x) clamp(2.5rem, 5vw, 3.5rem);
+	max-width: var(--ann-ab-max);
+	margin: 0 auto;
+}
+
+.annam-about-breadcrumb__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+	margin: 0 0 1rem;
+	padding: 0;
+	list-style: none;
+	font-family: var(--font-label, system-ui, sans-serif);
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: rgba(255, 255, 255, 0.88);
+}
+
+.annam-about-breadcrumb__list li {
+	display: inline-flex;
+	align-items: center;
+}
+
+.annam-about-breadcrumb__list li:not(:last-child)::after {
+	content: "/";
+	margin-left: 0.35rem;
+	opacity: 0.65;
+}
+
+.annam-about-breadcrumb__list a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.annam-about-breadcrumb__list a:hover {
+	text-decoration: underline;
+}
+
+.annam-about-hero__title {
+	margin: 0 0 0.5rem;
+	font-family: var(--font-heading, serif);
+	font-size: clamp(1.65rem, 4vw, 2.35rem);
+	font-weight: var(--font-weight-bold);
+	line-height: 1.2;
+	max-width: 22ch;
+	text-wrap: balance;
+}
+
+.annam-about-hero__subtitle {
+	margin: 0 0 1rem;
+	font-size: clamp(1rem, 2.2vw, 1.2rem);
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.95);
+	max-width: 36ch;
+}
+
+.annam-about-hero__lead {
+	margin: 0 0 1.5rem;
+	font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+	line-height: 1.65;
+	color: rgba(255, 255, 255, 0.92);
+	max-width: 52ch;
+}
+
+.annam-about-hero__cta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.annam-about-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--component-button-height);
+	padding: var(--component-button-padding-block) var(--component-button-padding-inline);
+	border-radius: var(--component-button-radius);
+	font-family: var(--font-label, system-ui, sans-serif);
+	font-size: var(--component-button-font-size);
+	font-weight: var(--component-button-font-weight);
+	text-decoration: none;
+	border: 2px solid transparent;
+	cursor: pointer;
+	transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.annam-about-btn:active {
+	transform: translateY(1px);
+}
+
+.annam-about-btn--primary {
+	background: var(--ann-ab-cta);
+	color: rgb(var(--color-on-primary));
+	border-color: var(--ann-ab-cta);
+}
+
+.annam-about-btn--primary:hover {
+	background: var(--ann-ab-cta-hover);
+	border-color: var(--ann-ab-cta-hover);
+	color: rgb(var(--color-on-primary));
+}
+
+.annam-about-btn--ghost {
+	background: transparent;
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.55);
+}
+
+.annam-about-btn--ghost:hover,
+.annam-about-btn--ghost:focus-visible {
+	color: rgb(var(--color-on-primary));
+	background: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.75);
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+.annam-about-btn--outline {
+	background: var(--ann-ab-surface);
+	color: var(--ann-ab-primary);
+	border-color: var(--ann-ab-border);
+}
+
+.annam-about-btn--outline:hover,
+.annam-about-btn--outline:focus-visible {
+	border-color: var(--ann-ab-secondary);
+	color: var(--ann-ab-secondary);
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+.annam-about-btn--cta {
+	background: var(--ann-ab-cta);
+	color: rgb(var(--color-on-primary));
+	border-color: var(--ann-ab-cta);
+}
+
+.annam-about-btn--cta:hover,
+.annam-about-btn--cta:focus-visible {
+	color: rgb(var(--color-on-primary));
+	background: var(--ann-ab-cta-hover);
+	border-color: var(--ann-ab-cta-hover);
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+/* Sections */
+.annam-about-section {
+	padding: var(--ann-ab-section-space) 0;
+}
+
+.annam-about-section:nth-of-type(even) {
+	background: var(--ann-ab-bg);
+}
+
+.annam-about-section__title {
+	margin: 0 0 1.25rem;
+	font-family: var(--font-heading, serif);
+	font-size: clamp(1.35rem, 2.8vw, 1.75rem);
+	font-weight: var(--font-weight-bold);
+	color: var(--ann-ab-primary);
+	text-wrap: balance;
+}
+
+.annam-about-section__title--center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 28ch;
+}
+
+.annam-about-section__lead {
+	margin: -0.5rem 0 1.5rem;
+	font-size: 1rem;
+	color: var(--ann-ab-muted);
+	line-height: 1.6;
+}
+
+.annam-about-section__lead--center {
+	text-align: center;
+	max-width: 48ch;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.annam-about-prose {
+	margin: 0 0 1rem;
+	font-size: 1.02rem;
+	line-height: 1.75;
+	color: var(--ann-ab-text);
+}
+
+.annam-about-editor {
+	margin-top: 1.25rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--ann-ab-border);
+	font-size: 1rem;
+	line-height: 1.75;
+	color: var(--ann-ab-text);
+}
+
+.annam-about-editor > *:first-child {
+	margin-top: 0;
+}
+
+/* Who we are */
+.annam-about-who__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: clamp(1.5rem, 3vw, 2.5rem);
+	align-items: start;
+}
+
+@media (min-width: 900px) {
+	.annam-about-who__grid {
+		grid-template-columns: 1.1fr 0.9fr;
+		align-items: center;
+	}
+}
+
+.annam-about-who__img {
+	width: 100%;
+	height: auto;
+	max-height: 420px;
+	object-fit: cover;
+	border-radius: var(--ann-ab-radius-tight);
+	box-shadow: var(--ann-ab-shadow);
+	display: block;
+}
+
+.annam-about-who__media {
+	border-radius: var(--ann-ab-radius);
+	overflow: hidden;
+}
+
+/* Stats */
+.annam-about-stats__grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1rem;
+}
+
+@media (min-width: 768px) {
+	.annam-about-stats__grid {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1.25rem;
+	}
+}
+
+.annam-about-stat-card {
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	padding: var(--space-5) var(--space-4);
+	box-shadow: var(--ann-ab-shadow);
+	text-align: center;
+}
+
+.annam-about-stat-card__num {
+	display: block;
+	font-family: var(--font-heading, serif);
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	font-weight: 700;
+	color: var(--ann-ab-secondary);
+	margin-bottom: 0.35rem;
+}
+
+.annam-about-stat-card__title {
+	margin: 0 0 0.5rem;
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: var(--ann-ab-primary);
+	line-height: 1.35;
+}
+
+.annam-about-stat-card__desc {
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--ann-ab-muted);
+	line-height: 1.5;
+}
+
+/* Why cards */
+.annam-about-why__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1rem;
+}
+
+@media (min-width: 600px) {
+	.annam-about-why__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1000px) {
+	.annam-about-why__grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.25rem;
+	}
+}
+
+.annam-about-icon-card {
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	padding: var(--space-5);
+	box-shadow: var(--ann-ab-shadow);
+	height: 100%;
+}
+
+.annam-about-icon-card__icon {
+	color: var(--ann-ab-secondary);
+	margin-bottom: 0.75rem;
+	display: flex;
+}
+
+.annam-about-icon-card__title {
+	margin: 0 0 0.5rem;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--ann-ab-primary);
+}
+
+.annam-about-icon-card__desc {
+	margin: 0;
+	font-size: 0.9rem;
+	color: var(--ann-ab-muted);
+	line-height: 1.55;
+}
+
+/* Services */
+.annam-about-services__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1rem;
+}
+
+@media (min-width: 600px) {
+	.annam-about-services__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1000px) {
+	.annam-about-services__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.annam-about-service-card {
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	padding: 0 0 var(--space-5);
+	box-shadow: var(--ann-ab-shadow);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.annam-about-service-card__visual {
+	position: relative;
+	height: 120px;
+	background: linear-gradient(135deg, rgba(46, 159, 159, 0.25) 0%, rgba(15, 76, 76, 0.35) 100%);
+	overflow: hidden;
+}
+
+.annam-about-service-card__visual-img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.annam-about-service-card__title {
+	margin: 1rem 1.15rem 0.5rem;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--ann-ab-primary);
+}
+
+.annam-about-service-card__desc {
+	margin: 0 1.15rem 1rem;
+	font-size: 0.9rem;
+	color: var(--ann-ab-muted);
+	line-height: 1.55;
+	flex: 1;
+}
+
+.annam-about-service-card__link {
+	margin: 0 1.15rem;
+	font-family: var(--font-label, system-ui, sans-serif);
+	font-weight: 600;
+	font-size: 0.9rem;
+	color: var(--ann-ab-secondary);
+	text-decoration: none;
+}
+
+.annam-about-service-card__link:hover {
+	color: var(--ann-ab-cta);
+	text-decoration: underline;
+}
+
+/* Legal + offices */
+.annam-about-legal__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+	.annam-about-legal__grid {
+		grid-template-columns: 1fr 1fr;
+		align-items: start;
+	}
+}
+
+.annam-about-legal__block {
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	padding: var(--component-dialog-padding);
+	box-shadow: var(--ann-ab-shadow);
+}
+
+.annam-about-legal__company {
+	margin: 0 0 1rem;
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--ann-ab-primary);
+}
+
+.annam-about-legal__line {
+	margin: 0 0 0.5rem;
+	font-size: 0.95rem;
+	color: var(--ann-ab-text);
+	line-height: 1.55;
+}
+
+.annam-about-legal__line a {
+	color: var(--ann-ab-secondary);
+}
+
+.annam-about-legal__offices {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.annam-about-office-card {
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	padding: var(--space-5);
+	box-shadow: var(--ann-ab-shadow);
+}
+
+.annam-about-office-card__title {
+	margin: 0 0 0.5rem;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--ann-ab-primary);
+}
+
+.annam-about-office-card__addr {
+	margin: 0 0 1rem;
+	font-size: 0.95rem;
+	color: var(--ann-ab-muted);
+	line-height: 1.55;
+}
+
+/* Process */
+.annam-about-process__steps {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+	.annam-about-process__steps {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1rem;
+	}
+}
+
+.annam-about-step {
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	padding: var(--space-5) var(--space-4);
+	box-shadow: var(--ann-ab-shadow);
+	text-align: center;
+	position: relative;
+}
+
+.annam-about-step__num {
+	display: inline-block;
+	font-family: var(--font-label, system-ui, sans-serif);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	color: var(--ann-ab-cta);
+	margin-bottom: 0.35rem;
+}
+
+.annam-about-step__icon {
+	color: var(--ann-ab-secondary);
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0.5rem;
+}
+
+.annam-about-step__title {
+	margin: 0 0 0.5rem;
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--ann-ab-primary);
+}
+
+.annam-about-step__desc {
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--ann-ab-muted);
+	line-height: 1.55;
+}
+
+/* Gallery */
+.annam-about-gallery {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 0.65rem;
+}
+
+@media (min-width: 600px) {
+	.annam-about-gallery {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.85rem;
+	}
+}
+
+@media (min-width: 900px) {
+	.annam-about-gallery {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+.annam-about-gallery__item {
+	position: relative;
+	padding: 0;
+	border: none;
+	border-radius: calc(var(--ann-ab-radius) - 4px);
+	overflow: hidden;
+	cursor: zoom-in;
+	aspect-ratio: 4 / 3;
+	background: var(--ann-ab-border);
+}
+
+.annam-about-gallery__item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: transform 0.35s ease;
+}
+
+.annam-about-gallery__item:hover img,
+.annam-about-gallery__item:focus-visible img {
+	transform: scale(1.04);
+}
+
+.annam-about-gallery__item:focus-visible {
+	outline: none;
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+/* Reviews slider */
+.annam-about-reviews__slider {
+	position: relative;
+	overflow: hidden;
+}
+
+.annam-about-reviews__track {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: nowrap;
+	transition: transform 0.35s ease;
+	will-change: transform;
+}
+
+.annam-about-review-card {
+	flex: 0 0 100%;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: var(--component-dialog-padding);
+	background: var(--ann-ab-surface);
+	border: 1px solid var(--ann-ab-border);
+	border-radius: var(--ann-ab-radius);
+	box-shadow: var(--ann-ab-shadow);
+}
+
+.annam-about-review-card__quote {
+	margin: 0 0 1rem;
+	font-size: 1rem;
+	font-style: italic;
+	line-height: 1.65;
+	color: var(--ann-ab-text);
+}
+
+.annam-about-review-card__meta {
+	font-size: 0.9rem;
+	color: var(--ann-ab-muted);
+}
+
+.annam-about-review-card__role {
+	display: block;
+	margin-top: 0.2rem;
+}
+
+.annam-about-reviews__nav {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+
+.annam-about-reviews__btn {
+	width: var(--component-carousel-nav-size);
+	height: var(--component-carousel-nav-size);
+	border-radius: var(--component-carousel-nav-radius);
+	border: 1px solid var(--ann-ab-border);
+	background: var(--ann-ab-surface);
+	color: var(--ann-ab-primary);
+	font-size: 1.25rem;
+	line-height: 1;
+	cursor: pointer;
+	box-shadow: var(--component-carousel-nav-shadow);
+}
+
+.annam-about-reviews__btn:hover,
+.annam-about-reviews__btn:focus-visible {
+	border-color: var(--ann-ab-secondary);
+	color: var(--ann-ab-secondary);
+	outline: none;
+	box-shadow: var(--component-carousel-nav-shadow-hover), var(--component-focus-ring-secondary);
+}
+
+/* CTA bottom */
+.annam-about-cta {
+	position: relative;
+	padding: var(--ann-ab-section-space) 0;
+	color: rgb(var(--color-on-primary));
+	margin-top: 0;
+	overflow: hidden;
+}
+
+.annam-about-cta__bg {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.annam-about-cta__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background: linear-gradient(120deg, rgba(15, 76, 76, 0.92) 0%, rgba(15, 76, 76, 0.85) 45%, rgba(46, 159, 159, 0.72) 100%);
+}
+
+.annam-about-cta__inner {
+	position: relative;
+	z-index: 2;
+	text-align: center;
+}
+
+.annam-about-cta__title {
+	margin: 0 0 0.75rem;
+	font-family: var(--font-heading, serif);
+	font-size: clamp(1.35rem, 3vw, 1.85rem);
+	font-weight: var(--font-weight-bold);
+}
+
+.annam-about-cta__desc {
+	margin: 0 auto 1.5rem;
+	max-width: 48ch;
+	font-size: 1rem;
+	line-height: 1.65;
+	color: rgba(255, 255, 255, 0.94);
+}
+
+.annam-about-cta__actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.65rem;
+}
+
+.annam-about-cta .annam-about-btn--ghost {
+	border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Lightbox */
+.annam-about-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	background: var(--component-overlay-scrim, rgba(15, 23, 42, 0.88));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+.annam-about-lightbox[hidden] {
+	display: none;
+}
+
+.annam-about-lightbox__img {
+	max-width: min(96vw, 1100px);
+	max-height: 88vh;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	border-radius: var(--component-card-radius-tight);
+}
+
+.annam-about-lightbox__close {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	width: var(--component-carousel-nav-size);
+	height: var(--component-carousel-nav-size);
+	border: none;
+	border-radius: var(--component-carousel-nav-radius);
+	background: rgba(255, 255, 255, 0.15);
+	color: rgb(var(--color-on-primary));
+	font-size: 1.75rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.annam-about-lightbox__close:hover,
+.annam-about-lightbox__close:focus-visible {
+	background: rgba(255, 255, 255, 0.28);
+	outline: none;
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+/*
+ * Ghi đè màu link/nút khi hover (GeneratePress Customizer, WooCommerce, v.v.).
+ * Template Giới thiệu không bọc `content-page.php` nên thường không có `.inside-article`;
+ * dùng `#main` (luôn có) + `.inside-article` (nếu có) để selector luôn khớp DOM.
+ */
+body.annam-about-page #main .annam-about-breadcrumb__list a:hover,
+body.annam-about-page #main .annam-about-breadcrumb__list a:focus,
+body.annam-about-page .inside-article .annam-about-breadcrumb__list a:hover,
+body.annam-about-page .inside-article .annam-about-breadcrumb__list a:focus {
+	color: rgba(255, 255, 255, 0.95);
+	text-decoration: underline;
+}
+
+body.annam-about-page #main a.annam-about-btn,
+body.annam-about-page #main a.annam-about-btn:visited,
+body.annam-about-page .inside-article a.annam-about-btn,
+body.annam-about-page .inside-article a.annam-about-btn:visited {
+	text-decoration: none;
+}
+
+body.annam-about-page #main a.annam-about-btn--primary:hover,
+body.annam-about-page #main a.annam-about-btn--primary:focus,
+body.annam-about-page #main a.annam-about-btn--primary:focus-visible,
+body.annam-about-page .inside-article a.annam-about-btn--primary:hover,
+body.annam-about-page .inside-article a.annam-about-btn--primary:focus,
+body.annam-about-page .inside-article a.annam-about-btn--primary:focus-visible {
+	color: #fff;
+	background: var(--color-tertiary-hover, #e0771c);
+	border-color: var(--color-tertiary-hover, #e0771c);
+	text-decoration: none;
+}
+
+body.annam-about-page #main a.annam-about-btn--ghost:hover,
+body.annam-about-page #main a.annam-about-btn--ghost:focus,
+body.annam-about-page #main a.annam-about-btn--ghost:focus-visible,
+body.annam-about-page .inside-article a.annam-about-btn--ghost:hover,
+body.annam-about-page .inside-article a.annam-about-btn--ghost:focus,
+body.annam-about-page .inside-article a.annam-about-btn--ghost:focus-visible {
+	color: #fff;
+	background: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.75);
+	text-decoration: none;
+}
+
+body.annam-about-page #main a.annam-about-btn--outline:hover,
+body.annam-about-page #main a.annam-about-btn--outline:focus,
+body.annam-about-page #main a.annam-about-btn--outline:focus-visible,
+body.annam-about-page .inside-article a.annam-about-btn--outline:hover,
+body.annam-about-page .inside-article a.annam-about-btn--outline:focus,
+body.annam-about-page .inside-article a.annam-about-btn--outline:focus-visible {
+	color: var(--ann-ab-secondary);
+	background: var(--ann-ab-surface);
+	border-color: var(--ann-ab-secondary);
+	text-decoration: none;
+}
+
+body.annam-about-page #main a.annam-about-btn--cta:hover,
+body.annam-about-page #main a.annam-about-btn--cta:focus,
+body.annam-about-page #main a.annam-about-btn--cta:focus-visible,
+body.annam-about-page .inside-article a.annam-about-btn--cta:hover,
+body.annam-about-page .inside-article a.annam-about-btn--cta:focus,
+body.annam-about-page .inside-article a.annam-about-btn--cta:focus-visible {
+	color: #fff;
+	background: var(--color-tertiary-hover, #e0771c);
+	border-color: var(--color-tertiary-hover, #e0771c);
+	text-decoration: none;
+}
+
+body.annam-about-page #main .annam-about-service-card__link:hover,
+body.annam-about-page #main .annam-about-service-card__link:focus,
+body.annam-about-page .inside-article .annam-about-service-card__link:hover,
+body.annam-about-page .inside-article .annam-about-service-card__link:focus {
+	color: var(--ann-ab-cta);
+	text-decoration: underline;
+}
+
+body.annam-about-page #main .annam-about-legal__line a:hover,
+body.annam-about-page #main .annam-about-legal__line a:focus,
+body.annam-about-page .inside-article .annam-about-legal__line a:hover,
+body.annam-about-page .inside-article .annam-about-legal__line a:focus {
+	color: var(--ann-ab-secondary);
+}
+
+body.annam-about-page #main .annam-about-reviews__btn:hover,
+body.annam-about-page #main .annam-about-reviews__btn:focus,
+body.annam-about-page .inside-article .annam-about-reviews__btn:hover,
+body.annam-about-page .inside-article .annam-about-reviews__btn:focus {
+	color: var(--ann-ab-secondary);
+	background: var(--ann-ab-surface);
+	border-color: var(--ann-ab-secondary);
+}
+
+body.annam-about-page .annam-about-lightbox__close:hover,
+body.annam-about-page .annam-about-lightbox__close:focus {
+	color: #fff;
+	background: rgba(255, 255, 255, 0.28);
+}

@@ -1,0 +1,604 @@
+/**
+ * Footer site — An Nam Discovery (child theme).
+ */
+
+.annam-site-footer {
+	--annam-footer-bg: #000000;
+	--annam-footer-text: rgb(var(--color-on-primary));
+	--annam-footer-muted: #cbd5e1;
+	--annam-footer-link-hover-teal: rgb(var(--color-secondary));
+	--annam-footer-link-hover-orange: rgb(var(--color-tertiary));
+	--annam-footer-accent: rgb(var(--color-tertiary));
+	--annam-footer-max: var(--layout-content-max);
+	--annam-footer-pad-x: var(--layout-gutter);
+	--annam-footer-section-padding-block: clamp(var(--space-8), 6vw, var(--space-16));
+	--annam-footer-section-padding-bottom: clamp(var(--space-6), 3vw, 28px);
+	--annam-footer-ecosystem-padding-top: 28px;
+	--annam-footer-ecosystem-padding-bottom: 22px;
+	--annam-footer-heading-size: var(--text-lg);
+	--annam-footer-text-size: 0.9rem;
+	--annam-footer-meta-size: 0.85rem;
+	--annam-footer-bottom-padding-top: var(--space-4);
+	--annam-footer-bottom-padding-bottom: 1.35rem;
+	--annam-footer-social-size: 44px;
+	--annam-footer-link-shift: 5px;
+	--annam-footer-border-soft: rgba(255, 255, 255, 0.06);
+	--annam-footer-border-strong: rgba(255, 255, 255, 0.12);
+	--annam-footer-surface-soft: rgba(255, 255, 255, 0.08);
+	--annam-footer-surface-hover: rgba(46, 159, 159, 0.25);
+}
+
+/* Vùng footer GP — một nền (ghi đè màu Customizer nếu lệch tông) */
+#footer.site-footer,
+body.annam-custom-site-footer #footer.site-footer {
+	background-color: var(--annam-footer-bg) !important;
+	color: var(--annam-footer-muted);
+}
+
+body.annam-custom-site-footer #footer.site-footer .annam-site-footer {
+	background-color: var(--annam-footer-bg);
+}
+
+body.annam-custom-site-footer #footer .inside-footer-widgets,
+body.annam-custom-site-footer #footer .footer-widgets {
+	display: none;
+}
+
+.annam-site-footer {
+	background: var(--annam-footer-bg);
+	color: var(--annam-footer-muted);
+	font-family: var(--font-body, system-ui, sans-serif);
+}
+
+/* Strip “Hệ sinh thái” phía trên lưới cột footer */
+.annam-site-footer__ecosystem {
+	border-bottom: 1px solid var(--annam-footer-border-soft);
+	background: var(--annam-footer-bg);
+}
+
+.annam-site-footer__ecosystem .annam-ecosystem {
+	background: var(--annam-footer-bg);
+	background-color: var(--annam-footer-bg);
+	padding: var(--annam-footer-ecosystem-padding-top) 0 var(--annam-footer-ecosystem-padding-bottom);
+}
+
+.annam-site-footer__ecosystem .annam-ecosystem__slider {
+	width: 100%;
+	max-width: 100%;
+}
+
+.annam-site-footer__ecosystem .annam-ecosystem__track {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: max-content;
+	min-width: max-content;
+}
+
+.annam-site-footer__ecosystem .annam-ecosystem__item {
+	flex-shrink: 0;
+}
+
+.annam-site-footer__main {
+	padding: var(--annam-footer-section-padding-block) 0 var(--annam-footer-section-padding-bottom);
+}
+
+.annam-site-footer__inner {
+	width: min(100% - 2 * var(--annam-footer-pad-x), var(--annam-footer-max));
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+.annam-site-footer__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: clamp(1.75rem, 4vw, 2.25rem);
+	align-items: stretch;
+}
+
+/* Desktop: cột 1 ~38%, 2 ~19%, 3 ~23%, 4 ~20% */
+@media (min-width: 992px) {
+	.annam-site-footer__grid {
+		grid-template-columns: minmax(0, 3.8fr) minmax(0, 1.9fr) minmax(0, 2.3fr) minmax(0, 2fr);
+		gap: clamp(20px, 2.2vw, 24px);
+		align-items: stretch;
+	}
+}
+
+/* Cột công ty + fact + icon inline SVG */
+.annam-site-footer__company-name {
+	margin: 0 0 1.1rem;
+	font-family: var(--font-label, system-ui, sans-serif);
+	font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: 0.02em;
+	color: var(--annam-footer-text);
+	line-height: 1.45;
+}
+
+.annam-site-footer__fact {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.65rem;
+	margin-bottom: 0.9rem;
+}
+
+.annam-site-footer__fact--address {
+	margin-bottom: 0.5rem;
+}
+
+/* Giấy phép + MST: gọn, không lặp tiêu đề */
+.annam-site-footer__fact--legal {
+	align-items: flex-start;
+	gap: 0.5rem;
+	margin-bottom: 0.45rem;
+}
+
+.annam-site-footer__fact--legal .annam-site-footer__fact-icon {
+	padding-top: 0.08rem;
+}
+
+.annam-site-footer__fact--legal .annam-site-footer__company-text {
+	font-size: var(--annam-footer-meta-size);
+	line-height: 1.45;
+}
+
+.annam-site-footer__fact--legal .annam-site-footer__company-accent {
+	margin: 0.12rem 0 0;
+	font-size: var(--annam-footer-meta-size);
+	line-height: 1.45;
+}
+
+.annam-site-footer__fact--legal .annam-site-footer__company-accent:first-child {
+	margin-top: 0;
+}
+
+.annam-site-footer__fact-icon {
+	display: inline-flex;
+	flex-shrink: 0;
+	padding-top: 0.12rem;
+	color: var(--annam-footer-muted);
+	transition: color 0.2s ease;
+}
+
+.annam-site-footer__fact:hover .annam-site-footer__fact-icon {
+	color: var(--annam-footer-link-hover-teal);
+}
+
+.annam-site-footer__fact:has(.annam-site-footer__addr-link:hover) .annam-site-footer__fact-icon,
+.annam-site-footer__fact:has(.annam-site-footer__addr-link:focus-visible) .annam-site-footer__fact-icon,
+.annam-site-footer__fact:has(.annam-site-footer__company-text a:hover) .annam-site-footer__fact-icon,
+.annam-site-footer__fact:has(.annam-site-footer__company-text a:focus-visible) .annam-site-footer__fact-icon {
+	color: var(--annam-footer-link-hover-teal);
+}
+
+.annam-site-footer__inline-svg {
+	display: block;
+	width: 19px;
+	height: 19px;
+}
+
+.annam-site-footer__fact-body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.annam-site-footer__fact-body--inline {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.35rem 0.65rem;
+}
+
+/* Email: icon + nhãn + địa chỉ cùng một hàng; cột hẹp thì ellipsis */
+.annam-site-footer__fact--email {
+	align-items: center;
+}
+
+.annam-site-footer__fact--email .annam-site-footer__fact-body--inline {
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 0.35rem 0.5rem;
+}
+
+.annam-site-footer__fact--email .annam-site-footer__company-text {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	overflow-wrap: normal;
+	word-wrap: normal;
+}
+
+.annam-site-footer__fact--email .annam-site-footer__company-text a {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.annam-site-footer__company-block {
+	margin-bottom: 0.85rem;
+}
+
+.annam-site-footer__company-block--address {
+	margin-bottom: 0.75rem;
+}
+
+.annam-site-footer__company-block--address > .annam-site-footer__company-label {
+	margin-bottom: 0.45rem;
+}
+
+.annam-site-footer__company-label {
+	margin: 0 0 0.2rem;
+	font-size: 0.75rem;
+	font-weight: var(--font-weight-bold);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--annam-footer-muted);
+}
+
+.annam-site-footer__fact-body--inline .annam-site-footer__company-label {
+	margin: 0;
+}
+
+.annam-site-footer__company-text {
+	margin: 0;
+	font-size: var(--annam-footer-text-size);
+	line-height: 1.55;
+	color: var(--annam-footer-muted);
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+
+.annam-site-footer__company-accent {
+	margin: 0.15rem 0 0;
+	font-size: var(--annam-footer-text-size);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.5;
+	color: var(--annam-footer-accent);
+}
+
+/* Link địa chỉ Google Maps — trông giống text */
+.annam-site-footer__addr-link {
+	display: inline-flex;
+	align-items: baseline;
+	font-size: var(--annam-footer-text-size);
+	line-height: 1.55;
+	color: var(--annam-footer-muted);
+	text-decoration: none;
+	overflow-wrap: anywhere;
+	transition:
+		color 0.2s ease,
+		transform 0.22s ease;
+}
+
+.annam-site-footer__addr-link::before {
+	content: "\203A";
+	display: inline-block;
+	font-size: 0.9em;
+	font-weight: 700;
+	opacity: 0;
+	max-width: 0;
+	margin-right: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	vertical-align: baseline;
+	transition:
+		opacity 0.22s ease,
+		max-width 0.22s ease,
+		margin 0.22s ease;
+}
+
+.annam-site-footer__addr-link:hover,
+.annam-site-footer__addr-link:focus-visible {
+	color: var(--annam-footer-link-hover-teal);
+	text-decoration: underline;
+	transform: translateX(var(--annam-footer-link-shift));
+}
+
+.annam-site-footer__addr-link:hover::before,
+.annam-site-footer__addr-link:focus-visible::before {
+	opacity: 0.95;
+	max-width: 1em;
+	margin-right: 0.3em;
+}
+
+.annam-site-footer__col--company .annam-site-footer__company-text a {
+	display: inline-flex;
+	align-items: baseline;
+	color: var(--annam-footer-text);
+	text-decoration: none;
+	transition:
+		color 0.2s ease,
+		transform 0.22s ease;
+}
+
+.annam-site-footer__col--company .annam-site-footer__company-text a::before {
+	content: "\203A";
+	display: inline-block;
+	font-size: 0.9em;
+	font-weight: 700;
+	opacity: 0;
+	max-width: 0;
+	margin-right: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	vertical-align: baseline;
+	transition:
+		opacity 0.22s ease,
+		max-width 0.22s ease,
+		margin 0.22s ease;
+}
+
+.annam-site-footer__col--company .annam-site-footer__company-text a:hover,
+.annam-site-footer__col--company .annam-site-footer__company-text a:focus-visible {
+	color: var(--annam-footer-link-hover-teal);
+	text-decoration: underline;
+	transform: translateX(var(--annam-footer-link-shift));
+}
+
+.annam-site-footer__col--company .annam-site-footer__company-text a:hover::before,
+.annam-site-footer__col--company .annam-site-footer__company-text a:focus-visible::before {
+	opacity: 0.95;
+	max-width: 1em;
+	margin-right: 0.3em;
+}
+
+/* Tiêu đề cột */
+.annam-site-footer__heading {
+	margin: 0 0 1rem;
+	font-family: var(--font-heading, Georgia, serif);
+	font-size: var(--annam-footer-heading-size);
+	font-weight: var(--font-weight-bold);
+	color: var(--annam-footer-text);
+}
+
+.annam-site-footer__heading--sub {
+	margin-top: 1.5rem;
+	margin-bottom: 0.75rem;
+}
+
+/* Danh sách link */
+.annam-site-footer__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-site-footer__list li {
+	margin-bottom: 0.55rem;
+}
+
+.annam-site-footer__list a {
+	display: inline-flex;
+	align-items: center;
+	font-size: var(--annam-footer-text-size);
+	line-height: 1.45;
+	color: var(--annam-footer-muted);
+	max-width: 100%;
+	text-decoration: none;
+	transition:
+		color 0.2s ease,
+		transform 0.22s ease;
+}
+
+.annam-site-footer__list a::before {
+	content: "\203A";
+	display: inline-block;
+	font-size: 0.9em;
+	font-weight: 700;
+	opacity: 0;
+	max-width: 0;
+	margin-right: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	vertical-align: middle;
+	transition:
+		opacity 0.22s ease,
+		max-width 0.22s ease,
+		margin 0.22s ease;
+}
+
+.annam-site-footer__list a:hover,
+.annam-site-footer__list a:focus-visible {
+	color: var(--annam-footer-link-hover-orange);
+	text-decoration: underline;
+	transform: translateX(var(--annam-footer-link-shift));
+}
+
+.annam-site-footer__list a:hover::before,
+.annam-site-footer__list a:focus-visible::before {
+	opacity: 0.95;
+	max-width: 1em;
+	margin-right: 0.3em;
+}
+
+.annam-site-footer__list a.annam-site-footer__list-link--more::after {
+	content: "\2192";
+	display: inline-block;
+	margin-left: 0.35em;
+	font-size: 0.85em;
+	opacity: 0.92;
+	text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.annam-site-footer__list a,
+	.annam-site-footer__list a::before,
+	.annam-site-footer__addr-link,
+	.annam-site-footer__addr-link::before,
+	.annam-site-footer__col--company .annam-site-footer__company-text a,
+	.annam-site-footer__col--company .annam-site-footer__company-text a::before {
+		transition-duration: 0.01ms;
+	}
+
+	.annam-site-footer__list a:hover,
+	.annam-site-footer__list a:focus-visible,
+	.annam-site-footer__addr-link:hover,
+	.annam-site-footer__addr-link:focus-visible,
+	.annam-site-footer__col--company .annam-site-footer__company-text a:hover,
+	.annam-site-footer__col--company .annam-site-footer__company-text a:focus-visible {
+		transform: none;
+	}
+}
+
+/* Khi ẩn cột tour (filter), cân lại lưới 3 cột desktop */
+@media (min-width: 992px) {
+	.annam-site-footer--no-tours-col .annam-site-footer__grid {
+		grid-template-columns: minmax(0, 4.2fr) minmax(0, 2.2fr) minmax(0, 2.1fr);
+	}
+}
+
+/* Cột 4: flex + đẩy ảnh sale xuống cuối */
+.annam-site-footer__col--follow {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 100%;
+	gap: var(--space-2);
+}
+
+/* Social tròn */
+.annam-site-footer__social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-site-footer__social-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--annam-footer-social-size);
+	height: var(--annam-footer-social-size);
+	border-radius: 50%;
+	background: var(--annam-footer-surface-soft);
+	color: var(--annam-footer-muted);
+	border: 1px solid var(--annam-footer-border-strong);
+	box-sizing: border-box;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease,
+		transform 0.2s ease;
+}
+
+.annam-site-footer__social-link:hover,
+.annam-site-footer__social-link:focus-visible {
+	background: var(--annam-footer-surface-hover);
+	border-color: var(--annam-footer-link-hover-teal);
+	color: var(--annam-footer-link-hover-teal);
+	transform: translateY(-2px);
+}
+
+.annam-site-footer__social-icon {
+	width: 19px;
+	height: 19px;
+	display: block;
+}
+
+/* Thanh toán */
+.annam-site-footer__payment {
+	margin-top: var(--space-1);
+	width: 100%;
+	max-width: min(100%, 25rem);
+}
+
+.annam-site-footer__payment img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	width: 100%;
+}
+
+.annam-site-footer__sale-noti-wrap {
+	margin-top: auto;
+	padding-top: var(--space-6);
+	width: 100%;
+	min-width: 0;
+}
+
+.annam-site-footer__sale-noti {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+/* Bottom bar (copyright) */
+.annam-site-footer__bottom {
+	border-top: 1px solid var(--annam-footer-border-soft);
+	background: var(--annam-footer-bg);
+	padding: var(--annam-footer-bottom-padding-top) 0 var(--annam-footer-bottom-padding-bottom);
+}
+
+.annam-site-footer__inner--bottom {
+	text-align: center;
+}
+
+.annam-site-footer__copyright {
+	margin: 0;
+	font-size: 0.8rem;
+	line-height: 1.5;
+	color: var(--annam-footer-muted);
+}
+
+@media (max-width: 991px) {
+	.annam-site-footer__main {
+		padding: 32px var(--annam-footer-pad-x);
+	}
+
+	.annam-site-footer__inner {
+		width: 100%;
+		padding: 0;
+	}
+
+	.annam-site-footer__social-link {
+		width: 48px;
+		height: 48px;
+	}
+
+	.annam-site-footer__col--follow {
+		gap: var(--space-2);
+	}
+
+	.annam-site-footer__heading--sub {
+		margin-top: var(--space-4);
+		margin-bottom: var(--space-2);
+	}
+
+	.annam-site-footer__payment {
+		max-width: min(100%, 21rem);
+	}
+
+	.annam-site-footer__sale-noti-wrap {
+		margin-top: var(--space-4);
+		padding-top: var(--space-3);
+	}
+}
+
+@media (max-width: 640px) {
+	.annam-site-footer__col--follow {
+		align-items: flex-start;
+	}
+
+	.annam-site-footer__payment {
+		max-width: min(100%, 18.5rem);
+	}
+
+	.annam-site-footer__payment img {
+		border-radius: var(--radius-sm);
+	}
+
+	.annam-site-footer__sale-noti-wrap {
+		width: 100%;
+		max-width: min(100%, 16.5rem);
+	}
+
+	.annam-site-footer__sale-noti {
+		width: 100%;
+	}
+}

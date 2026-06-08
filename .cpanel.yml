@@ -1,0 +1,18 @@
+---
+# cPanel Git Version Control — deployment tasks.
+# Sửa YOUR_CPANEL_USERNAME trước khi dùng Deploy trên hosting.
+# Deploy path trong cPanel UI cũng phải trỏ tới:
+#   public_html/wp-content/themes/generatepress_child
+
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/YOUR_CPANEL_USERNAME/public_html/wp-content/themes/generatepress_child
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R assets $DEPLOYPATH/
+    - /bin/cp -R inc $DEPLOYPATH/
+    - /bin/cp -R template-parts $DEPLOYPATH/
+    - /bin/cp -R woocommerce $DEPLOYPATH/
+    - /bin/cp -R deploy $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp -R scripts $DEPLOYPATH/ 2>/dev/null || true
+    - /bin/cp functions.php header.php home.php content-page.php content-single.php archive.php style.css screenshot.png $DEPLOYPATH/
+    - /bin/cp page-template-*.php $DEPLOYPATH/

@@ -1,0 +1,542 @@
+/**
+ * Single product tour — two columns below gallery + booking card.
+ * Column ratio matches gallery (2fr / 1fr, same gap) on body.single-product.
+ */
+body.single-product {
+	--annam-tour-split-cols: minmax(0, 2fr) minmax(0, 1fr);
+	--annam-tour-split-gap: 6px;
+	--annam-tour-booking-card-padding: 30px 28px;
+}
+
+.annam-tour-detail-section {
+	box-sizing: border-box;
+	margin-top: 28px;
+	margin-bottom: 32px;
+	overflow: visible;
+}
+
+.annam-tour-detail-section *,
+.annam-tour-detail-section *::before,
+.annam-tour-detail-section *::after {
+	box-sizing: inherit;
+}
+
+.annam-tour-detail-section__container.annam-container.grid-container {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: var(--layout-gutter);
+	padding-right: var(--layout-gutter);
+	overflow: visible;
+}
+
+/* Mobile-first: one column */
+.annam-tour-detail-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-6);
+	align-items: start;
+}
+
+.annam-tour-detail-grid__main.annam-tour-main-content {
+	min-width: 0;
+	width: 100%;
+	order: 2;
+}
+
+.annam-tour-detail-grid__sidebar.annam-tour-sidebar {
+	min-width: 0;
+	width: 100%;
+	order: 1;
+}
+
+.annam-tour-content {
+	font-family: var(--font-body);
+	font-size: var(--text-lg);
+	line-height: var(--line-height-normal);
+	color: rgb(var(--color-neutral));
+}
+
+.annam-tour-content > *:first-child {
+	margin-top: 0;
+}
+
+.annam-tour-content h2,
+.annam-tour-content h3,
+.annam-tour-content h4 {
+	font-family: var(--font-heading);
+	color: rgb(var(--color-primary));
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	line-height: var(--line-height-tight);
+	font-weight: var(--font-weight-bold);
+}
+
+.annam-tour-content h2 {
+	font-size: var(--text-3xl);
+}
+
+.annam-tour-content h3 {
+	font-size: var(--text-2xl);
+}
+
+.annam-tour-content h4 {
+	font-size: var(--text-xl);
+}
+
+.annam-tour-content p {
+	margin-bottom: var(--space-3);
+}
+
+/*
+ * Căn đều hai bên toàn nội dung mô tả (gồm ul/li), chỉ trong cột tour detail.
+ * Reset tiêu đề và khối kỹ thuật; giữ class căn Gutenberg/classic.
+ */
+body.single-product .annam-tour-detail-section .annam-tour-content {
+	text-align: justify;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content h1,
+body.single-product .annam-tour-detail-section .annam-tour-content h2,
+body.single-product .annam-tour-detail-section .annam-tour-content h3,
+body.single-product .annam-tour-detail-section .annam-tour-content h4,
+body.single-product .annam-tour-detail-section .annam-tour-content h5,
+body.single-product .annam-tour-detail-section .annam-tour-content h6 {
+	text-align: start;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content figcaption,
+body.single-product .annam-tour-detail-section .annam-tour-content caption,
+body.single-product .annam-tour-detail-section .annam-tour-content pre {
+	text-align: start;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content table,
+body.single-product .annam-tour-detail-section .annam-tour-content th,
+body.single-product .annam-tour-detail-section .annam-tour-content td {
+	text-align: start;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content .has-text-align-center {
+	text-align: center;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content .has-text-align-right {
+	text-align: right;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content .has-text-align-left {
+	text-align: left;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content .aligncenter {
+	text-align: center;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content .alignright {
+	text-align: right;
+}
+
+body.single-product .annam-tour-detail-section .annam-tour-content .alignleft {
+	text-align: left;
+}
+
+.annam-tour-content ul {
+	margin: var(--space-2) 0 var(--space-5) 0;
+	padding-left: var(--space-6);
+}
+
+.annam-tour-content ul ul {
+	margin-top: var(--space-2);
+	margin-bottom: var(--space-2);
+	padding-left: var(--space-4);
+}
+
+.annam-tour-content li {
+	margin-bottom: var(--space-2);
+	line-height: var(--line-height-normal);
+	padding-left: 2px;
+}
+
+.annam-tour-content li::marker {
+	font-size: 0.85em;
+	color: rgb(var(--color-secondary));
+}
+
+.annam-tour-content img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 10px;
+}
+
+.annam-tour-content table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1em 0;
+	font-size: 0.95em;
+}
+
+.annam-tour-content table th,
+.annam-tour-content table td {
+	border: 1px solid rgb(var(--color-border));
+	padding: 8px 10px;
+}
+
+.annam-tour-booking-card {
+	background: rgb(var(--color-surface));
+	border: 1px solid rgb(var(--color-border));
+	border-radius: var(--component-card-radius);
+	padding: var(--annam-tour-booking-card-padding);
+	box-shadow: var(--component-card-shadow);
+	width: 100%;
+	max-width: 100%;
+}
+
+/* Desktop: same split as gallery; sticky card stops at end of left column (grid stretch) */
+@media (min-width: 769px) {
+	.annam-tour-detail-grid {
+		grid-template-columns: var(--annam-tour-split-cols, minmax(0, 2fr) minmax(0, 1fr));
+		gap: var(--annam-tour-split-gap, 6px);
+		align-items: stretch;
+	}
+
+	.annam-tour-detail-grid__main.annam-tour-main-content,
+	.annam-tour-detail-grid__sidebar.annam-tour-sidebar {
+		order: 0;
+	}
+
+	.annam-tour-booking-card {
+		position: sticky;
+		top: calc(100px + var(--wp-admin--admin-bar--height, 0px));
+	}
+}
+
+.annam-tour-booking-card__title {
+	margin: 0 0 var(--space-3);
+	font-family: var(--font-heading);
+	font-size: clamp(18px, 2vw, 22px);
+	font-weight: var(--font-weight-bold);
+	color: rgb(var(--color-primary));
+	line-height: 1.25;
+}
+
+.annam-tour-booking-card__price {
+	margin: 0 0 var(--space-4);
+	min-width: 0;
+}
+
+.annam-tour-booking-card__price .tour-price {
+	font-size: clamp(15px, 1.6vw, 17px);
+}
+
+.annam-tour-booking-card__info {
+	list-style: none;
+	margin: 0 0 var(--space-5);
+	padding: 0;
+	border-top: 1px solid rgb(var(--color-border));
+	border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.annam-tour-booking-card__info-item {
+	display: grid;
+	grid-template-columns: 22px minmax(0, 92px) 1fr;
+	gap: var(--space-2) 10px;
+	padding: var(--space-3) 0;
+	font-family: var(--font-label);
+	font-size: var(--text-base);
+	line-height: 1.45;
+	border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.annam-tour-booking-card__info-item:last-child {
+	border-bottom: 0;
+}
+
+.annam-tour-booking-card__info-icon {
+	opacity: 0.75;
+	text-align: center;
+	color: rgb(var(--color-primary));
+}
+
+.annam-tour-booking-card__info-label {
+	color: rgb(var(--color-muted));
+	font-weight: var(--font-weight-semibold);
+}
+
+.annam-tour-booking-card__info-value {
+	color: rgb(var(--color-neutral));
+	font-weight: var(--font-weight-medium);
+}
+
+.annam-tour-booking-card__hotline {
+	margin-bottom: var(--space-3);
+	padding: var(--space-3) var(--space-4);
+	background: linear-gradient(135deg, rgb(var(--color-primary)) 0%, rgb(var(--color-primary-hover)) 100%);
+	border-radius: var(--component-card-radius-tight);
+	text-align: center;
+}
+
+.annam-tour-booking-card__hotline-label {
+	display: block;
+	font-family: var(--font-label);
+	font-size: var(--text-xs);
+	font-weight: var(--font-weight-semibold);
+	color: rgba(255, 255, 255, 0.96);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin-bottom: var(--space-2);
+}
+
+.annam-tour-booking-card__hotline-num {
+	font-family: var(--font-label);
+	font-size: 22px;
+	font-weight: var(--font-weight-bold);
+	color: rgb(var(--color-on-primary));
+	text-decoration: none;
+	letter-spacing: 0.02em;
+}
+
+.annam-tour-booking-card__hotline-num:hover,
+.annam-tour-booking-card__hotline-num:focus-visible {
+	color: rgb(var(--color-on-primary));
+	text-decoration: underline;
+}
+
+.annam-tour-booking-card__note {
+	margin: 0 0 var(--space-4);
+	font-family: var(--font-label);
+	font-size: var(--text-sm);
+	line-height: 1.45;
+	color: rgb(var(--color-muted));
+}
+
+.annam-tour-form-message {
+	margin: 0 0 var(--space-3);
+	padding: var(--component-field-padding-block) var(--component-field-padding-x);
+	border-radius: var(--component-field-radius);
+	font-family: var(--font-label);
+	font-size: var(--text-sm);
+	line-height: 1.45;
+}
+
+.annam-tour-form-message--success {
+	background: rgba(var(--color-success), 0.08);
+	color: rgb(var(--color-success-dark));
+	border: 1px solid rgba(var(--color-success), 0.24);
+}
+
+.annam-tour-form-message--error {
+	background: rgba(var(--color-danger), 0.08);
+	color: rgb(var(--color-danger));
+	border: 1px solid rgba(var(--color-danger), 0.24);
+}
+
+.annam-tour-form-message--js {
+	background: rgba(var(--color-warning), 0.12);
+	color: rgb(var(--color-neutral));
+	border: 1px solid rgba(var(--color-warning), 0.45);
+}
+
+.annam-tour-lead-form {
+	position: relative;
+}
+
+.annam-tour-lead-form__hp {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.annam-tour-phone-row {
+	display: grid;
+	grid-template-columns: minmax(120px, 0.38fr) minmax(0, 1fr);
+	gap: var(--space-2);
+	margin-bottom: var(--space-3);
+}
+
+.annam-tour-phone-code__select,
+.annam-tour-phone-input__field {
+	width: 100%;
+	height: var(--component-field-height);
+	padding: 0 var(--component-field-padding-x);
+	font-size: 15px;
+	font-family: var(--font-label);
+	border: 1px solid rgb(var(--color-border));
+	border-radius: var(--component-field-radius);
+	background: rgb(var(--color-surface));
+	color: rgb(var(--color-neutral));
+}
+
+.annam-tour-phone-code__select {
+	cursor: pointer;
+}
+
+.annam-tour-phone-input__field::placeholder {
+	color: rgb(var(--color-muted));
+}
+
+.annam-tour-phone-code__select:focus,
+.annam-tour-phone-input__field:focus {
+	outline: none;
+	border-color: rgb(var(--color-secondary));
+	box-shadow: var(--component-focus-ring-secondary);
+}
+
+.annam-tour-lead-form__submit {
+	display: block;
+	width: 100%;
+	height: var(--component-button-height);
+	margin: 0;
+	padding: 0 var(--component-button-padding-inline);
+	font-size: var(--component-button-font-size);
+	font-weight: var(--font-weight-bold);
+	font-family: var(--font-label);
+	color: rgb(var(--color-on-primary));
+	background: rgb(var(--color-tertiary));
+	border: 0;
+	border-radius: var(--component-field-radius);
+	cursor: pointer;
+	transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.annam-tour-lead-form__submit:hover,
+.annam-tour-lead-form__submit:focus-visible {
+	background: rgb(var(--color-tertiary-hover));
+}
+
+.annam-tour-lead-form__submit:focus-visible {
+	box-shadow: 0 0 0 2px rgb(var(--color-surface)), var(--component-focus-ring-secondary);
+}
+
+.annam-tour-lead-form__submit:active {
+	transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+	.annam-tour-detail-section {
+		margin-top: 20px;
+	}
+
+	.annam-tour-detail-section__container.annam-container.grid-container {
+		padding-left: 18px;
+		padding-right: 18px;
+	}
+
+	.annam-tour-detail-grid {
+		gap: var(--space-6);
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content,
+	body.single-product .annam-tour-detail-section .annam-tour-content p,
+	body.single-product .annam-tour-detail-section .annam-tour-content li {
+		font-size: var(--text-md) !important;
+		line-height: 1.75 !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content h2 {
+		font-size: clamp(1.55rem, 5.6vw, 1.9rem) !important;
+		line-height: 1.18 !important;
+		margin-top: 1.25em !important;
+		margin-bottom: 0.45em !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content h3 {
+		font-size: clamp(1.25rem, 4.8vw, 1.55rem) !important;
+		line-height: 1.22 !important;
+		margin-top: 1.2em !important;
+		margin-bottom: 0.45em !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content h4,
+	body.single-product .annam-tour-detail-section .annam-tour-content h5,
+	body.single-product .annam-tour-detail-section .annam-tour-content h6 {
+		font-size: clamp(1.05rem, 4vw, 1.2rem) !important;
+		line-height: 1.28 !important;
+		margin-top: 1.15em !important;
+		margin-bottom: 0.4em !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content ul,
+	body.single-product .annam-tour-detail-section .annam-tour-content ol {
+		padding-left: var(--space-4) !important;
+		margin-top: var(--space-2) !important;
+		margin-bottom: var(--space-4) !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content li {
+		margin-bottom: var(--space-2) !important;
+	}
+
+	.annam-tour-booking-card {
+		position: static;
+		top: auto;
+		align-self: stretch;
+		padding: 22px 20px;
+	}
+
+	.annam-tour-booking-card__info-item {
+		grid-template-columns: 20px minmax(0, 88px) 1fr;
+		font-size: 13px;
+	}
+
+	.annam-tour-content ul {
+		padding-left: 18px;
+	}
+
+	.annam-tour-content ul ul {
+		padding-left: 16px;
+	}
+
+	.annam-tour-content li {
+		line-height: 1.6;
+	}
+}
+
+@media (max-width: 480px) {
+	.annam-tour-detail-section__container.annam-container.grid-container {
+		padding-left: var(--layout-gutter-mobile);
+		padding-right: var(--layout-gutter-mobile);
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content,
+	body.single-product .annam-tour-detail-section .annam-tour-content p,
+	body.single-product .annam-tour-detail-section .annam-tour-content li {
+		font-size: var(--text-base) !important;
+		line-height: 1.72 !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content h2 {
+		font-size: clamp(1.4rem, 6vw, 1.7rem) !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content h3 {
+		font-size: clamp(1.16rem, 5vw, 1.36rem) !important;
+	}
+
+	body.single-product .annam-tour-detail-section .annam-tour-content h4,
+	body.single-product .annam-tour-detail-section .annam-tour-content h5,
+	body.single-product .annam-tour-detail-section .annam-tour-content h6 {
+		font-size: 1rem !important;
+	}
+
+	.annam-tour-phone-row {
+		grid-template-columns: minmax(100px, 0.42fr) minmax(0, 1fr);
+		gap: 8px;
+	}
+
+	.annam-tour-phone-code__select,
+	.annam-tour-phone-input__field {
+		height: 44px;
+		font-size: 14px;
+		padding: 0 10px;
+	}
+}
+
+@media (max-width: 380px) {
+	.annam-tour-phone-row {
+		grid-template-columns: 1fr;
+	}
+}
