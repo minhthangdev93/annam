@@ -185,7 +185,9 @@
 
 	function showNotice(form, message, isError) {
 		var variant = form.getAttribute('data-variant') || 'hero';
-		var notice = qs('#annam-cr-form-notice-' + variant);
+		var notice =
+			form.querySelector('#annam-cr-form-notice-' + variant) ||
+			qs('#annam-cr-form-notice-' + variant);
 		if (!notice) {
 			return;
 		}

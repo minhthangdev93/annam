@@ -23,14 +23,6 @@ $form_id      = 'hero' === $variant ? 'annam-cr-booking' : 'annam-cr-booking-fin
 $is_compact   = 'final' === $variant;
 ?>
 <div class="annam-cr-form-wrap annam-cr-form-wrap--<?php echo esc_attr( $variant ); ?>" id="<?php echo esc_attr( $form_id ); ?>">
-	<div class="annam-cr-form__ajax-notice" id="annam-cr-form-notice-<?php echo esc_attr( $variant ); ?>" role="alert" hidden></div>
-
-	<?php if ( $notice && 'hero' === $variant ) : ?>
-		<div class="annam-cr-notice annam-cr-notice--<?php echo esc_attr( $notice['type'] ); ?>" role="alert">
-			<?php echo esc_html( $notice['message'] ); ?>
-		</div>
-	<?php endif; ?>
-
 	<?php if ( ! empty( $form['title'] ) && ! $is_compact ) : ?>
 		<h2 class="annam-cr-form__title"><?php echo esc_html( $form['title'] ); ?></h2>
 	<?php endif; ?>
@@ -107,6 +99,14 @@ $is_compact   = 'final' === $variant;
 					<?php echo annam_car_rental_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<input type="tel" name="annam_cr_phone" id="annam-cr-phone-<?php echo esc_attr( $variant ); ?>" placeholder="<?php esc_attr_e( 'Nhập số điện thoại', 'generatepress_child' ); ?>" required autocomplete="tel" />
 				</div>
+			</div>
+		<?php endif; ?>
+
+		<div class="annam-cr-form__ajax-notice" id="annam-cr-form-notice-<?php echo esc_attr( $variant ); ?>" role="alert" hidden></div>
+
+		<?php if ( $notice ) : ?>
+			<div class="annam-cr-notice annam-cr-notice--<?php echo esc_attr( $notice['type'] ); ?>" role="alert">
+				<?php echo esc_html( $notice['message'] ); ?>
 			</div>
 		<?php endif; ?>
 
