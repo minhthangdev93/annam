@@ -8,6 +8,21 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Thứ tự hiển thị « Hành trình phổ biến » (tuyến hot).
+ *
+ * @return string[] Route ids.
+ */
+function annam_car_rental_get_hot_route_display_order() {
+	return array(
+		'quang-ninh',
+		'sapa',
+		'ha-giang',
+		'ninh-binh',
+		'thanh-hoa',
+	);
+}
+
+/**
  * @return array<string,array{label:string,slug:string,path:string,passengers:string}>
  */
 function annam_car_rental_get_vehicle_types() {
@@ -93,8 +108,8 @@ function annam_car_rental_get_routes_raw() {
 			),
 		),
 		array(
-			'id'     => 'lao-cai',
-			'label'  => 'Hà Nội ↔ Lào Cai',
+			'id'     => 'sapa',
+			'label'  => 'Hà Nội ↔ Sapa',
 			'hot'    => true,
 			'prices' => array(
 				'7-cho'          => 4074000,

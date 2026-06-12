@@ -282,6 +282,14 @@ function annam_car_rental_get_landing_image_attachment_id( $post_id, $slot ) {
 		return $id;
 	}
 
+	// Đổi route id lao-cai → sapa: vẫn đọc ảnh hành trình đã gán trước đó.
+	if ( 'journey_sapa' === $slot ) {
+		$legacy_id = absint( $meta['journey_lao-cai'] ?? 0 );
+		if ( $legacy_id > 0 && wp_attachment_is_image( $legacy_id ) ) {
+			return $legacy_id;
+		}
+	}
+
 	return 0;
 }
 

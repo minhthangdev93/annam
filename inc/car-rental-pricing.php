@@ -167,6 +167,27 @@ function annam_car_rental_get_hot_routes( $vehicle_type, $limit = 0 ) {
 			}
 		)
 	);
+
+	$order = function_exists( 'annam_car_rental_get_hot_route_display_order' )
+		? annam_car_rental_get_hot_route_display_order()
+		: array();
+
+	if ( ! empty( $order ) ) {
+		usort(
+			$hot,
+			static function ( $a, $b ) use ( $order ) {
+				$pos_a = array_search( (string) ( $a['id'] ?? '' ), $order, true );
+				$pos_b = array_search( (string) ( $b['id'] ?? '' ), $order, true );
+				$pos_a = false === $pos_a ? PHP_INT_MAX : (int) $pos_a;
+				$pos_b = false === $pos_b ? PHP_INT_MAX : (int) $pos_b;
+				if ( $pos_a === $pos_b ) {
+					return 0;
+				}
+				return $pos_a < $pos_b ? -1 : 1;
+			}
+		);
+	}
+
 	$limit = (int) $limit;
 	if ( $limit > 0 ) {
 		return array_slice( $hot, 0, $limit );
