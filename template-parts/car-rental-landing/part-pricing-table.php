@@ -34,6 +34,14 @@ $price_col_label = $vehicle_label
 		$vehicle_label
 	)
 	: __( 'Giá (2 chiều)', 'generatepress_child' );
+
+$search_placeholder = $vehicle_label
+	? sprintf(
+		/* translators: %s: vehicle label e.g. 7 chỗ, Limousine 9–11 chỗ */
+		__( 'Bạn muốn thuê xe %s đi đâu?', 'generatepress_child' ),
+		$vehicle_label
+	)
+	: __( 'Bạn muốn đi đâu?', 'generatepress_child' );
 ?>
 <section class="annam-cr-section" id="bang-gia">
 	<div class="annam-cr-container">
@@ -44,17 +52,21 @@ $price_col_label = $vehicle_label
 		</header>
 
 		<div class="annam-cr-pricing" data-annam-cr-pricing>
-			<label class="annam-cr-pricing__search-label" for="annam-cr-pricing-search">
-				<span class="screen-reader-text"><?php esc_html_e( 'Tìm hành trình', 'generatepress_child' ); ?></span>
-				<input
-					type="search"
-					class="annam-cr-pricing__search"
-					id="annam-cr-pricing-search"
-					placeholder="<?php esc_attr_e( 'Nhập tỉnh/thành muốn đi', 'generatepress_child' ); ?>"
-					autocomplete="off"
-					inputmode="search"
-				/>
-			</label>
+			<div class="annam-cr-pricing__search-wrap">
+				<label class="annam-cr-pricing__search-label" for="annam-cr-pricing-search">
+					<span class="screen-reader-text"><?php esc_html_e( 'Tìm hành trình', 'generatepress_child' ); ?></span>
+					<span class="annam-cr-pricing__search-field">
+						<input
+							type="search"
+							class="annam-cr-pricing__search"
+							id="annam-cr-pricing-search"
+							placeholder="<?php echo esc_attr( $search_placeholder ); ?>"
+							autocomplete="off"
+							inputmode="search"
+						/>
+					</span>
+				</label>
+			</div>
 
 			<div class="annam-cr-pricing-list annam-cr-pricing-list--sticky-head" id="annam-cr-pricing-list" role="list">
 				<div class="annam-cr-pricing-list__header" role="row" aria-hidden="true">

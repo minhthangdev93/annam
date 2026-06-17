@@ -964,31 +964,97 @@ body.admin-bar.annam-car-rental-landing-page {
 }
 
 /* Pricing list — desktop table / mobile cards */
-.annam-cr-pricing__search-label {
-	display: block;
-	margin-bottom: var(--space-4);
+.annam-cr-pricing__search-wrap {
+	width: 100%;
+	max-width: 100%;
+	margin: 0 0 var(--space-5);
 }
 
-.annam-cr-pricing__search-label + .annam-cr-pricing-list {
+.annam-cr-pricing__search-label {
+	display: block;
+	margin-bottom: 0;
+}
+
+.annam-cr-pricing__search-field {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 54px;
+	padding: 0 20px 0 18px;
+	border: 1px solid rgba(var(--cr-primary), 0.1);
+	border-radius: var(--cr-radius-lg);
+	background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+	box-shadow:
+		0 10px 30px rgba(15, 23, 42, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 0.9);
+	box-sizing: border-box;
+	transition:
+		border-color 0.22s ease,
+		box-shadow 0.22s ease,
+		background 0.22s ease;
+}
+
+.annam-cr-pricing__search-field::before {
+	content: "";
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	opacity: 0.42;
+	pointer-events: none;
+	background-color: rgb(var(--cr-primary));
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+	mask-repeat: no-repeat;
+	mask-position: center;
+	mask-size: contain;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	-webkit-mask-size: contain;
+}
+
+.annam-cr-pricing__search-field:focus-within {
+	border-color: rgba(var(--cr-cta), 0.55);
+	background: #fff;
+	box-shadow:
+		0 12px 32px rgba(var(--cr-cta), 0.14),
+		0 0 0 3px rgba(var(--cr-cta), 0.14);
+}
+
+.annam-cr-pricing__search-wrap + .annam-cr-pricing-list {
 	margin-top: var(--space-2);
 }
 
 .annam-cr-pricing__search {
-	width: 100%;
-	min-height: var(--component-field-height, 46px);
-	padding: 10px 16px;
-	border: 1px solid rgb(var(--color-border-strong));
-	border-radius: var(--cr-radius-lg);
+	flex: 1 1 auto;
+	min-width: 0;
+	width: auto;
+	min-height: 54px;
+	padding: 14px 0;
+	border: 0;
+	border-radius: 0;
 	font-size: 1rem;
 	font-family: inherit;
-	background: #fff;
+	color: rgb(var(--cr-primary));
+	background: transparent;
+	box-shadow: none;
 	box-sizing: border-box;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.annam-cr-pricing__search::placeholder {
+	color: rgba(var(--cr-primary), 0.42);
+	font-weight: 500;
+	font-size: clamp(0.8125rem, 2.6vw, 0.9375rem);
+	line-height: 1.35;
 }
 
 .annam-cr-pricing__search:focus {
 	outline: none;
-	border-color: rgb(var(--cr-cta));
-	box-shadow: 0 0 0 3px rgba(var(--cr-cta), 0.2);
+	border-color: transparent;
+	background: transparent;
+	box-shadow: none;
 }
 
 .annam-cr-pricing-list {

@@ -81,12 +81,15 @@ document.addEventListener("DOMContentLoaded", function () {
 			return;
 		}
 		scope.querySelectorAll('input[type="search"], .search-field').forEach(function (input) {
+			if (input.closest('.annam-cr-landing')) {
+				return;
+			}
 			input.setAttribute("placeholder", PLACEHOLDER);
 		});
 	}
 
-	// Apply cho search desktop + mobile (kể cả khi panel đang hidden).
-	applySearchPlaceholder(document);
+	// Chỉ áp placeholder cho search trong header (tránh ghi đè ô tìm trên landing thuê xe).
+	applySearchPlaceholder(headerRoot || document.querySelector(".annam-site-header"));
 	syncAllLanguageSwitchers();
 
 	function setDrawer(open) {
