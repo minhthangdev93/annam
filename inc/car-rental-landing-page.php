@@ -68,6 +68,43 @@ function annam_car_rental_get_steps_section_title( $page_id = 0 ) {
 }
 
 /**
+ * Page editor có nội dung (không rỗng sau khi strip tag).
+ *
+ * @param int $post_id Post ID.
+ * @return bool
+ */
+function annam_car_rental_page_has_editor_content( $post_id = 0 ) {
+	if ( $post_id <= 0 ) {
+		$post_id = get_the_ID();
+	}
+	if ( ! $post_id ) {
+		return false;
+	}
+	$raw = get_post_field( 'post_content', $post_id );
+	return is_string( $raw ) && '' !== trim( wp_strip_all_tags( $raw ) );
+}
+
+/**
+ * HTML nội dung page sau filter the_content.
+ *
+ * @param int $post_id Post ID.
+ * @return string
+ */
+function annam_car_rental_get_page_content_html( $post_id = 0 ) {
+	if ( $post_id <= 0 ) {
+		$post_id = get_the_ID();
+	}
+	if ( ! $post_id || ! annam_car_rental_page_has_editor_content( $post_id ) ) {
+		return '';
+	}
+	$raw = get_post_field( 'post_content', $post_id );
+	if ( ! is_string( $raw ) ) {
+		return '';
+	}
+	return (string) apply_filters( 'the_content', $raw );
+}
+
+/**
  * Inline SVG icons (stroke for UI, fill for decorative cards).
  *
  * @param string $name Icon name.

@@ -285,6 +285,16 @@ if ( ! $why_img ) {
 	<?php endif; ?>
 
 	<?php
+	get_template_part(
+		'template-parts/car-rental-landing/part',
+		'seo-content',
+		array(
+			'page_id' => $page_id,
+		)
+	);
+	?>
+
+	<?php
 	$cta_final     = isset( $config['cta_final'] ) ? $config['cta_final'] : array();
 	$cta_final_bg  = $page_id ? annam_car_rental_get_landing_image_url( $page_id, 'cta_final', 'large' ) : '';
 	$cta_final_cls = 'annam-cr-cta-final';

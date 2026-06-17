@@ -592,10 +592,30 @@
 		});
 	}
 
+	function initSeoContent() {
+		qsa('.annam-cr-seo-content').forEach(function (section) {
+			var btn = qs('.annam-cr-seo-content__toggle', section);
+			if (!btn) {
+				return;
+			}
+
+			var initial = (btn.textContent || '').trim() || 'Xem thêm';
+			var labelMore = btn.getAttribute('data-label-more') || initial;
+			var labelLess = btn.getAttribute('data-label-less') || 'Thu gọn';
+
+			btn.addEventListener('click', function () {
+				var expanded = section.classList.toggle('is-expanded');
+				btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+				btn.textContent = expanded ? labelLess : labelMore;
+			});
+		});
+	}
+
 	qsa('[data-annam-cr-form]').forEach(handleSubmit);
 	initDateInputs();
 	initPricingSearch();
 	initHubPricingTabs();
 	initTrustGallery();
 	initTrustCopy();
+	initSeoContent();
 })();
