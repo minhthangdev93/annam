@@ -22,6 +22,9 @@ const ANNAM_CABIN_GALLERY_THUMB_SIZE = 'annam-cabin-gallery-thumb';
 /** @var string Ảnh thẻ loại cabin. */
 const ANNAM_CABIN_CARD_IMAGE_SIZE = 'annam-cabin-card';
 
+/** @var string Ảnh thumbnail card tin tức / cẩm nang (16:9). */
+const ANNAM_BLOG_CARD_IMAGE_SIZE = 'annam-blog-card';
+
 /**
  * Đăng ký kích thước ảnh phù hợp card (tránh load full/woocommerce_single quá lớn).
  */
@@ -34,6 +37,8 @@ function annam_performance_register_image_sizes() {
 	add_image_size( ANNAM_CABIN_GALLERY_MAIN_SIZE, 1200, 750, true );
 	add_image_size( ANNAM_CABIN_GALLERY_THUMB_SIZE, 600, 450, true );
 	add_image_size( ANNAM_CABIN_CARD_IMAGE_SIZE, 800, 600, true );
+	/* 16:9 — khớp .annam-blog-card__image-link (archive cẩm nang) */
+	add_image_size( ANNAM_BLOG_CARD_IMAGE_SIZE, 1200, 675, true );
 }
 add_action( 'after_setup_theme', 'annam_performance_register_image_sizes', 20 );
 
@@ -62,6 +67,15 @@ function annam_get_tour_gallery_image_size() {
  */
 function annam_get_category_nav_card_image_size() {
 	return apply_filters( 'annam_category_nav_card_image_size', ANNAM_CAT_NAV_IMAGE_SIZE );
+}
+
+/**
+ * Kích thước ảnh thumbnail card tin tức (1200×675, 16:9).
+ *
+ * @return string
+ */
+function annam_get_blog_card_image_size() {
+	return apply_filters( 'annam_blog_card_image_size', ANNAM_BLOG_CARD_IMAGE_SIZE );
 }
 
 /**

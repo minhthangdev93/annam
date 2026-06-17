@@ -246,7 +246,7 @@ body.annam-has-blog-archive-layout .annam-blog-archive__container {
 .annam-blog-card {
 	display: flex;
 	flex-direction: row;
-	align-items: stretch;
+	align-items: flex-start;
 	background: var(--color-surface, #fff);
 	border-radius: var(--component-card-radius);
 	box-shadow: var(--component-card-shadow);
@@ -266,9 +266,10 @@ body.annam-has-blog-archive-layout .annam-blog-archive__container {
 }
 
 .annam-blog-card__image-link {
-	flex: 0 0 30%;
-	max-width: 32%;
-	min-height: 200px;
+	flex: 0 0 auto;
+	width: min(42%, 420px);
+	max-width: 420px;
+	aspect-ratio: 16 / 9;
 	display: block;
 	position: relative;
 	overflow: hidden;
@@ -279,14 +280,16 @@ body.annam-has-blog-archive-layout .annam-blog-archive__container {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	object-position: center;
 	display: block;
+	aspect-ratio: 16 / 9;
 }
 
 .annam-blog-card__image--placeholder {
 	display: block;
 	width: 100%;
 	height: 100%;
-	min-height: 200px;
+	aspect-ratio: 16 / 9;
 	background: linear-gradient(135deg, var(--color-surface-muted, #e8f2f2), var(--color-border, #d5e4e4));
 }
 
@@ -369,6 +372,12 @@ body.annam-has-blog-archive-layout .annam-blog-archive__container {
 
 .annam-blog-card__sep {
 	margin: 0 4px;
+}
+
+.annam-blog-card__date {
+	font-size: var(--text-sm);
+	line-height: 1.5;
+	color: var(--color-muted, #5c7373);
 }
 
 .annam-blog-card__readmore {
@@ -491,7 +500,7 @@ body.annam-has-blog-archive-layout .site-content .site-main .wp-block-search {
 		flex: none;
 		max-width: none;
 		width: 100%;
-		min-height: 200px;
+		aspect-ratio: 16 / 9;
 		border-radius: 0;
 	}
 
