@@ -144,6 +144,21 @@ function annam_cabin_landing_process_booking( array $input ) {
 }
 
 /**
+ * AJAX: nonce + timestamp mới (tránh nonce trong HTML bị LiteSpeed cache hết hạn).
+ */
+function annam_cabin_landing_ajax_fresh_nonce() {
+	// ts lùi 5s để vượt honeypot "(time - ts) < 3" sau khi fetch nonce rồi submit.
+	wp_send_json_success(
+		array(
+			'nonce' => wp_create_nonce( 'annam_cabin_booking' ),
+			'ts'    => (string) max( 0, time() - 5 ),
+		)
+	);
+}
+add_action( 'wp_ajax_annam_cabin_booking_nonce', 'annam_cabin_landing_ajax_fresh_nonce' );
+add_action( 'wp_ajax_nopriv_annam_cabin_booking_nonce', 'annam_cabin_landing_ajax_fresh_nonce' );
+
+/**
  * AJAX submit form.
  */
 function annam_cabin_landing_ajax_booking() {

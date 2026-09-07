@@ -328,6 +328,35 @@
 		}
 	}
 
+	/**
+	 * Lấy nonce mới từ server — trang landing bị LiteSpeed cache nên nonce trong HTML dễ hết hạn.
+	 */
+	function fetchFreshBookingNonce() {
+		var body = new URLSearchParams();
+		body.set('action', booking.nonceAction || 'annam_cabin_booking_nonce');
+
+		return fetch(booking.ajaxUrl, {
+			method: 'POST',
+			body: body,
+			credentials: 'same-origin',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+			},
+		})
+			.then(function (res) {
+				return res.json();
+			})
+			.then(function (json) {
+				if (!json || !json.success || !json.data || !json.data.nonce) {
+					throw new Error('nonce');
+				}
+				return {
+					nonce: String(json.data.nonce),
+					ts: json.data.ts ? String(json.data.ts) : String(Math.floor(Date.now() / 1000)),
+				};
+			});
+	}
+
 	function initAjaxForm() {
 		var form = $('#annam-cabin-form');
 		if (!form || !booking.ajaxUrl) {
@@ -359,21 +388,42 @@
 				submitBtn.textContent = i18n.sending || 'Đang gửi...';
 			}
 
-			var fd = new FormData(form);
-			fd.append('action', booking.action || 'annam_cabin_booking');
-			if (booking.nonce) {
-				fd.set('annam_cabin_nonce', booking.nonce);
-			}
-			fd.set('annam_cabin_page_url', booking.pageUrl || window.location.href);
+			fetchFreshBookingNonce()
+				.catch(function () {
+					return {
+						nonce: booking.nonce || '',
+						ts: String(Math.floor(Date.now() / 1000) - 5),
+					};
+				})
+				.then(function (fresh) {
+					var nonceField = $('#annam-cabin-nonce', form);
+					var tsField = $('#annam-cabin-ts', form);
+					if (nonceField && fresh.nonce) {
+						nonceField.value = fresh.nonce;
+					}
+					if (tsField && fresh.ts) {
+						tsField.value = fresh.ts;
+					}
+					if (fresh.nonce) {
+						booking.nonce = fresh.nonce;
+					}
 
-			fetch(booking.ajaxUrl, {
-				method: 'POST',
-				body: fd,
-				credentials: 'same-origin',
-			})
-				.then(function (res) {
-					return res.json().then(function (json) {
-						return { ok: res.ok, json: json };
+					var fd = new FormData(form);
+					fd.append('action', booking.action || 'annam_cabin_booking');
+					if (fresh.nonce) {
+						fd.set('annam_cabin_nonce', fresh.nonce);
+					}
+					fd.set('annam_cabin_ts', fresh.ts || String(Math.floor(Date.now() / 1000)));
+					fd.set('annam_cabin_page_url', booking.pageUrl || window.location.href);
+
+					return fetch(booking.ajaxUrl, {
+						method: 'POST',
+						body: fd,
+						credentials: 'same-origin',
+					}).then(function (res) {
+						return res.json().then(function (json) {
+							return { ok: res.ok, json: json };
+						});
 					});
 				})
 				.then(function (result) {

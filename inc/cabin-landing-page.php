@@ -307,6 +307,7 @@ function annam_cabin_landing_enqueue_assets() {
 				'booking'            => array(
 					'ajaxUrl'        => admin_url( 'admin-ajax.php' ),
 					'action'         => 'annam_cabin_booking',
+					'nonceAction'    => 'annam_cabin_booking_nonce',
 					'nonce'          => wp_create_nonce( 'annam_cabin_booking' ),
 					'pageUrl'        => get_permalink() ? get_permalink() : home_url( '/' ),
 					'dateToday'      => $today,
