@@ -24,14 +24,6 @@ $place_labels  = array(
 );
 ?>
 <div class="annam-cabin-form-wrap annam-cabin-form-wrap--prominent" id="annam-cabin-booking">
-	<div class="annam-cabin-form__ajax-notice" id="annam-cabin-form-notice" role="alert" hidden></div>
-
-	<?php if ( $notice ) : ?>
-		<div class="annam-cabin-notice annam-cabin-notice--<?php echo esc_attr( $notice['type'] ); ?>" role="alert">
-			<?php echo esc_html( $notice['message'] ); ?>
-		</div>
-	<?php endif; ?>
-
 	<?php if ( ! empty( $form['title'] ) ) : ?>
 		<h2 class="annam-cabin-form__title"><?php echo esc_html( $form['title'] ); ?></h2>
 	<?php endif; ?>
@@ -116,6 +108,15 @@ $place_labels  = array(
 				<?php echo esc_html( ! empty( $form['submit_label'] ) ? $form['submit_label'] : __( 'Gửi Yêu Cầu Giữ Chỗ', 'generatepress_child' ) ); ?>
 			</button>
 		</div>
+
+		<div class="annam-cabin-form__ajax-notice" id="annam-cabin-form-notice" role="alert" hidden></div>
+
+		<?php if ( $notice ) : ?>
+			<div class="annam-cabin-notice annam-cabin-notice--<?php echo esc_attr( $notice['type'] ); ?>" role="alert">
+				<?php echo esc_html( $notice['message'] ); ?>
+			</div>
+		<?php endif; ?>
+
 		<?php if ( ! empty( $form['footer_note'] ) ) : ?>
 			<p class="annam-cabin-form__note"><?php echo esc_html( $form['footer_note'] ); ?></p>
 		<?php endif; ?>

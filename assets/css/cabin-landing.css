@@ -504,7 +504,12 @@ body.annam-cabin-landing-page .entry-content {
 }
 
 .annam-cabin-form__ajax-notice {
-	margin-bottom: 14px;
+	margin: 14px 0 0;
+}
+
+.annam-cabin-form__actions + .annam-cabin-notice {
+	margin-top: 14px;
+	margin-bottom: 0;
 }
 
 .annam-cabin-form__hint {
