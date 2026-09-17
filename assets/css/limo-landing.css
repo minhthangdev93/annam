@@ -1,0 +1,1397 @@
+/**
+ * Landing vé Limousine HN–Sapa.
+ */
+:root {
+	--annam-limo-green: #0f766e;
+	--annam-limo-green-dark: #0d5c56;
+	--annam-limo-orange: #ea580c;
+	--annam-limo-orange-dark: #c2410c;
+	--annam-limo-zalo: #0068ff;
+	--annam-limo-text: #1f2937;
+	--annam-limo-muted: #6b7280;
+	--annam-limo-border: #e5e7eb;
+	--annam-limo-bg: #f8fafc;
+	--annam-limo-radius: 14px;
+}
+
+/* GP bọc #page trong .grid-container — mở full viewport. */
+body.annam-limo-landing-page #page.site.grid-container,
+body.annam-limo-landing-page #page.site.container {
+	max-width: none;
+	width: 100%;
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+body.annam-limo-landing-page .site-content,
+body.annam-limo-landing-page #content,
+body.annam-limo-landing-page #primary,
+body.annam-limo-landing-page .content-area,
+body.annam-limo-landing-page .site-main {
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 0;
+	margin-left: 0;
+	margin-right: 0;
+	max-width: none;
+	width: 100%;
+	float: none;
+}
+
+body.annam-limo-landing-page.separate-containers .site-main > *,
+body.annam-limo-landing-page.separate-containers .inside-article {
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+	max-width: none;
+	box-shadow: none;
+	background: transparent;
+}
+
+body.annam-limo-landing-page {
+	overflow-x: clip;
+}
+
+.annam-limo-landing-page .site-content,
+.annam-limo-landing-page #content {
+	padding: 0;
+}
+
+.annam-limo-landing {
+	color: var(--annam-limo-text);
+	font-family: inherit;
+	line-height: 1.55;
+}
+
+.annam-limo-container {
+	width: min(1120px, calc(100% - 32px));
+	margin-inline: auto;
+}
+
+.annam-limo-container--narrow {
+	width: min(760px, calc(100% - 32px));
+}
+
+.annam-limo-banner {
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+	width: 100vw;
+	max-width: 100vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: 0;
+	background: #061428;
+	overflow: hidden;
+}
+
+.annam-limo-banner__img,
+.annam-limo-banner img {
+	display: block;
+	width: 100%;
+	max-width: 2048px;
+	height: auto;
+	aspect-ratio: 2048 / 751;
+	object-fit: contain;
+	object-position: center center;
+}
+
+.annam-limo-hero {
+	padding: 28px 0 36px;
+	background:
+		radial-gradient(ellipse 80% 60% at 10% 0%, rgba(15, 118, 110, 0.12), transparent 55%),
+		linear-gradient(180deg, #ecfdf5 0%, #fff 70%);
+}
+
+.annam-limo-hero__grid {
+	display: grid;
+	gap: 24px;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-hero__grid {
+		grid-template-columns: 1.05fr 0.95fr;
+		align-items: start;
+		gap: 36px;
+	}
+}
+
+.annam-limo-hero__eyebrow {
+	margin: 0 0 8px;
+	font-size: 0.8125rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--annam-limo-green);
+}
+
+.annam-limo-hero__title {
+	margin: 0 0 12px;
+	font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+	line-height: 1.2;
+	font-weight: 800;
+	color: #0f172a;
+}
+
+.annam-limo-hero__subtitle {
+	margin: 0 0 14px;
+	color: var(--annam-limo-muted);
+	font-size: 1rem;
+}
+
+.annam-limo-hero__price {
+	margin: 0 0 16px;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.annam-limo-hero__price-label {
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-hero__price strong {
+	font-size: 1.75rem;
+	color: var(--annam-limo-orange);
+}
+
+.annam-limo-hero__price-unit {
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-hero__badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 18px;
+	padding: 0;
+	list-style: none;
+}
+
+.annam-limo-hero__badge {
+	padding: 6px 10px;
+	border-radius: 8px;
+	background: #fff;
+	border: 1px solid var(--annam-limo-border);
+	font-size: 0.8125rem;
+	font-weight: 600;
+}
+
+.annam-limo-hero__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.annam-limo-hero__ctas--mobile {
+	display: flex;
+	margin-bottom: 12px;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-hero__ctas--mobile {
+		display: none;
+	}
+}
+
+@media (max-width: 899px) {
+	.annam-limo-hero__ctas--desktop {
+		display: none;
+	}
+}
+
+.annam-limo-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 18px;
+	border-radius: 10px;
+	border: 1px solid transparent;
+	font-size: 0.9375rem;
+	font-weight: 700;
+	text-decoration: none;
+	cursor: pointer;
+	line-height: 1.2;
+	transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.annam-limo-btn--primary {
+	background: var(--annam-limo-orange);
+	color: #fff;
+}
+
+.annam-limo-btn--primary:hover,
+.annam-limo-btn--primary:focus {
+	background: var(--annam-limo-orange-dark);
+	color: #fff;
+}
+
+.annam-limo-btn--zalo {
+	background: var(--annam-limo-zalo);
+	color: #fff;
+}
+
+.annam-limo-btn--zalo:hover,
+.annam-limo-btn--zalo:focus {
+	background: #0054d1;
+	color: #fff;
+}
+
+.annam-limo-btn--outline {
+	background: #fff;
+	border-color: var(--annam-limo-border);
+	color: var(--annam-limo-text);
+}
+
+.annam-limo-btn--outline:hover,
+.annam-limo-btn--outline:focus {
+	background: #f0fdfa;
+	border-color: var(--annam-limo-green);
+	color: var(--annam-limo-green-dark);
+}
+
+.annam-limo-btn--block {
+	width: 100%;
+}
+
+.annam-limo-form-wrap {
+	background: #fff;
+	border: 1px solid var(--annam-limo-border);
+	border-radius: var(--annam-limo-radius);
+	padding: 18px 16px 16px;
+	box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+.annam-limo-form__title {
+	margin: 0 0 6px;
+	font-size: 1.2rem;
+	font-weight: 800;
+	color: var(--annam-limo-green);
+}
+
+.annam-limo-form__subtitle,
+.annam-limo-form__note {
+	margin: 0 0 14px;
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-form__note {
+	margin: 12px 0 0;
+	text-align: center;
+}
+
+.annam-limo-form__hp {
+	position: absolute;
+	left: -9999px;
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.annam-limo-form__row {
+	display: grid;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+@media (min-width: 560px) {
+	.annam-limo-form__row--2 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.annam-limo-form__field label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 0.8125rem;
+	font-weight: 600;
+}
+
+.annam-limo-req {
+	color: #dc2626;
+}
+
+.annam-limo-form__field input,
+.annam-limo-form__field select {
+	width: 100%;
+	min-height: 44px;
+	padding: 10px 12px;
+	border: 1px solid var(--annam-limo-border);
+	border-radius: 10px;
+	font: inherit;
+	background: #fff;
+}
+
+.annam-limo-form__actions {
+	margin-top: 4px;
+}
+
+.annam-limo-form__actions .annam-limo-btn {
+	width: 100%;
+	min-height: 48px;
+}
+
+.annam-limo-form__ajax-notice,
+.annam-limo-notice {
+	margin-top: 14px;
+	padding: 12px 14px;
+	border-radius: 10px;
+	font-size: 0.875rem;
+}
+
+.annam-limo-notice--success,
+.annam-limo-form__ajax-notice.annam-limo-notice--success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+}
+
+.annam-limo-notice--error,
+.annam-limo-form__ajax-notice.annam-limo-notice--error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+}
+
+.annam-limo-form__hint {
+	margin: 0 0 12px;
+	padding: 10px 12px;
+	font-size: 0.8125rem;
+	border-radius: 10px;
+	background: #fff8e6;
+	color: #92400e;
+	border: 1px solid #fde68a;
+}
+
+.annam-limo-form__hint[hidden] {
+	display: none !important;
+}
+
+.annam-limo-section {
+	padding: 48px 0;
+}
+
+.annam-limo-section--alt {
+	background: var(--annam-limo-bg);
+}
+
+.annam-limo-section__title {
+	margin: 0 0 10px;
+	font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+	font-weight: 800;
+	text-align: center;
+}
+
+.annam-limo-section__lead {
+	margin: 0 auto 24px;
+	max-width: 42rem;
+	text-align: center;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-section__note {
+	margin: 18px 0 0;
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+	text-align: center;
+}
+
+.annam-limo-section__cta-row {
+	margin: 20px 0 0;
+	text-align: center;
+}
+
+.annam-limo-price-grid {
+	display: grid;
+	gap: 16px;
+}
+
+@media (min-width: 768px) {
+	.annam-limo-price-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.annam-limo-price-card {
+	position: relative;
+	padding: 20px 18px;
+	background: #fff;
+	border: 1px solid var(--annam-limo-border);
+	border-radius: var(--annam-limo-radius);
+}
+
+.annam-limo-price-card--highlight {
+	border-color: #fdba74;
+	box-shadow: 0 8px 24px rgba(234, 88, 12, 0.12);
+}
+
+.annam-limo-price-card__badge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	padding: 4px 8px;
+	border-radius: 999px;
+	background: #ffedd5;
+	color: #9a3412;
+	font-size: 0.75rem;
+	font-weight: 700;
+}
+
+.annam-limo-price-card__name {
+	margin: 0 0 8px;
+	font-size: 1.125rem;
+}
+
+.annam-limo-price-card__price {
+	margin: 0 0 10px;
+	font-size: 1.25rem;
+	font-weight: 800;
+	color: var(--annam-limo-orange);
+}
+
+.annam-limo-price-card__desc {
+	margin: 0 0 16px;
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+	min-height: 2.8em;
+}
+
+.annam-limo-tabs__nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: center;
+	margin-bottom: 18px;
+}
+
+.annam-limo-tabs__btn {
+	padding: 10px 14px;
+	border-radius: 999px;
+	border: 1px solid var(--annam-limo-border);
+	background: #fff;
+	color: var(--annam-limo-text);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.annam-limo-tabs__btn.is-active {
+	background: var(--annam-limo-green);
+	border-color: var(--annam-limo-green);
+	color: #fff;
+}
+
+.annam-limo-tabs__panel {
+	display: none;
+}
+
+.annam-limo-tabs__panel.is-active {
+	display: block;
+}
+
+/* —— Schedule section redesign —— */
+.annam-limo-schedule {
+	max-width: 720px;
+	margin-inline: auto;
+}
+
+.annam-limo-schedule__tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.annam-limo-schedule__tab {
+	min-width: 148px;
+	padding: 12px 18px;
+}
+
+.annam-limo-schedule__card {
+	background: #fff;
+	border: 1px solid var(--annam-limo-border);
+	border-radius: 18px;
+	padding: 22px 20px 20px;
+	box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+}
+
+.annam-limo-schedule__times-block {
+	margin-bottom: 22px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #f1f5f9;
+}
+
+.annam-limo-schedule__label {
+	margin: 0 0 12px;
+	text-align: center;
+	font-size: 0.8125rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-time-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	max-width: 420px;
+	margin-inline: auto;
+}
+
+.annam-limo-time-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-width: 0;
+	min-height: 72px;
+	padding: 14px 12px;
+	border-radius: 14px;
+	border: 2px solid var(--annam-limo-border);
+	background: #f8fafc;
+	color: var(--annam-limo-text);
+	font: inherit;
+	cursor: pointer;
+	transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.annam-limo-time-btn__clock {
+	font-size: 1.35rem;
+	font-weight: 800;
+	line-height: 1.1;
+	letter-spacing: 0.02em;
+}
+
+.annam-limo-time-btn__meta {
+	font-size: 0.75rem;
+	font-weight: 600;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-time-btn.is-active {
+	border-color: var(--annam-limo-orange);
+	background: #fff7ed;
+	color: var(--annam-limo-orange-dark);
+	box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+}
+
+.annam-limo-time-btn.is-active .annam-limo-time-btn__meta {
+	color: var(--annam-limo-orange-dark);
+}
+
+.annam-limo-schedule__hint {
+	margin: 12px 0 0;
+	text-align: center;
+	font-size: 0.8125rem;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-timeline {
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+}
+
+.annam-limo-timeline__title {
+	margin: 0 0 16px;
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: #0f172a;
+	text-align: left;
+}
+
+.annam-limo-timeline__list {
+	list-style: none;
+	margin: 0;
+	padding: 0 0 0 4px;
+}
+
+.annam-limo-timeline__step {
+	position: relative;
+	display: grid;
+	grid-template-columns: 20px 1fr;
+	gap: 12px;
+	padding: 0 0 18px;
+	margin: 0;
+}
+
+.annam-limo-timeline__step:last-child {
+	padding-bottom: 0;
+}
+
+.annam-limo-timeline__step:not(:last-child)::before {
+	content: '';
+	position: absolute;
+	left: 9px;
+	top: 18px;
+	bottom: 0;
+	width: 2px;
+	background: linear-gradient(180deg, #99f6e4, #e2e8f0);
+}
+
+.annam-limo-timeline__dot {
+	position: relative;
+	z-index: 1;
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	border-radius: 50%;
+	background: #fff;
+	border: 3px solid var(--annam-limo-green);
+	box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+.annam-limo-timeline__step:first-child .annam-limo-timeline__dot {
+	background: var(--annam-limo-green);
+	border-color: var(--annam-limo-green);
+}
+
+.annam-limo-timeline__step:last-child .annam-limo-timeline__dot {
+	border-color: var(--annam-limo-orange);
+	box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.12);
+}
+
+.annam-limo-timeline__body {
+	min-width: 0;
+}
+
+.annam-limo-timeline__place {
+	display: block;
+	font-size: 0.975rem;
+	font-weight: 700;
+	color: #0f172a;
+	line-height: 1.35;
+}
+
+.annam-limo-timeline__note {
+	display: block;
+	margin-top: 4px;
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+	line-height: 1.45;
+}
+
+.annam-limo-schedule__footer {
+	margin-top: 22px;
+	padding-top: 18px;
+	border-top: 1px solid #f1f5f9;
+	text-align: center;
+}
+
+.annam-limo-schedule__footer .annam-limo-btn {
+	min-width: min(100%, 280px);
+}
+
+@media (min-width: 640px) {
+	.annam-limo-schedule__card {
+		padding: 28px 28px 24px;
+	}
+
+	.annam-limo-schedule__card {
+		display: grid;
+		grid-template-columns: 1fr 1.25fr;
+		gap: 28px;
+		align-items: start;
+	}
+
+	.annam-limo-schedule__times-block {
+		margin: 0;
+		padding: 0 20px 0 0;
+		border-bottom: 0;
+		border-right: 1px solid #f1f5f9;
+	}
+
+	.annam-limo-time-grid {
+		grid-template-columns: 1fr;
+		max-width: none;
+	}
+
+	.annam-limo-schedule__footer {
+		grid-column: 1 / -1;
+		margin-top: 0;
+	}
+}
+
+.annam-limo-section--pickup {
+	background:
+		radial-gradient(ellipse 60% 45% at 100% 0%, rgba(234, 88, 12, 0.06), transparent 55%),
+		radial-gradient(ellipse 50% 40% at 0% 100%, rgba(15, 118, 110, 0.08), transparent 50%),
+		#fff;
+}
+
+.annam-limo-pickup__heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 8px;
+	margin: 0 auto 18px;
+	max-width: 40rem;
+	padding: 10px 14px;
+	text-align: center;
+	color: var(--annam-limo-muted);
+	font-size: 0.9rem;
+	line-height: 1.45;
+	background: rgba(15, 118, 110, 0.06);
+	border: 1px solid rgba(15, 118, 110, 0.12);
+	border-radius: 12px;
+}
+
+.annam-limo-pickup__heading-icon {
+	flex: 0 0 auto;
+	margin-top: 2px;
+	color: var(--annam-limo-green);
+}
+
+.annam-limo-pickup__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 12px;
+}
+
+@media (min-width: 700px) {
+	.annam-limo-pickup__list {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.annam-limo-pickup__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 14px 14px 14px 12px;
+	background: #fff;
+	border: 1px solid rgba(15, 118, 110, 0.12);
+	border-radius: 14px;
+	box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+	transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.annam-limo-pickup__item:hover {
+	transform: translateY(-2px);
+	border-color: rgba(15, 118, 110, 0.28);
+	box-shadow: 0 10px 24px rgba(15, 118, 110, 0.08);
+}
+
+.annam-limo-pickup__marker {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	background: linear-gradient(145deg, #ecfdf5 0%, #ccfbf1 100%);
+	color: var(--annam-limo-green);
+	font-size: 0.8125rem;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.annam-limo-pickup__item:nth-child(even) .annam-limo-pickup__marker {
+	background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%);
+	color: var(--annam-limo-orange);
+}
+
+.annam-limo-pickup__body {
+	min-width: 0;
+	flex: 1;
+}
+
+.annam-limo-pickup__name {
+	display: block;
+	font-size: 0.95rem;
+	font-weight: 700;
+	line-height: 1.35;
+	color: var(--annam-limo-text);
+}
+
+.annam-limo-pickup__time {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	margin-top: 6px;
+	font-size: 0.8125rem;
+	line-height: 1.4;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-pickup__time svg {
+	flex: 0 0 auto;
+	color: var(--annam-limo-orange);
+	opacity: 0.85;
+}
+
+.annam-limo-pickup__note {
+	margin: 18px 0 0;
+	padding: 12px 14px;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: #92400e;
+	text-align: left;
+	background: #fffbeb;
+	border: 1px solid #fde68a;
+	border-radius: 12px;
+}
+
+.annam-limo-gallery {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 768px) {
+	.annam-limo-gallery {
+		grid-template-columns: 1.35fr 1fr 1fr;
+		grid-template-rows: auto auto;
+		align-items: stretch;
+	}
+
+	.annam-limo-gallery__item--hero {
+		grid-row: 1 / span 2;
+		height: 100%;
+	}
+
+	.annam-limo-gallery__item--hero .annam-limo-gallery__btn {
+		flex: 1 1 auto;
+		min-height: 0;
+		position: relative;
+	}
+
+	.annam-limo-gallery__item--hero .annam-limo-gallery__btn img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		min-height: 0;
+		object-fit: cover;
+	}
+
+	/* Ảnh thứ 6 chỉ hiện mobile để lưới 2 cột cân (3×2). */
+	.annam-limo-gallery__item:nth-child(6) {
+		display: none;
+	}
+}
+
+.annam-limo-gallery__item {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	min-width: 0;
+	border-radius: 12px;
+	overflow: hidden;
+	background: #fff;
+	border: 1px solid var(--annam-limo-border);
+	box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.annam-limo-gallery__btn {
+	display: block;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	overflow: hidden;
+	text-align: left;
+	line-height: 0;
+	border-radius: 0;
+}
+
+.annam-limo-gallery__btn img {
+	display: block;
+	width: 100%;
+	height: 180px;
+	object-fit: cover;
+}
+
+.annam-limo-gallery__caption {
+	flex: 0 0 auto;
+	margin: 0;
+	padding: 10px 12px;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	line-height: 1.4;
+	color: var(--annam-limo-text);
+	background: #fff;
+}
+
+.annam-limo-section--why {
+	background:
+		radial-gradient(ellipse 70% 50% at 50% 0%, rgba(15, 118, 110, 0.1), transparent 60%),
+		linear-gradient(180deg, #f0fdfa 0%, #f8fafc 55%, #fff 100%);
+}
+
+.annam-limo-why-grid {
+	display: grid;
+	gap: 16px;
+}
+
+@media (min-width: 640px) {
+	.annam-limo-why-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.annam-limo-why-grid {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 18px;
+	}
+}
+
+.annam-limo-why-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 22px 18px 20px;
+	background: #fff;
+	border: 1px solid rgba(15, 118, 110, 0.12);
+	border-radius: var(--annam-limo-radius);
+	box-shadow: 0 8px 24px rgba(15, 118, 110, 0.06);
+	overflow: hidden;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.annam-limo-why-card::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg, var(--annam-limo-green), var(--annam-limo-orange));
+	opacity: 0.85;
+}
+
+.annam-limo-why-card:hover {
+	transform: translateY(-3px);
+	border-color: rgba(15, 118, 110, 0.28);
+	box-shadow: 0 14px 32px rgba(15, 118, 110, 0.1);
+}
+
+.annam-limo-why-card__index {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	font-size: 0.75rem;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	color: rgba(15, 118, 110, 0.35);
+}
+
+.annam-limo-why-card__icon {
+	display: grid;
+	place-items: center;
+	width: 48px;
+	height: 48px;
+	border-radius: 14px;
+	background: linear-gradient(145deg, #ecfdf5 0%, #ccfbf1 100%);
+	color: var(--annam-limo-green);
+	flex: 0 0 auto;
+}
+
+.annam-limo-why-card:nth-child(2) .annam-limo-why-card__icon {
+	background: linear-gradient(145deg, #fff7ed 0%, #ffedd5 100%);
+	color: var(--annam-limo-orange);
+}
+
+.annam-limo-why-card:nth-child(3) .annam-limo-why-card__icon {
+	background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%);
+	color: #2563eb;
+}
+
+.annam-limo-why-card:nth-child(4) .annam-limo-why-card__icon {
+	background: linear-gradient(145deg, #fef3c7 0%, #fde68a 100%);
+	color: #b45309;
+}
+
+.annam-limo-why-card__title {
+	margin: 4px 0 0;
+	font-size: 1.05rem;
+	font-weight: 800;
+	line-height: 1.3;
+	color: var(--annam-limo-text);
+}
+
+.annam-limo-why-card p {
+	margin: 0;
+	color: var(--annam-limo-muted);
+	font-size: 0.9rem;
+	line-height: 1.55;
+}
+
+.annam-limo-steps {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 14px;
+}
+
+@media (min-width: 768px) {
+	.annam-limo-steps {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.annam-limo-steps__item {
+	display: flex;
+	gap: 12px;
+	padding: 16px;
+	background: #fff;
+	border-radius: var(--annam-limo-radius);
+	border: 1px solid var(--annam-limo-border);
+}
+
+.annam-limo-steps__num {
+	flex: 0 0 auto;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: var(--annam-limo-green);
+	color: #fff;
+	font-weight: 800;
+}
+
+.annam-limo-steps__item h3 {
+	margin: 0 0 6px;
+	font-size: 1rem;
+}
+
+.annam-limo-steps__item p {
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--annam-limo-muted);
+}
+
+.annam-limo-faq {
+	display: grid;
+	gap: 10px;
+}
+
+@media (min-width: 768px) {
+	.annam-limo-faq {
+		grid-template-columns: 1fr 1fr;
+		gap: 12px 16px;
+		align-items: start;
+	}
+}
+
+.annam-limo-faq__item {
+	border: 1px solid var(--annam-limo-border);
+	border-radius: 12px;
+	background: #fff;
+	padding: 0 14px;
+	margin: 0;
+}
+
+.annam-limo-faq__item summary {
+	cursor: pointer;
+	padding: 14px 0;
+	font-weight: 700;
+}
+
+.annam-limo-faq__item p {
+	margin: 0 0 14px;
+	color: var(--annam-limo-muted);
+	font-size: 0.9375rem;
+}
+
+.annam-limo-final {
+	position: relative;
+	padding: 56px 0;
+	color: #fff;
+	background:
+		linear-gradient(135deg, rgba(15, 118, 110, 0.92), rgba(13, 92, 86, 0.88)),
+		var(--annam-limo-final-bg, none) center / cover no-repeat;
+	text-align: center;
+}
+
+.annam-limo-final h2 {
+	margin: 0 0 10px;
+	font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+}
+
+.annam-limo-final p {
+	margin: 0 auto 20px;
+	max-width: 36rem;
+	opacity: 0.95;
+}
+
+.annam-limo-final__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+
+.annam-limo-final .annam-limo-btn--outline {
+	background: transparent;
+	border-color: rgba(255, 255, 255, 0.55);
+	color: #fff;
+}
+
+.annam-limo-seo.is-collapsible:not(.is-open) .annam-limo-seo__body {
+	max-height: 220px;
+	overflow: hidden;
+	mask-image: linear-gradient(#000 60%, transparent);
+}
+
+.annam-limo-seo [data-annam-seo-toggle] {
+	margin-top: 12px;
+}
+
+.annam-limo-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	display: grid;
+	place-items: center;
+	padding: 24px;
+	background: rgba(15, 23, 42, 0.85);
+}
+
+.annam-limo-lightbox[hidden] {
+	display: none !important;
+}
+
+.annam-limo-lightbox__img {
+	max-width: min(960px, 100%);
+	max-height: 75vh;
+	object-fit: contain;
+	border-radius: 8px;
+}
+
+.annam-limo-lightbox__cap {
+	margin: 10px 0 0;
+	color: #fff;
+	text-align: center;
+}
+
+.annam-limo-lightbox__close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	width: 44px;
+	height: 44px;
+	border: 0;
+	border-radius: 50%;
+	background: #fff;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.annam-limo-sticky {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 90;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1.2fr;
+	gap: 0;
+	background: #fff;
+	border-top: 1px solid var(--annam-limo-border);
+	box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08);
+}
+
+@media (min-width: 900px) {
+	.annam-limo-sticky {
+		display: none;
+	}
+}
+
+.annam-limo-sticky__btn {
+	padding: 14px 8px;
+	border: 0;
+	background: #fff;
+	font: inherit;
+	font-weight: 700;
+	text-align: center;
+	text-decoration: none;
+	color: var(--annam-limo-text);
+	cursor: pointer;
+}
+
+.annam-limo-sticky__btn--zalo {
+	background: #eff6ff;
+	color: var(--annam-limo-zalo);
+}
+
+.annam-limo-sticky__btn--form {
+	background: var(--annam-limo-orange);
+	color: #fff;
+}
+
+.annam-limo-landing-page {
+	padding-bottom: 64px;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-landing-page {
+		padding-bottom: 0;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Chống override GeneratePress / plugin (button { color:#fff; background:#555 })
+   ------------------------------------------------------------------------- */
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn,
+body.annam-limo-landing-page .annam-limo-landing button[data-annam-scroll-form],
+body.annam-limo-landing-page .annam-limo-landing button[data-annam-pick-seat],
+body.annam-limo-landing-page .annam-limo-landing button[data-annam-seo-toggle] {
+	-webkit-appearance: none;
+	appearance: none;
+	box-shadow: none;
+	text-shadow: none;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn {
+	opacity: 1 !important;
+	background-color: #fff !important;
+	background-image: none !important;
+	border: 1px solid var(--annam-limo-border) !important;
+	color: var(--annam-limo-text) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn:focus,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn:focus-visible {
+	opacity: 1 !important;
+	background-color: #f3f4f6 !important;
+	color: var(--annam-limo-green-dark) !important;
+	border-color: var(--annam-limo-border) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn.is-active,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn.is-active:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-tabs__btn.is-active:focus {
+	opacity: 1 !important;
+	background-color: var(--annam-limo-green) !important;
+	border-color: var(--annam-limo-green) !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn {
+	opacity: 1 !important;
+	background-color: #f8fafc !important;
+	background-image: none !important;
+	border: 2px solid var(--annam-limo-border) !important;
+	color: var(--annam-limo-text) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn span,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn .annam-limo-time-btn__clock,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn .annam-limo-time-btn__meta {
+	opacity: 1 !important;
+	visibility: visible !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn .annam-limo-time-btn__clock {
+	color: inherit !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn .annam-limo-time-btn__meta {
+	color: var(--annam-limo-muted) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn:focus {
+	background-color: #fff7ed !important;
+	border-color: var(--annam-limo-orange) !important;
+	color: var(--annam-limo-orange-dark) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn.is-active {
+	opacity: 1 !important;
+	background-color: #fff7ed !important;
+	border-color: var(--annam-limo-orange) !important;
+	color: var(--annam-limo-orange-dark) !important;
+	box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-time-btn.is-active .annam-limo-time-btn__meta {
+	color: var(--annam-limo-orange-dark) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--primary,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--primary:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--primary:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--primary,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--primary:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--primary:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--primary:visited {
+	background-color: var(--annam-limo-orange) !important;
+	border-color: transparent !important;
+	color: #fff !important;
+	opacity: 1 !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--primary:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--primary:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--primary:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--primary:focus {
+	background-color: var(--annam-limo-orange-dark) !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--zalo,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--zalo:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--zalo:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--zalo:visited {
+	background-color: var(--annam-limo-zalo) !important;
+	border-color: transparent !important;
+	color: #fff !important;
+	opacity: 1 !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--zalo:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--zalo:focus {
+	background-color: #0054d1 !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--outline,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--outline:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--outline:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline:visited {
+	background-color: #fff !important;
+	border: 1px solid var(--annam-limo-border) !important;
+	color: var(--annam-limo-text) !important;
+	opacity: 1 !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--outline:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--outline:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline:focus {
+	background-color: #f0fdfa !important;
+	border-color: var(--annam-limo-green) !important;
+	color: var(--annam-limo-green-dark) !important;
+}
