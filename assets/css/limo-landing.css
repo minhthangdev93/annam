@@ -269,6 +269,14 @@ body.annam-limo-landing-page {
 	border-radius: var(--annam-limo-radius);
 	padding: 18px 16px 16px;
 	box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+	min-width: 0;
+	max-width: 100%;
+	overflow-x: clip;
+}
+
+.annam-limo-form {
+	min-width: 0;
+	max-width: 100%;
 }
 
 .annam-limo-form__title {
@@ -310,6 +318,11 @@ body.annam-limo-landing-page {
 	}
 }
 
+.annam-limo-form__field {
+	min-width: 0;
+	max-width: 100%;
+}
+
 .annam-limo-form__field label {
 	display: block;
 	margin-bottom: 6px;
@@ -323,13 +336,29 @@ body.annam-limo-landing-page {
 
 .annam-limo-form__field input,
 .annam-limo-form__field select {
+	display: block;
 	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
 	min-height: 44px;
 	padding: 10px 12px;
 	border: 1px solid var(--annam-limo-border);
 	border-radius: 10px;
 	font: inherit;
 	background: #fff;
+}
+
+/* iOS Safari: native date control overflow phá form */
+.annam-limo-form__field input[type="date"] {
+	-webkit-appearance: none;
+	appearance: none;
+	line-height: 1.25;
+}
+
+.annam-limo-form__field input[type="date"]::-webkit-date-and-time-value {
+	min-width: 0;
+	text-align: left;
 }
 
 .annam-limo-form__actions {
