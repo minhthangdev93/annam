@@ -14,16 +14,16 @@ Không dùng wording/giá đại lý nội bộ — chỉ giá niêm yết công
 
 ## 2. Brand & liên hệ (landing-scoped)
 
-CTA **riêng landing**, không inherit hotline site An Nam:
+CTA lấy từ `annam_contact_get_details()` (An Nam Discovery), có thể ghi đè qua filter `annam_limo_landing_cta`:
 
 | Trường | Giá trị hiện tại |
 |--------|------------------|
-| Brand | S trip Việt Nam |
-| Hotline 1 | `1900 888 828` / `tel:1900888828` |
-| Hotline 2 | `0523 031 111` / `tel:0523031111` |
-| Zalo | `https://zalo.me/0523031111` |
+| Brand | An Nam Discovery |
+| Hotline 1 | `1900 8164` / `tel:19008164` |
+| Hotline 2 | `0942471111` / `tel:0942471111` |
+| Zalo | `http://zalo.me/2127942034358673568` |
 
-Khi clone: đổi trong `annam_limo_landing_get_cta()` (hoặc filter `annam_limo_landing_cta`).
+Khi clone brand khác: đổi trong `annam_limo_landing_get_cta()` hoặc filter `annam_limo_landing_cta`.
 
 ---
 

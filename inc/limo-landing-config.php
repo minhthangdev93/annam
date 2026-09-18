@@ -30,20 +30,24 @@ function annam_limo_landing_get_schedule_times_map() {
 }
 
 /**
- * CTA landing Limousine — S trip Việt Nam (không lấy hotline site An Nam).
+ * CTA landing Limousine — lấy hotline/Zalo An Nam Discovery (site-wide).
  *
  * @return array<string,string>
  */
 function annam_limo_landing_get_cta() {
+	$d = function_exists( 'annam_contact_get_details' ) ? annam_contact_get_details() : array();
+	$mobile = isset( $d['mobile_display'] ) ? (string) $d['mobile_display'] : '0942471111';
+	$mobile_digits = preg_replace( '/\D+/', '', $mobile );
+
 	return apply_filters(
 		'annam_limo_landing_cta',
 		array(
-			'brand'             => 'S trip Việt Nam',
-			'hotline_display'   => '1900 888 828',
-			'hotline_tel'       => 'tel:1900888828',
-			'hotline2_display'  => '0523 031 111',
-			'hotline2_tel'      => 'tel:0523031111',
-			'zalo_url'          => 'https://zalo.me/0523031111',
+			'brand'            => isset( $d['brand'] ) ? (string) $d['brand'] : 'An Nam Discovery',
+			'hotline_display'  => isset( $d['hotline_display'] ) ? (string) $d['hotline_display'] : '1900 8164',
+			'hotline_tel'      => isset( $d['hotline_tel'] ) ? (string) $d['hotline_tel'] : 'tel:19008164',
+			'hotline2_display' => $mobile,
+			'hotline2_tel'     => 'tel:' . $mobile_digits,
+			'zalo_url'         => isset( $d['zalo_url'] ) ? (string) $d['zalo_url'] : 'http://zalo.me/2127942034358673568',
 		)
 	);
 }
@@ -75,7 +79,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'subtitle'        => 'Điền thông tin — nhân viên gọi hoặc Zalo xác nhận trong giờ làm việc.',
 			'submit_label'    => 'Gửi Yêu Cầu Giữ Chỗ',
 			'footer_note'     => 'Không cần thanh toán online ngay. Nhân viên sẽ gọi/Zalo xác nhận trước.',
-			'success_message' => 'Cảm ơn quý khách. S trip Việt Nam đã nhận thông tin và sẽ liên hệ xác nhận vé sớm.',
+			'success_message' => 'Cảm ơn quý khách. An Nam Discovery đã nhận thông tin và sẽ liên hệ xác nhận vé sớm.',
 		),
 		'form_defaults' => array(
 			'from' => 'hanoi',
