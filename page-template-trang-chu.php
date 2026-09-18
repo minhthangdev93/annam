@@ -64,6 +64,8 @@ get_header();
 						annam_recently_viewed_render_section( 0 );
 					}
 
+					get_template_part( 'template-parts/home/home', 'reviews' );
+
 					generate_do_template_part( 'page' );
 
 				endwhile;

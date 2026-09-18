@@ -512,3 +512,58 @@
 		padding-right: var(--layout-gutter-mobile);
 	}
 }
+
+/* -------------------------------------------------------------------------
+   Reviews / Trustindex Google
+   ------------------------------------------------------------------------- */
+.annam-home-reviews {
+	width: 100%;
+	max-width: 1500px;
+	margin: var(--section-space-compact) auto;
+	padding: 0 var(--layout-gutter);
+	box-sizing: border-box;
+}
+
+.annam-home-reviews__inner {
+	width: 100%;
+}
+
+.annam-home-reviews__header {
+	margin: 0 0 var(--space-5);
+	text-align: center;
+}
+
+.annam-home-reviews__title {
+	margin: 0;
+	font-family: var(--font-heading);
+	font-size: clamp(20px, 2.4vw, 28px);
+	font-weight: 700;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+	color: rgb(var(--color-primary));
+}
+
+.annam-home-reviews__lead {
+	margin: var(--space-3) auto 0;
+	max-width: 48ch;
+	font-family: var(--font-body);
+	font-size: var(--text-md);
+	line-height: 1.55;
+	color: rgb(var(--color-muted));
+}
+
+.annam-home-reviews__widget {
+	width: 100%;
+	min-height: 80px;
+}
+
+.annam-home-reviews__widget > * {
+	max-width: 100%;
+}
+
+@media (max-width: 480px) {
+	.annam-home-reviews {
+		padding-left: var(--layout-gutter-mobile);
+		padding-right: var(--layout-gutter-mobile);
+	}
+}
