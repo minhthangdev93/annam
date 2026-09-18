@@ -114,6 +114,59 @@ function annam_limo_landing_get_settings() {
 }
 
 /**
+ * URL YouTube trust video (admin hoặc placeholder).
+ *
+ * @return string
+ */
+function annam_limo_landing_get_youtube_url() {
+	$settings = annam_limo_landing_get_settings();
+	if ( ! empty( $settings['youtube_url'] ) && is_string( $settings['youtube_url'] ) ) {
+		$url = esc_url_raw( trim( $settings['youtube_url'] ) );
+		if ( '' !== $url ) {
+			return $url;
+		}
+	}
+	return 'https://www.youtube.com/watch?v=aqz-KE-bpKQ';
+}
+
+/**
+ * Lấy YouTube video ID từ URL.
+ *
+ * @param string $url YouTube URL.
+ * @return string
+ */
+function annam_limo_landing_youtube_video_id( $url ) {
+	$url = trim( (string) $url );
+	if ( '' === $url ) {
+		return '';
+	}
+	if ( preg_match( '/(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/', $url, $m ) ) {
+		return $m[1];
+	}
+	if ( preg_match( '/^[A-Za-z0-9_-]{6,}$/', $url ) ) {
+		return $url;
+	}
+	return '';
+}
+
+/**
+ * src embed YouTube (privacy-enhanced).
+ *
+ * @param string $url Optional URL; empty = from settings.
+ * @return string
+ */
+function annam_limo_landing_youtube_embed_src( $url = '' ) {
+	if ( '' === $url ) {
+		$url = annam_limo_landing_get_youtube_url();
+	}
+	$id = annam_limo_landing_youtube_video_id( $url );
+	if ( '' === $id ) {
+		return '';
+	}
+	return 'https://www.youtube-nocookie.com/embed/' . rawurlencode( $id );
+}
+
+/**
  * @return string[]
  */
 function annam_limo_landing_get_lead_recipient_emails() {
@@ -150,14 +203,11 @@ function annam_limo_landing_maybe_save_settings() {
 
 	check_admin_referer( 'annam_save_limo_landing_settings', 'annam_limo_landing_settings_nonce' );
 
-	$raw = isset( $_POST['annam_limo_lead_emails'] ) ? sanitize_text_field( wp_unslash( $_POST['annam_limo_lead_emails'] ) ) : '';
-	update_option(
-		ANNAM_LIMO_LANDING_SETTINGS_OPTION,
-		array(
-			'lead_emails' => $raw,
-		),
-		false
-	);
+	$saved = annam_limo_landing_get_settings();
+	$saved['lead_emails'] = isset( $_POST['annam_limo_lead_emails'] ) ? sanitize_text_field( wp_unslash( $_POST['annam_limo_lead_emails'] ) ) : '';
+	$saved['youtube_url'] = isset( $_POST['annam_limo_youtube_url'] ) ? esc_url_raw( trim( (string) wp_unslash( $_POST['annam_limo_youtube_url'] ) ) ) : '';
+
+	update_option( ANNAM_LIMO_LANDING_SETTINGS_OPTION, $saved, false );
 
 	wp_safe_redirect(
 		add_query_arg(

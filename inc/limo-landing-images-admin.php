@@ -324,6 +324,10 @@ function annam_limo_landing_images_render_admin_page() {
 	$slots    = annam_limo_landing_get_image_slots();
 	$settings = function_exists( 'annam_limo_landing_get_settings' ) ? annam_limo_landing_get_settings() : array();
 	$emails   = isset( $settings['lead_emails'] ) ? (string) $settings['lead_emails'] : '';
+	$youtube_url = isset( $settings['youtube_url'] ) ? (string) $settings['youtube_url'] : '';
+	if ( '' === $youtube_url && function_exists( 'annam_limo_landing_get_youtube_url' ) ) {
+		$youtube_url = annam_limo_landing_get_youtube_url();
+	}
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Landing Limousine HN–Sapa', 'generatepress_child' ); ?></h1>
@@ -332,7 +336,7 @@ function annam_limo_landing_images_render_admin_page() {
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Đã lưu.', 'generatepress_child' ); ?></p></div>
 		<?php endif; ?>
 
-		<h2><?php esc_html_e( 'Email nhận lead', 'generatepress_child' ); ?></h2>
+		<h2><?php esc_html_e( 'Email & video YouTube', 'generatepress_child' ); ?></h2>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images' ) ); ?>">
 			<?php wp_nonce_field( 'annam_save_limo_landing_settings', 'annam_limo_landing_settings_nonce' ); ?>
 			<input type="hidden" name="annam_limo_landing_settings_action" value="1" />
@@ -340,7 +344,12 @@ function annam_limo_landing_images_render_admin_page() {
 				<label for="annam_limo_lead_emails"><?php esc_html_e( 'Email nhận lead (cách nhau bằng dấu phẩy)', 'generatepress_child' ); ?></label>
 				<input type="text" class="large-text" id="annam_limo_lead_emails" name="annam_limo_lead_emails" value="<?php echo esc_attr( $emails ); ?>" placeholder="email1@example.com, email2@example.com" />
 			</p>
-			<?php submit_button( __( 'Lưu email', 'generatepress_child' ) ); ?>
+			<p>
+				<label for="annam_limo_youtube_url"><strong><?php esc_html_e( 'Link video YouTube (trust)', 'generatepress_child' ); ?></strong></label><br />
+				<input type="url" class="large-text" id="annam_limo_youtube_url" name="annam_limo_youtube_url" value="<?php echo esc_attr( $youtube_url ); ?>" placeholder="https://www.youtube.com/watch?v=..." />
+			</p>
+			<p class="description"><?php esc_html_e( 'Dán link watch / youtu.be / shorts. Để trống sẽ dùng video placeholder tạm. Video hiện sau khối Hình ảnh xe.', 'generatepress_child' ); ?></p>
+			<?php submit_button( __( 'Lưu email & video', 'generatepress_child' ) ); ?>
 		</form>
 
 		<hr />

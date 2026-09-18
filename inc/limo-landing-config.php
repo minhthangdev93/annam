@@ -30,21 +30,20 @@ function annam_limo_landing_get_schedule_times_map() {
 }
 
 /**
- * CTA toàn site.
+ * CTA landing Limousine — S trip Việt Nam (không lấy hotline site An Nam).
  *
  * @return array<string,string>
  */
 function annam_limo_landing_get_cta() {
-	$d = function_exists( 'annam_contact_get_details' ) ? annam_contact_get_details() : array();
-
 	return apply_filters(
 		'annam_limo_landing_cta',
 		array(
-			'hotline_display' => isset( $d['hotline_display'] ) ? $d['hotline_display'] : '1900 8164',
-			'hotline_tel'     => isset( $d['hotline_tel'] ) ? $d['hotline_tel'] : 'tel:19008164',
-			'zalo_url'        => isset( $d['zalo_url'] ) ? $d['zalo_url'] : 'http://zalo.me/2127942034358673568',
-			'whatsapp_url'    => isset( $d['whatsapp_url'] ) ? $d['whatsapp_url'] : 'https://wa.me/+84942471111',
-			'email'           => isset( $d['email'] ) ? $d['email'] : 'annamdiscoveryvn@gmail.com',
+			'brand'             => 'S trip Việt Nam',
+			'hotline_display'   => '1900 888 828',
+			'hotline_tel'       => 'tel:1900888828',
+			'hotline2_display'  => '0523 031 111',
+			'hotline2_tel'      => 'tel:0523031111',
+			'zalo_url'          => 'https://zalo.me/0523031111',
 		)
 	);
 }
@@ -76,7 +75,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'subtitle'        => 'Điền thông tin — nhân viên gọi hoặc Zalo xác nhận trong giờ làm việc.',
 			'submit_label'    => 'Gửi Yêu Cầu Giữ Chỗ',
 			'footer_note'     => 'Không cần thanh toán online ngay. Nhân viên sẽ gọi/Zalo xác nhận trước.',
-			'success_message' => 'Cảm ơn quý khách. An Nam Discovery đã nhận thông tin và sẽ liên hệ xác nhận vé sớm.',
+			'success_message' => 'Cảm ơn quý khách. S trip Việt Nam đã nhận thông tin và sẽ liên hệ xác nhận vé sớm.',
 		),
 		'form_defaults' => array(
 			'from' => 'hanoi',
@@ -183,16 +182,6 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				'note'    => 'Giờ đón thực tế được xác nhận trước chuyến. Có thể dùng xe trung chuyển nếu điểm đón ghép ngược hướng (đặc biệt khu Phố Cổ).',
 			),
 			array(
-				'id'      => 'laocai',
-				'label'   => 'Lào Cai',
-				'heading' => 'Đón/trả tại TP. Lào Cai',
-				'items'   => array(
-					array( 'name' => 'Đón/trả tận nơi trung tâm TP. Lào Cai (bán kính 3 km)', 'time' => 'Hỗ trợ đón/trả tận nơi trong phạm vi 3 km' ),
-					array( 'name' => 'VP IC19 Cốc San', 'time' => 'Điểm đón/trả cố định khu vực TP. Lào Cai' ),
-				),
-				'note'    => 'Ngoài bán kính 3 km trung tâm có thể phát sinh phụ thu — báo trước khi xác nhận.',
-			),
-			array(
 				'id'      => 'sapa',
 				'label'   => 'Sapa',
 				'heading' => 'Đón/trả tận nơi trong phạm vi thị trấn',
@@ -228,6 +217,10 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				'slot'    => 'gallery-road',
 				'caption' => 'Trên đường Hà Nội ⇄ Sapa',
 			),
+		),
+		'video'         => array(
+			'title' => 'Xem Xe & Hành Trình Thật',
+			'lead'  => 'Video giúp quý khách hình dung rõ hơn về xe Limousine và trải nghiệm trên tuyến Hà Nội ⇄ Sapa.',
 		),
 		'why_cards'     => array(
 			array(
@@ -316,6 +309,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'schedule' => true,
 			'pickup'   => true,
 			'gallery'  => true,
+			'video'    => true,
 			'why'      => true,
 			'steps'    => true,
 			'faq'      => true,

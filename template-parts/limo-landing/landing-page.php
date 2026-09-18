@@ -249,6 +249,33 @@ if ( has_post_thumbnail() ) {
 	</section>
 	<?php endif; ?>
 
+	<?php
+	$video_cfg  = isset( $config['video'] ) ? $config['video'] : array();
+	$video_src  = function_exists( 'annam_limo_landing_youtube_embed_src' ) ? annam_limo_landing_youtube_embed_src() : '';
+	$show_video = ! empty( $secs['video'] ) && '' !== $video_src;
+	?>
+	<?php if ( $show_video ) : ?>
+	<section class="annam-limo-section annam-limo-section--video" id="video-xe">
+		<div class="annam-limo-container annam-limo-container--narrow">
+			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $video_cfg['title'] ) ? $video_cfg['title'] : __( 'Xem Xe & Hành Trình Thật', 'generatepress_child' ) ); ?></h2>
+			<?php if ( ! empty( $video_cfg['lead'] ) ) : ?>
+				<p class="annam-limo-section__lead"><?php echo esc_html( $video_cfg['lead'] ); ?></p>
+			<?php endif; ?>
+			<div class="annam-limo-video">
+				<iframe
+					class="annam-limo-video__frame"
+					src="<?php echo esc_url( $video_src ); ?>"
+					title="<?php echo esc_attr( ! empty( $video_cfg['title'] ) ? $video_cfg['title'] : __( 'Video Limousine', 'generatepress_child' ) ); ?>"
+					loading="lazy"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allowfullscreen
+					referrerpolicy="strict-origin-when-cross-origin"
+				></iframe>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $secs['why'] ) ) : ?>
 	<section class="annam-limo-section annam-limo-section--why" id="uu-diem">
 		<div class="annam-limo-container">
@@ -327,6 +354,7 @@ if ( has_post_thumbnail() ) {
 				<button type="button" class="annam-limo-btn annam-limo-btn--primary" data-annam-scroll-form><?php esc_html_e( 'Giữ Chỗ Ngay', 'generatepress_child' ); ?></button>
 				<a class="annam-limo-btn annam-limo-btn--zalo" href="<?php echo esc_url( $cta['zalo_url'] ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Nhắn Zalo', 'generatepress_child' ); ?></a>
 				<a class="annam-limo-btn annam-limo-btn--outline" href="<?php echo esc_url( $cta['hotline_tel'] ); ?>"><?php echo esc_html( $cta['hotline_display'] ); ?></a>
+				<a class="annam-limo-btn annam-limo-btn--outline" href="<?php echo esc_url( $cta['hotline2_tel'] ); ?>"><?php echo esc_html( $cta['hotline2_display'] ); ?></a>
 			</div>
 		</div>
 	</section>
