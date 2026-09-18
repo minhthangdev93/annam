@@ -1261,12 +1261,9 @@ body.annam-limo-landing-page {
 	right: 0;
 	bottom: 0;
 	z-index: 90;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1.2fr;
-	gap: 0;
-	background: #fff;
-	border-top: 1px solid var(--annam-limo-border);
-	box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08);
+	padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+	pointer-events: none;
+	background: linear-gradient(180deg, rgba(248, 250, 252, 0) 0%, rgba(248, 250, 252, 0.85) 40%, rgba(248, 250, 252, 0.96) 100%);
 }
 
 @media (min-width: 900px) {
@@ -1275,30 +1272,107 @@ body.annam-limo-landing-page {
 	}
 }
 
+.annam-limo-sticky__inner {
+	pointer-events: auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1.35fr;
+	gap: 8px;
+	max-width: 480px;
+	margin: 0 auto;
+	padding: 8px;
+	border-radius: 18px;
+	background: rgba(255, 255, 255, 0.92);
+	border: 1px solid rgba(229, 231, 235, 0.95);
+	box-shadow:
+		0 1px 2px rgba(15, 23, 42, 0.04),
+		0 10px 28px rgba(15, 23, 42, 0.12);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+}
+
 .annam-limo-sticky__btn {
-	padding: 14px 8px;
-	border: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 46px;
+	padding: 10px 10px;
+	border: 1px solid transparent;
+	border-radius: 12px;
 	background: #fff;
 	font: inherit;
+	font-size: 0.875rem;
 	font-weight: 700;
+	line-height: 1.1;
+	letter-spacing: 0.01em;
 	text-align: center;
 	text-decoration: none;
 	color: var(--annam-limo-text);
 	cursor: pointer;
+	transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.annam-limo-sticky__btn:active {
+	transform: scale(0.97);
+}
+
+.annam-limo-sticky__icon {
+	display: inline-flex;
+	flex-shrink: 0;
+	line-height: 0;
+}
+
+.annam-limo-sticky__icon svg {
+	display: block;
+}
+
+.annam-limo-sticky__label {
+	white-space: nowrap;
+}
+
+.annam-limo-sticky__btn--call {
+	background: #f0fdfa;
+	border-color: #99f6e4;
+	color: var(--annam-limo-green-dark);
+}
+
+.annam-limo-sticky__btn--call:hover,
+.annam-limo-sticky__btn--call:focus {
+	background: #ccfbf1;
+	border-color: #5eead4;
+	color: var(--annam-limo-green-dark);
 }
 
 .annam-limo-sticky__btn--zalo {
 	background: #eff6ff;
+	border-color: #bfdbfe;
+	color: var(--annam-limo-zalo);
+}
+
+.annam-limo-sticky__btn--zalo:hover,
+.annam-limo-sticky__btn--zalo:focus {
+	background: #dbeafe;
+	border-color: #93c5fd;
 	color: var(--annam-limo-zalo);
 }
 
 .annam-limo-sticky__btn--form {
-	background: var(--annam-limo-orange);
+	background: linear-gradient(180deg, #f97316 0%, var(--annam-limo-orange) 100%);
+	border-color: transparent;
 	color: #fff;
+	box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35);
+}
+
+.annam-limo-sticky__btn--form:hover,
+.annam-limo-sticky__btn--form:focus {
+	background: linear-gradient(180deg, #fb923c 0%, var(--annam-limo-orange-dark) 100%);
+	color: #fff;
+	box-shadow: 0 6px 16px rgba(194, 65, 12, 0.4);
 }
 
 .annam-limo-landing-page {
-	padding-bottom: 64px;
+	padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
 }
 
 @media (min-width: 900px) {
@@ -1449,4 +1523,41 @@ body.annam-limo-landing-page .annam-limo-landing a.annam-limo-btn--outline:focus
 	background-color: #f0fdfa !important;
 	border-color: var(--annam-limo-green) !important;
 	color: var(--annam-limo-green-dark) !important;
+}
+
+/* Sticky mobile CTA — chống GP button/link override */
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-sticky__btn {
+	-webkit-appearance: none;
+	appearance: none;
+	text-decoration: none !important;
+	opacity: 1 !important;
+	text-shadow: none !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:visited {
+	background-color: #f0fdfa !important;
+	border: 1px solid #99f6e4 !important;
+	color: var(--annam-limo-green-dark) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:hover,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:focus,
+body.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:visited {
+	background-color: #eff6ff !important;
+	border: 1px solid #bfdbfe !important;
+	color: var(--annam-limo-zalo) !important;
+}
+
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-sticky__btn--form,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-sticky__btn--form:hover,
+body.annam-limo-landing-page .annam-limo-landing button.annam-limo-sticky__btn--form:focus {
+	background: linear-gradient(180deg, #f97316 0%, var(--annam-limo-orange) 100%) !important;
+	border: 1px solid transparent !important;
+	color: #fff !important;
+	box-shadow: 0 4px 12px rgba(234, 88, 12, 0.35) !important;
 }

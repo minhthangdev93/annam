@@ -382,8 +382,25 @@ if ( has_post_thumbnail() ) {
 	</div>
 
 	<div class="annam-limo-sticky" role="navigation" aria-label="<?php esc_attr_e( 'Thao tác nhanh', 'generatepress_child' ); ?>">
-		<a class="annam-limo-sticky__btn" href="<?php echo esc_url( $cta['hotline_tel'] ); ?>"><?php esc_html_e( 'Gọi', 'generatepress_child' ); ?></a>
-		<a class="annam-limo-sticky__btn annam-limo-sticky__btn--zalo" href="<?php echo esc_url( $cta['zalo_url'] ); ?>" target="_blank" rel="noopener">Zalo</a>
-		<button type="button" class="annam-limo-sticky__btn annam-limo-sticky__btn--form" data-annam-scroll-form><?php esc_html_e( 'Giữ chỗ', 'generatepress_child' ); ?></button>
+		<div class="annam-limo-sticky__inner">
+			<a class="annam-limo-sticky__btn annam-limo-sticky__btn--call" href="<?php echo esc_url( $cta['hotline_tel'] ); ?>">
+				<span class="annam-limo-sticky__icon" aria-hidden="true">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.1a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
+				</span>
+				<span class="annam-limo-sticky__label"><?php esc_html_e( 'Gọi', 'generatepress_child' ); ?></span>
+			</a>
+			<a class="annam-limo-sticky__btn annam-limo-sticky__btn--zalo" href="<?php echo esc_url( $cta['zalo_url'] ); ?>" target="_blank" rel="noopener">
+				<span class="annam-limo-sticky__icon" aria-hidden="true">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+				</span>
+				<span class="annam-limo-sticky__label">Zalo</span>
+			</a>
+			<button type="button" class="annam-limo-sticky__btn annam-limo-sticky__btn--form" data-annam-scroll-form>
+				<span class="annam-limo-sticky__icon" aria-hidden="true">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+				</span>
+				<span class="annam-limo-sticky__label"><?php esc_html_e( 'Giữ chỗ', 'generatepress_child' ); ?></span>
+			</button>
+		</div>
 	</div>
 </article>
