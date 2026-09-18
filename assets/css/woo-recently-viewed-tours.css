@@ -4,13 +4,28 @@
  */
 
 .annam-recently-viewed {
+	width: 100%;
+	max-width: 1500px;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
 }
 
 .annam-recently-viewed__inner.annam-container,
 .annam-recently-viewed__inner.annam-container.grid-container {
-	width:  clamp(1000px, 80vw, 1500px);
+	width: 100%;
+	max-width: none;
 	margin-left: auto;
 	margin-right: auto;
+	padding-left: 0;
+	padding-right: 0;
+	box-sizing: border-box;
+}
+
+@media (min-width: 782px) {
+	.annam-recently-viewed {
+		padding: var(--space-5);
+	}
 }
 
 .annam-recently-viewed__header { margin: 0 0 var(--space-5); }
