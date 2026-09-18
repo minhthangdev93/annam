@@ -15,8 +15,18 @@ $notice   = annam_limo_landing_get_notice();
 $default_from = isset( $defaults['from'] ) ? sanitize_key( (string) $defaults['from'] ) : 'hanoi';
 $default_to   = isset( $defaults['to'] ) ? sanitize_key( (string) $defaults['to'] ) : 'sapa';
 $default_seat = isset( $defaults['seat'] ) ? sanitize_key( (string) $defaults['seat'] ) : 'seat_a';
+$default_time = isset( $defaults['time'] ) ? (string) $defaults['time'] : '07:00';
 $today        = wp_date( 'Y-m-d' );
 $route_map    = annam_limo_landing_get_route_destinations_map();
+$time_options = function_exists( 'annam_limo_landing_departure_times' )
+	? annam_limo_landing_departure_times( $default_from, $default_to )
+	: array( '07:00', '14:30' );
+if ( empty( $time_options ) ) {
+	$time_options = array( '07:00', '14:30' );
+}
+if ( ! in_array( $default_time, $time_options, true ) ) {
+	$default_time = $time_options[0];
+}
 $place_labels = array(
 	'hanoi' => 'Hà Nội',
 	'sapa'  => 'Sapa',
@@ -71,8 +81,9 @@ $place_labels = array(
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-time"><?php esc_html_e( 'Giờ đi', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
 				<select name="annam_limo_time" id="annam-limo-time" required data-annam-field="time">
-					<option value="07:00" selected>07:00</option>
-					<option value="14:00">14:00</option>
+					<?php foreach ( $time_options as $time_opt ) : ?>
+						<option value="<?php echo esc_attr( $time_opt ); ?>" <?php selected( $default_time, $time_opt ); ?>><?php echo esc_html( $time_opt ); ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>

@@ -8,25 +8,41 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Giờ chạy cố định mỗi chiều.
- *
- * @return string[]
- */
-function annam_limo_landing_departure_times() {
-	return array( '07:00', '14:00' );
-}
-
-/**
- * Map giờ cho JS (key: from_to).
+ * Map giờ xuất phát theo chiều (key: from_to).
  *
  * @return array<string,string[]>
  */
 function annam_limo_landing_get_schedule_times_map() {
-	$times = annam_limo_landing_departure_times();
 	return array(
-		'hanoi_sapa' => $times,
-		'sapa_hanoi' => $times,
+		'hanoi_sapa' => array( '07:00', '14:30' ),
+		'sapa_hanoi' => array( '07:30', '14:30' ),
 	);
+}
+
+/**
+ * Giờ chạy theo chiều; không truyền from/to thì trả về toàn bộ giờ unique.
+ *
+ * @param string $from hanoi|sapa|''.
+ * @param string $to   hanoi|sapa|''.
+ * @return string[]
+ */
+function annam_limo_landing_departure_times( $from = '', $to = '' ) {
+	$map  = annam_limo_landing_get_schedule_times_map();
+	$from = sanitize_key( (string) $from );
+	$to   = sanitize_key( (string) $to );
+
+	if ( '' !== $from && '' !== $to ) {
+		$key = $from . '_' . $to;
+		return isset( $map[ $key ] ) ? $map[ $key ] : array();
+	}
+
+	$all = array();
+	foreach ( $map as $times ) {
+		foreach ( $times as $time ) {
+			$all[ $time ] = $time;
+		}
+	}
+	return array_values( $all );
 }
 
 /**
@@ -59,17 +75,19 @@ function annam_limo_landing_get_cta() {
  * @return array<string,mixed>
  */
 function annam_limo_landing_get_default_config( $page_id = 0 ) {
-	$times = annam_limo_landing_departure_times();
+	$schedule_map   = annam_limo_landing_get_schedule_times_map();
+	$times_hn_sapa  = isset( $schedule_map['hanoi_sapa'] ) ? $schedule_map['hanoi_sapa'] : array( '07:00', '14:30' );
+	$times_sapa_hn  = isset( $schedule_map['sapa_hanoi'] ) ? $schedule_map['sapa_hanoi'] : array( '07:30', '14:30' );
 
 	$config = array(
 		'product_name' => 'Vé Limousine 10 chỗ Hà Nội ⇄ Sapa',
 		'hero'         => array(
 			'title'      => 'Vé Limousine 10 Chỗ Hà Nội ⇄ Sapa',
-			'subtitle'   => '2 chuyến mỗi chiều mỗi ngày (07:00 & 14:00), khoảng 6 giờ, đón trả theo phạm vi tiêu chuẩn.',
+			'subtitle'   => '2 chuyến mỗi chiều mỗi ngày (HN→Sapa 07:00 & 14:30 · Sapa→HN 07:30 & 14:30), khoảng 6 giờ, đón trả theo phạm vi tiêu chuẩn.',
 			'price_from' => '450.000đ',
 			'badges'     => array(
 				'Limousine 10 chỗ',
-				'07:00 & 14:00 hằng ngày',
+				'HN→Sapa 07:00 & 14:30 · Sapa→HN 07:30 & 14:30',
 				'Nhiều điểm đón trả HN ⇄ Sapa',
 				'Giữ chỗ nhanh qua form / Zalo',
 			),
@@ -133,14 +151,14 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				'label' => 'Hà Nội → Sapa',
 				'from'  => 'hanoi',
 				'to'    => 'sapa',
-				'times' => $times,
+				'times' => $times_hn_sapa,
 			),
 			array(
 				'id'    => 'sapa-hanoi',
 				'label' => 'Sapa → Hà Nội',
 				'from'  => 'sapa',
 				'to'    => 'hanoi',
-				'times' => $times,
+				'times' => $times_sapa_hn,
 			),
 		),
 		'timelines'     => array(
@@ -148,7 +166,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				'heading' => 'Lộ trình Hà Nội → Sapa (mốc dự kiến)',
 				'steps'   => array(
 					array( 'place' => 'Đón nội thành Hà Nội', 'note' => 'Trước giờ xuất phát tùy điểm' ),
-					array( 'place' => 'Cầu vượt Vĩnh Ngọc', 'note' => 'Đúng giờ chuyến 07:00 hoặc 14:00' ),
+					array( 'place' => 'Cầu vượt Vĩnh Ngọc', 'note' => 'Đúng giờ chuyến 07:00 hoặc 14:30' ),
 					array( 'place' => 'Sân bay Nội Bài', 'note' => '~20 phút sau giờ xuất phát' ),
 					array( 'place' => 'TP. Lào Cai (VP IC19 Cốc San)', 'note' => '~05 giờ sau giờ xuất phát' ),
 					array( 'place' => 'Thị trấn Sapa', 'note' => '~06 giờ sau giờ xuất phát' ),
@@ -158,7 +176,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				'heading' => 'Lộ trình Sapa → Hà Nội (mốc dự kiến)',
 				'steps'   => array(
 					array( 'place' => 'Đón thị trấn Sapa / VP 697 Điện Biên Phủ', 'note' => 'Bắt đầu đón ~30–45 phút trước giờ' ),
-					array( 'place' => 'Xuất phát đúng giờ', 'note' => '07:00 hoặc 14:00' ),
+					array( 'place' => 'Xuất phát đúng giờ', 'note' => '07:30 hoặc 14:30' ),
 					array( 'place' => 'TP. Lào Cai', 'note' => '~01 giờ sau giờ xuất phát' ),
 					array( 'place' => 'Sân bay Nội Bài', 'note' => '~05 giờ sau giờ xuất phát' ),
 					array( 'place' => 'Nội thành Hà Nội', 'note' => '~06 giờ sau giờ xuất phát' ),
@@ -235,7 +253,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'icon'  => 'clock',
 				'title' => 'Lịch rõ ràng mỗi ngày',
-				'text'  => 'Hai khung giờ cố định 07:00 và 14:00 cho cả chiều đi và chiều về.',
+				'text'  => 'HN→Sapa: 07:00 & 14:30 · Sapa→HN: 07:30 & 14:30 — hai chuyến mỗi chiều mỗi ngày.',
 			),
 			array(
 				'icon'  => 'pin',
@@ -251,7 +269,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 		'steps'         => array(
 			array(
 				'title' => 'Chọn tuyến & giờ',
-				'text'  => 'Hà Nội ⇄ Sapa, chuyến 07:00 hoặc 14:00, chọn ghế giữa / ghế đầu–cuối hoặc bao xe.',
+				'text'  => 'Hà Nội ⇄ Sapa: HN→Sapa 07:00/14:30, Sapa→HN 07:30/14:30 — chọn ghế giữa / ghế đầu–cuối hoặc bao xe.',
 			),
 			array(
 				'title' => 'Gửi yêu cầu giữ chỗ',
@@ -273,7 +291,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			),
 			array(
 				'question' => 'Xe chạy những giờ nào?',
-				'answer'   => 'Mỗi chiều 02 chuyến mỗi ngày: 07:00 và 14:00. Thời gian hành trình dự kiến khoảng 06 giờ (đã gồm nghỉ dọc đường).',
+				'answer'   => 'Hà Nội → Sapa: 07:00 và 14:30. Sapa → Hà Nội: 07:30 và 14:30. Mỗi chiều 02 chuyến mỗi ngày. Thời gian hành trình dự kiến khoảng 06 giờ (đã gồm nghỉ dọc đường).',
 			),
 			array(
 				'question' => 'Đón trả ở đâu tại Hà Nội?',
@@ -298,7 +316,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 		),
 		'final_cta'     => array(
 			'title'    => 'Sẵn sàng giữ chỗ Limousine Hà Nội ⇄ Sapa?',
-			'subtitle' => 'Chọn giờ 07:00 hoặc 14:00 — nhân viên xác nhận ghế và điểm đón nhanh.',
+			'subtitle' => 'Chọn giờ theo chiều (HN→Sapa 07:00/14:30 · Sapa→HN 07:30/14:30) — nhân viên xác nhận ghế và điểm đón nhanh.',
 		),
 		'anchors'       => array(
 			array( 'id' => 'gia-ve', 'label' => 'Bảng giá' ),

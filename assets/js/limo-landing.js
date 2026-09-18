@@ -419,31 +419,75 @@
 		}
 		var img = $('.annam-limo-lightbox__img', lb);
 		var cap = $('.annam-limo-lightbox__cap', lb);
+		var current = 0;
+
+		function show(index) {
+			if (!items.length) {
+				return;
+			}
+			current = ((index % items.length) + items.length) % items.length;
+			var item = items[current];
+			if (!item || !img) {
+				return;
+			}
+			img.src = item.src;
+			img.alt = item.caption || '';
+			if (cap) {
+				cap.textContent = item.caption || '';
+			}
+			lb.hidden = false;
+			lb.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function close() {
+			lb.hidden = true;
+			lb.setAttribute('aria-hidden', 'true');
+			document.body.style.overflow = '';
+		}
 
 		$$('[data-annam-gallery-open]').forEach(function (btn) {
 			btn.addEventListener('click', function () {
 				var idx = parseInt(btn.getAttribute('data-annam-gallery-open'), 10) || 0;
-				var item = items[idx];
-				if (!item || !img) {
-					return;
-				}
-				img.src = item.src;
-				img.alt = item.caption || '';
-				if (cap) {
-					cap.textContent = item.caption || '';
-				}
-				lb.hidden = false;
+				show(idx);
 			});
 		});
 
-		$$('[data-annam-lightbox-close]').forEach(function (btn) {
-			btn.addEventListener('click', function () {
-				lb.hidden = true;
-			});
+		$$('[data-annam-lightbox-close]', lb).forEach(function (btn) {
+			btn.addEventListener('click', close);
 		});
+
+		var prev = $('[data-annam-lightbox-prev]', lb);
+		var next = $('[data-annam-lightbox-next]', lb);
+		if (prev) {
+			prev.addEventListener('click', function (e) {
+				e.stopPropagation();
+				show(current - 1);
+			});
+		}
+		if (next) {
+			next.addEventListener('click', function (e) {
+				e.stopPropagation();
+				show(current + 1);
+			});
+		}
+
 		lb.addEventListener('click', function (e) {
 			if (e.target === lb) {
-				lb.hidden = true;
+				close();
+			}
+		});
+
+		document.addEventListener('keydown', function (e) {
+			if (lb.hidden) {
+				return;
+			}
+			if (e.key === 'Escape') {
+				close();
+			} else if (e.key === 'ArrowLeft') {
+				show(current - 1);
+			} else if (e.key === 'ArrowRight') {
+				show(current + 1);
 			}
 		});
 	}

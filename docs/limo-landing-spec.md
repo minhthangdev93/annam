@@ -39,13 +39,13 @@ Hai cột trên desktop: bên trái là thông điệp sản phẩm, bên phải
 
 **Cột trái:** nhãn nhỏ “Limousine 10 chỗ” → tiêu đề lớn (vé HN ⇄ Sapa) → một câu mô tả ngắn (2 chuyến/ngày, ~6 giờ, đón trả trong phạm vi) → dòng “Giá từ 450.000đ/ghế/chiều” → vài badge tin cậy (loại xe, giờ chạy, điểm đón, giữ chỗ nhanh) → ba nút: gọi hotline, chat Zalo, nhảy xuống bảng giá.
 
-**Cột phải — form “Giữ chỗ trong 1 phút”:** khách chọn điểm đón / điểm trả (chỉ HN ⇄ Sapa), ngày đi, giờ (07:00 hoặc 14:00 — đã có sẵn, không bắt chọn “Chọn giờ”), hạng ghế, số khách, họ tên, SĐT/Zalo, và tùy chọn ghi điểm đón/trả mong muốn (placeholder đổi theo chiều). Gửi xong không thanh toán online; nhân viên gọi/Zalo xác nhận. Trên mobile, nút gọi/Zalo nằm phía trên form.
+**Cột phải — form “Giữ chỗ trong 1 phút”:** khách chọn điểm đón / điểm trả (chỉ HN ⇄ Sapa), ngày đi, giờ theo chiều (HN→Sapa: 07:00/14:30; Sapa→HN: 07:30/14:30 — không có option “Chọn giờ”), hạng ghế, số khách, họ tên, SĐT/Zalo, và tùy chọn ghi điểm đón/trả mong muốn (placeholder đổi theo chiều). Gửi xong không thanh toán online; nhân viên gọi/Zalo xác nhận. Trên mobile, nút gọi/Zalo nằm phía trên form.
 
 ### Bảng giá (`#gia-ve`)
 Ba thẻ giá ngang hàng: ghế giữa (badge “Phổ biến”, 500k), ghế đầu/cuối (450k), bao nguyên xe (badge “Nhóm”, 4.2tr). Mỗi thẻ có mô tả ngắn + nút “Chọn vé này” (điền hạng ghế vào form và kéo lên form). Dưới cùng một ghi chú: giá hai chiều trong phạm vi chuẩn; ngoài phạm vi có thể phụ thu.
 
 ### Lịch xe (`#lich-xe`)
-Giới thiệu: 2 chuyến mỗi chiều mỗi ngày, khoảng 6 giờ. Tab chuyển **Hà Nội → Sapa** / **Sapa → Hà Nội**. Trong mỗi tab: hai nút giờ lớn (07:00 chuyến sáng, 14:00 chuyến chiều) — bấm thì điền vào form; bên cạnh là timeline lộ trình dạng cột mốc (đón nội thành → Vĩnh Ngọc → Nội Bài → Lào Cai → Sapa, hoặc ngược lại). Nút “Chọn giờ này và giữ chỗ” kéo về form. Lào Cai chỉ là điểm trên lộ trình, không phải tab đón riêng.
+Giới thiệu: 2 chuyến mỗi chiều mỗi ngày, khoảng 6 giờ. Tab chuyển **Hà Nội → Sapa** / **Sapa → Hà Nội**. Trong mỗi tab: hai nút giờ lớn (HN→Sapa: 07:00 sáng & 14:30 chiều; Sapa→HN: 07:30 sáng & 14:30 chiều) — bấm thì điền vào form; bên cạnh là timeline lộ trình dạng cột mốc (đón nội thành → Vĩnh Ngọc → Nội Bài → Lào Cai → Sapa, hoặc ngược lại). Nút “Chọn giờ này và giữ chỗ” kéo về form. Lào Cai chỉ là điểm trên lộ trình, không phải tab đón riêng.
 
 ### Điểm đón & trả (`#diem-don`)
 Tab **Hà Nội** / **Sapa**. Mỗi điểm là một dòng có số thứ tự, tên địa điểm, icon đồng hồ + giờ đón dự kiến. Hà Nội liệt kê nhiều điểm (Phố Cổ, các VP, Vĩnh Ngọc…). Sapa: khách sạn trong ~5km + VP 697 Điện Biên Phủ. Ghi chú dưới list: giờ thực tế xác nhận trước chuyến; ngoài phạm vi có thể phụ thu.
@@ -57,7 +57,7 @@ Lưới ảnh xe thật + caption dưới mỗi ảnh. Desktop: ảnh đầu l�
 Khối hẹp hơn, tiêu đề kiểu “Xem xe & hành trình thật”, một đoạn lead ngắn, rồi khung video 16:9 nhúng YouTube (URL chỉnh trong admin). Mục đích tạo niềm tin bằng hình động.
 
 ### Vì sao chọn (`#uu-diem`)
-Bốn thẻ lý do (số thứ tự 01–04 + icon): xe 10 chỗ riêng tư hơn; lịch cố định 07:00/14:00; đón trả tiện (HN + Sapa KS); giữ chỗ nhanh qua form/Zalo. Không phải bảng so sánh dài — chỉ 4 điểm bán.
+Bốn thẻ lý do (số thứ tự 01–04 + icon): xe 10 chỗ riêng tư hơn; lịch cố định theo chiều (HN→Sapa 07:00/14:30, Sapa→HN 07:30/14:30); đón trả tiện (HN + Sapa KS); giữ chỗ nhanh qua form/Zalo. Không phải bảng so sánh dài — chỉ 4 điểm bán.
 
 ### Đặt vé 3 bước (`#dat-ve`)
 Ba bước ngang/dọc có số: (1) chọn tuyến & giờ & ghế, (2) gửi form giữ chỗ, (3) nhân viên xác nhận & hướng dẫn lên xe. Một nút “Giữ chỗ ngay” kéo lên form.
@@ -117,7 +117,7 @@ Shared mail: `inc/annam-lead-mail.php` → `annam_lead_send_notification()`.
 |-------|----------|---------|
 | Điểm đón / Điểm trả | * | Chỉ `hanoi` ⇄ `sapa` |
 | Ngày đi | * | `input[type=date]`, min = hôm nay; **iOS cần CSS chống overflow** |
-| Giờ đi | * | `07:00` / `14:00`, **không** có option “Chọn giờ”; mặc định `07:00` |
+| Giờ đi | * | Theo chiều: HN→Sapa `07:00`/`14:30`, Sapa→HN `07:30`/`14:30`; **không** có option “Chọn giờ”; mặc định `07:00` (chiều HN→Sapa) |
 | Hạng ghế | * | Ghế giữa / Ghế đầu–cuối / Bao xe |
 | Số khách | | 1–20 |
 | Họ tên, SĐT/Zalo | * | Validate phone |
@@ -155,7 +155,9 @@ Recipient: option admin `lead_emails`, fallback `admin_email`.
 
 ## 8. Lịch & lộ trình
 
-- Mỗi chiều: **07:00** và **14:00**.
+- Hà Nội → Sapa: **07:00** và **14:30**.
+- Sapa → Hà Nội: **07:30** và **14:30**.
+- Nguồn sự thật: `annam_limo_landing_get_schedule_times_map()`.
 - Timeline mốc dự kiến (đón nội thành → Vĩnh Ngọc → Nội Bài → Lào Cai → Sapa và ngược lại). Lào Cai chỉ là **mốc lộ trình**, không còn tab điểm đón riêng.
 - UI: card lịch + nút giờ lớn + CTA “Chọn giờ này và giữ chỗ” (đẩy data vào form).
 

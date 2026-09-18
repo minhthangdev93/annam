@@ -68,7 +68,7 @@ function annam_limo_landing_filter_times_for_date( $from, $to, $date_ymd ) {
 		return array();
 	}
 
-	$all      = annam_limo_landing_departure_times();
+	$all      = annam_limo_landing_departure_times( $from, $to );
 	$date_ymd = preg_match( '/^\d{4}-\d{2}-\d{2}$/', (string) $date_ymd ) ? (string) $date_ymd : '';
 	if ( '' === $date_ymd ) {
 		return $all;

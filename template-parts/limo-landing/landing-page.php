@@ -124,7 +124,8 @@ if ( has_post_thumbnail() ) {
 					$timeline = isset( $config['timelines'][ $sch['id'] ] ) ? $config['timelines'][ $sch['id'] ] : null;
 					$time_meta = array(
 						'07:00' => __( 'Chuyến sáng', 'generatepress_child' ),
-						'14:00' => __( 'Chuyến chiều', 'generatepress_child' ),
+						'07:30' => __( 'Chuyến sáng', 'generatepress_child' ),
+						'14:30' => __( 'Chuyến chiều', 'generatepress_child' ),
 					);
 					?>
 					<div class="annam-limo-tabs__panel annam-limo-schedule__panel<?php echo 0 === $i ? ' is-active' : ''; ?>" role="tabpanel" data-panel="<?php echo esc_attr( $sch['id'] ); ?>">
@@ -375,10 +376,20 @@ if ( has_post_thumbnail() ) {
 	</section>
 	<?php endif; ?>
 
-	<div class="annam-limo-lightbox" id="annam-limo-lightbox" hidden>
-		<button type="button" class="annam-limo-lightbox__close" data-annam-lightbox-close aria-label="<?php esc_attr_e( 'Đóng', 'generatepress_child' ); ?>">&times;</button>
-		<img src="" alt="" class="annam-limo-lightbox__img" />
-		<p class="annam-limo-lightbox__cap"></p>
+	<div class="annam-limo-lightbox" id="annam-limo-lightbox" hidden role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Xem ảnh', 'generatepress_child' ); ?>">
+		<button type="button" class="annam-limo-lightbox__ctrl annam-limo-lightbox__close" data-annam-lightbox-close aria-label="<?php esc_attr_e( 'Đóng', 'generatepress_child' ); ?>">
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+		</button>
+		<button type="button" class="annam-limo-lightbox__ctrl annam-limo-lightbox__nav annam-limo-lightbox__nav--prev" data-annam-lightbox-prev aria-label="<?php esc_attr_e( 'Ảnh trước', 'generatepress_child' ); ?>">
+			<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+		</button>
+		<figure class="annam-limo-lightbox__figure">
+			<img src="" alt="" class="annam-limo-lightbox__img" />
+			<figcaption class="annam-limo-lightbox__cap"></figcaption>
+		</figure>
+		<button type="button" class="annam-limo-lightbox__ctrl annam-limo-lightbox__nav annam-limo-lightbox__nav--next" data-annam-lightbox-next aria-label="<?php esc_attr_e( 'Ảnh sau', 'generatepress_child' ); ?>">
+			<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+		</button>
 	</div>
 
 	<div class="annam-limo-sticky" role="navigation" aria-label="<?php esc_attr_e( 'Thao tác nhanh', 'generatepress_child' ); ?>">
