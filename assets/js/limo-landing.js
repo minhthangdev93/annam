@@ -207,6 +207,43 @@
 			});
 	}
 
+	function pushBookingSuccess(detail) {
+		var payload = {
+			event: 'limo_booking_success',
+			eventCategory: 'limo_landing',
+			form_id: 'annam-limo-form',
+			landing: 'limo_hn_sapa',
+		};
+		if (detail && typeof detail === 'object') {
+			if (detail.from) {
+				payload.from = detail.from;
+			}
+			if (detail.to) {
+				payload.to = detail.to;
+			}
+			if (detail.seat) {
+				payload.seat = detail.seat;
+			}
+			if (detail.time) {
+				payload.time = detail.time;
+			}
+		}
+		document.body.dispatchEvent(
+			new CustomEvent('annam_limo_track', {
+				bubbles: true,
+				detail: payload,
+			})
+		);
+		if (typeof window.gtag === 'function') {
+			window.gtag('event', 'limo_booking_success', {
+				event_category: 'limo_landing',
+				form_id: 'annam-limo-form',
+			});
+		}
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push(payload);
+	}
+
 	function initAjaxForm() {
 		var form = $('#annam-limo-form');
 		if (!form || !booking.ajaxUrl) {
@@ -281,6 +318,12 @@
 							(result.json.data && result.json.data.message) ||
 							'Cảm ơn quý khách.';
 						showFormNotice('success', msg);
+						pushBookingSuccess({
+							from: fromEl ? fromEl.value : '',
+							to: toEl ? toEl.value : '',
+							seat: $('#annam-limo-seat', form) ? $('#annam-limo-seat', form).value : '',
+							time: timeEl ? timeEl.value : '',
+						});
 						form.reset();
 						autoTomorrowDone = false;
 						var defs = cfg.formDefaults || {};
