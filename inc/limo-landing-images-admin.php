@@ -41,7 +41,7 @@ function annam_limo_landing_get_image_slots() {
 			'formats'         => 'JPG, WebP',
 			'wp_size'         => 'large',
 			'fallback'        => 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80',
-			'default_caption' => 'Ngoại thất Limousine 10 chỗ',
+			'default_caption' => 'Ngoại thất Limousine 11 chỗ',
 		),
 		'gallery-interior' => array(
 			'label'           => __( 'Nội thất ghế', 'generatepress_child' ),
@@ -301,7 +301,7 @@ function annam_limo_landing_images_render_field( $key, array $slot, $value_id, $
 		<?php if ( $is_gallery ) : ?>
 			<p>
 				<label for="annam-limo-cap-<?php echo esc_attr( $key ); ?>"><strong><?php esc_html_e( 'Mô tả ảnh (caption)', 'generatepress_child' ); ?></strong></label><br />
-				<input type="text" class="large-text" id="annam-limo-cap-<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $cap_name ); ?>" value="<?php echo esc_attr( $cap_value ); ?>" maxlength="120" placeholder="<?php esc_attr_e( 'VD: Ngoại thất Limousine 10 chỗ', 'generatepress_child' ); ?>" />
+				<input type="text" class="large-text" id="annam-limo-cap-<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $cap_name ); ?>" value="<?php echo esc_attr( $cap_value ); ?>" maxlength="120" placeholder="<?php esc_attr_e( 'VD: Ngoại thất Limousine 11 chỗ', 'generatepress_child' ); ?>" />
 			</p>
 		<?php endif; ?>
 	</div>

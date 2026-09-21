@@ -1,6 +1,6 @@
 <?php
 /**
- * Landing vé Limousine 10 chỗ Hà Nội ⇄ Sapa.
+ * Landing vé Limousine 11 chỗ Hà Nội ⇄ Sapa.
  *
  * @package GeneratePress_Child
  */
@@ -49,7 +49,7 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-hero">
 		<div class="annam-limo-container annam-limo-hero__grid">
 			<div class="annam-limo-hero__content">
-				<p class="annam-limo-hero__eyebrow"><?php esc_html_e( 'Limousine 10 chỗ', 'generatepress_child' ); ?></p>
+				<p class="annam-limo-hero__eyebrow"><?php esc_html_e( 'Limousine 11 chỗ', 'generatepress_child' ); ?></p>
 				<h1 class="annam-limo-hero__title"><?php echo esc_html( $hero['title'] ); ?></h1>
 				<p class="annam-limo-hero__subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>
 				<p class="annam-limo-hero__price">
@@ -85,7 +85,7 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-section" id="gia-ve">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Bảng Giá Vé Limousine', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-section__lead"><?php esc_html_e( 'Áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội. Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 ghế khách.', 'generatepress_child' ); ?></p>
 			<div class="annam-limo-price-grid">
 				<?php foreach ( $config['pricing']['rows'] as $row ) : ?>
 					<article class="annam-limo-price-card<?php echo ! empty( $row['badge'] ) ? ' annam-limo-price-card--highlight' : ''; ?>">
@@ -218,7 +218,7 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-section annam-limo-section--alt" id="anh-xe">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Hình Ảnh Xe Limousine', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Xe thật — ghế Limousine 10 chỗ trên tuyến Hà Nội ⇄ Sapa.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-section__lead"><?php esc_html_e( 'Xe thật — Limousine 11 chỗ (gồm ghế tài xế) trên tuyến Hà Nội ⇄ Sapa.', 'generatepress_child' ); ?></p>
 			<div class="annam-limo-gallery" data-annam-limo-gallery>
 				<?php foreach ( $gallery as $i => $item ) : ?>
 					<?php
@@ -280,8 +280,8 @@ if ( has_post_thumbnail() ) {
 	<?php if ( ! empty( $secs['why'] ) ) : ?>
 	<section class="annam-limo-section annam-limo-section--why" id="uu-diem">
 		<div class="annam-limo-container">
-			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Vì Sao Chọn Limousine 10 Chỗ?', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Xe nhỏ hơn, lịch cố định, đón trả gần — giữ chỗ nhanh qua form hoặc Zalo.', 'generatepress_child' ); ?></p>
+			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Vì Sao Chọn Limousine 11 Chỗ?', 'generatepress_child' ); ?></h2>
+			<p class="annam-limo-section__lead"><?php esc_html_e( 'Limousine 11 chỗ, lịch cố định, đón trả gần — giữ chỗ nhanh qua form hoặc Zalo.', 'generatepress_child' ); ?></p>
 			<div class="annam-limo-why-grid">
 				<?php foreach ( $config['why_cards'] as $i => $card ) :
 					$icon = isset( $card['icon'] ) ? (string) $card['icon'] : 'van';

@@ -93,7 +93,7 @@ function annam_limo_landing_process_booking( array $input ) {
 	$seat_labels = array(
 		'seat_a'  => 'Ghế giữa',
 		'seat_b'  => 'Ghế đầu / cuối',
-		'charter' => 'Bao nguyên xe 10 chỗ',
+		'charter' => 'Bao nguyên xe (11 chỗ gồm tài xế)',
 	);
 
 	$from_label = isset( $labels[ $from_place ] ) ? $labels[ $from_place ] : $from_place;

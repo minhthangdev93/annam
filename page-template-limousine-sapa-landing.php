@@ -2,7 +2,7 @@
 /**
  * Template Name: Landing Vé Limousine HN–Sapa
  * Template Post Type: page
- * Description: Landing bán vé Limousine 10 chỗ Hà Nội ⇄ Sapa.
+ * Description: Landing bán vé Limousine 11 chỗ Hà Nội ⇄ Sapa.
  *
  * @package GeneratePress_Child
  */

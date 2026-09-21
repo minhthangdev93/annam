@@ -1,6 +1,6 @@
 <?php
 /**
- * Cấu hình landing vé Limousine 10 chỗ Hà Nội ⇄ Sapa (giá niêm yết công khai).
+ * Cấu hình landing vé Limousine 11 chỗ Hà Nội ⇄ Sapa (giá niêm yết công khai).
  *
  * @package GeneratePress_Child
  */
@@ -75,18 +75,18 @@ function annam_limo_landing_get_cta() {
  * @return array<string,mixed>
  */
 function annam_limo_landing_get_default_config( $page_id = 0 ) {
-	$schedule_map   = annam_limo_landing_get_schedule_times_map();
-	$times_hn_sapa  = isset( $schedule_map['hanoi_sapa'] ) ? $schedule_map['hanoi_sapa'] : array( '07:00', '14:30' );
-	$times_sapa_hn  = isset( $schedule_map['sapa_hanoi'] ) ? $schedule_map['sapa_hanoi'] : array( '07:30', '14:30' );
+	$schedule_map  = annam_limo_landing_get_schedule_times_map();
+	$times_hn_sapa = isset( $schedule_map['hanoi_sapa'] ) ? $schedule_map['hanoi_sapa'] : array( '07:00', '14:30' );
+	$times_sapa_hn = isset( $schedule_map['sapa_hanoi'] ) ? $schedule_map['sapa_hanoi'] : array( '07:30', '14:30' );
 
 	$config = array(
-		'product_name' => 'Vé Limousine 10 chỗ Hà Nội ⇄ Sapa',
-		'hero'         => array(
-			'title'      => 'Vé Limousine 10 Chỗ Hà Nội ⇄ Sapa',
+		'product_name'  => 'Vé Limousine 11 chỗ Hà Nội ⇄ Sapa',
+		'hero'          => array(
+			'title'      => 'Vé Limousine 11 Chỗ Hà Nội ⇄ Sapa',
 			'subtitle'   => '2 chuyến mỗi chiều mỗi ngày (HN→Sapa 07:00 & 14:30 · Sapa→HN 07:30 & 14:30), khoảng 6 giờ, đón trả theo phạm vi tiêu chuẩn.',
 			'price_from' => '450.000đ',
 			'badges'     => array(
-				'Limousine 10 chỗ',
+				'Limousine 11 chỗ (gồm ghế tài xế)',
 				'HN→Sapa 07:00 & 14:30 · Sapa→HN 07:30 & 14:30',
 				'Nhiều điểm đón trả HN ⇄ Sapa',
 				'Giữ chỗ nhanh qua form / Zalo',
@@ -116,7 +116,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			),
 			array(
 				'value' => 'charter',
-				'label' => 'Bao nguyên xe 10 chỗ',
+				'label' => 'Bao nguyên xe (11 chỗ gồm tài xế)',
 			),
 		),
 		'pricing'       => array(
@@ -124,26 +124,26 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				array(
 					'type'  => 'seat_a',
 					'label' => 'Ghế giữa',
-					'desc'  => '06 ghế giữa xe — thoải mái, vị trí trung tâm.',
+					'desc'  => '06 ghế giữa xe — thoải mái, vị trí trung tâm (ghế khách).',
 					'price' => '500.000đ/ghế/chiều',
 					'badge' => 'Phổ biến',
 				),
 				array(
 					'type'  => 'seat_b',
 					'label' => 'Ghế đầu / cuối',
-					'desc'  => '01 ghế đầu + 03 ghế cuối xe.',
+					'desc'  => '01 ghế đầu + 03 ghế cuối xe (ghế khách).',
 					'price' => '450.000đ/ghế/chiều',
 					'badge' => '',
 				),
 				array(
 					'type'  => 'charter',
 					'label' => 'Bao nguyên xe',
-					'desc'  => 'Toàn bộ xe 10 chỗ — phù hợp nhóm / gia đình.',
-					'price' => '4.200.000đ/xe/chiều',
+					'desc'  => 'Xe 11 chỗ gồm ghế tài xế — bao toàn bộ 10 ghế khách. Phù hợp nhóm / gia đình.',
+					'price' => '4.500.000đ/xe/chiều',
 					'badge' => 'Nhóm',
 				),
 			),
-			'price_note' => 'Giá niêm yết áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội trong phạm vi đón/trả tiêu chuẩn. Điểm ngoài phạm vi có thể phát sinh phụ thu (thông báo trước khi xác nhận).',
+			'price_note' => 'Xe Limousine 11 chỗ đã bao gồm ghế tài xế; hành khách ngồi tối đa 10 ghế (06 ghế giữa + 01 ghế đầu + 03 ghế cuối). Giá niêm yết áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội trong phạm vi đón/trả tiêu chuẩn. Điểm ngoài phạm vi có thể phát sinh phụ thu (thông báo trước khi xác nhận).',
 		),
 		'schedules'     => array(
 			array(
@@ -165,9 +165,9 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'hanoi-sapa' => array(
 				'heading' => 'Lộ trình Hà Nội → Sapa (mốc dự kiến)',
 				'steps'   => array(
-					array( 'place' => 'Đón nội thành Hà Nội', 'note' => 'Trước giờ xuất phát tùy điểm' ),
-					array( 'place' => 'Cầu vượt Vĩnh Ngọc', 'note' => 'Đúng giờ chuyến 07:00 hoặc 14:30' ),
-					array( 'place' => 'Sân bay Nội Bài', 'note' => '~20 phút sau giờ xuất phát' ),
+					array( 'place' => 'Đón nội thành (Phố Cổ, 214 TQK, Nhà Hát Lớn…)', 'note' => 'Trước giờ xuất phát tùy điểm' ),
+					array( 'place' => 'Sảnh Royal City', 'note' => 'Đúng giờ chuyến 07:00 hoặc 14:30' ),
+					array( 'place' => 'Sân bay Nội Bài', 'note' => '~40 phút sau giờ xuất phát' ),
 					array( 'place' => 'TP. Lào Cai (VP IC19 Cốc San)', 'note' => '~05 giờ sau giờ xuất phát' ),
 					array( 'place' => 'Thị trấn Sapa', 'note' => '~06 giờ sau giờ xuất phát' ),
 				),
@@ -175,10 +175,10 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'sapa-hanoi' => array(
 				'heading' => 'Lộ trình Sapa → Hà Nội (mốc dự kiến)',
 				'steps'   => array(
-					array( 'place' => 'Đón thị trấn Sapa / VP 697 Điện Biên Phủ', 'note' => 'Bắt đầu đón ~30–45 phút trước giờ' ),
+					array( 'place' => 'Đón thị trấn Sapa / VP 697 Điện Biên Phủ', 'note' => 'KS trung tâm ~30–45 phút trước; VP ~15 phút trước' ),
 					array( 'place' => 'Xuất phát đúng giờ', 'note' => '07:30 hoặc 14:30' ),
-					array( 'place' => 'TP. Lào Cai', 'note' => '~01 giờ sau giờ xuất phát' ),
-					array( 'place' => 'Sân bay Nội Bài', 'note' => '~05 giờ sau giờ xuất phát' ),
+					array( 'place' => 'TP. Lào Cai (VP IC19 Cốc San)', 'note' => '~30 phút sau giờ xuất phát' ),
+					array( 'place' => 'Sân bay Nội Bài', 'note' => '~05 giờ hơn sau giờ xuất phát' ),
 					array( 'place' => 'Nội thành Hà Nội', 'note' => '~06 giờ sau giờ xuất phát' ),
 				),
 			),
@@ -187,29 +187,25 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'id'      => 'hanoi',
 				'label'   => 'Hà Nội',
-				'heading' => 'Đón/trả miễn phí trong phạm vi tiêu chuẩn (giờ đón là dự kiến)',
+				'heading' => 'Đón/trả trong phạm vi tiêu chuẩn (giờ đón là dự kiến)',
 				'items'   => array(
-					array( 'name' => 'Khách sạn khu vực Phố Cổ', 'time' => '~30–45 phút trước giờ xuất phát' ),
-					array( 'name' => 'VP 51 Minh Khai', 'time' => '~30–60 phút trước giờ xuất phát' ),
-					array( 'name' => 'VP 56 Phố Vọng', 'time' => '~30–45 phút trước giờ xuất phát' ),
-					array( 'name' => 'Rạp Xiếc Trung Ương', 'time' => '~30–45 phút trước giờ xuất phát' ),
-					array( 'name' => 'VP 214 Trần Quang Khải', 'time' => '~25–30 phút trước giờ xuất phát' ),
-					array( 'name' => 'VP 80 Hồng Tiến', 'time' => '~15–20 phút trước giờ xuất phát' ),
-					array( 'name' => '72 Trường Chinh', 'time' => '~30–45 phút trước giờ xuất phát' ),
-					array( 'name' => 'VP 23 Tú Mỡ', 'time' => '~30 phút trước giờ xuất phát' ),
-					array( 'name' => 'Công viên Hòa Bình', 'time' => '~20 phút trước giờ xuất phát' ),
-					array( 'name' => 'Lotte Mall Tây Hồ – 96 Võ Chí Công', 'time' => '~10 phút trước giờ xuất phát' ),
-					array( 'name' => 'Cầu vượt Vĩnh Ngọc', 'time' => 'Đúng giờ xuất phát' ),
+					array( 'name' => 'VP 214 Trần Quang Khải & khách sạn Phố Cổ', 'time' => '~30–45 phút trước giờ xuất phát' ),
+					array( 'name' => 'Nhà Hát Lớn', 'time' => '~30–45 phút trước giờ xuất phát' ),
+					array( 'name' => 'Rạp Xiếc Trung Ương', 'time' => '~20 phút trước giờ xuất phát' ),
+					array( 'name' => 'Mediamart 72 Trường Chinh', 'time' => '~10 phút trước giờ xuất phát' ),
+					array( 'name' => 'Sảnh Royal City', 'time' => 'Đúng giờ xuất phát' ),
+					array( 'name' => 'VP 23 Tú Mỡ', 'time' => '~10 phút sau giờ xuất phát' ),
+					array( 'name' => 'Lotte Mall Tây Hồ', 'time' => '~20 phút sau giờ xuất phát' ),
 				),
 				'note'    => 'Giờ đón thực tế được xác nhận trước chuyến. Có thể dùng xe trung chuyển nếu điểm đón ghép ngược hướng (đặc biệt khu Phố Cổ).',
 			),
 			array(
 				'id'      => 'sapa',
 				'label'   => 'Sapa',
-				'heading' => 'Đón/trả tận nơi trong phạm vi thị trấn',
+				'heading' => 'Đón/trả tận nơi trong khu vực thị trấn',
 				'items'   => array(
-					array( 'name' => 'Khách sạn trong bán kính 5 km thị trấn Sapa', 'time' => 'Hỗ trợ đón/trả tận nơi' ),
-					array( 'name' => 'VP 697 Điện Biên Phủ (chiều về Hà Nội)', 'time' => 'Điểm tập kết / bắt đầu đón' ),
+					array( 'name' => 'Khách sạn khu vực thị trấn Sapa', 'time' => 'Đón/trả tận nơi (~30–45 phút trước giờ XP chiều về)' ),
+					array( 'name' => 'VP 697 Điện Biên Phủ (chiều về Hà Nội)', 'time' => '~15 phút trước giờ xuất phát' ),
 				),
 				'note'    => 'Ngoài phạm vi tiêu chuẩn có thể phát sinh phụ thu — báo trước khi xác nhận.',
 			),
@@ -217,7 +213,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 		'gallery'       => array(
 			array(
 				'slot'    => 'gallery-exterior',
-				'caption' => 'Ngoại thất Limousine 10 chỗ',
+				'caption' => 'Ngoại thất Limousine 11 chỗ',
 			),
 			array(
 				'slot'    => 'gallery-interior',
@@ -247,8 +243,8 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 		'why_cards'     => array(
 			array(
 				'icon'  => 'van',
-				'title' => 'Limousine 10 chỗ',
-				'text'  => 'Ít chỗ hơn xe khách lớn — không gian riêng tư, ghế ngồi êm cho hành trình ~6 giờ.',
+				'title' => 'Limousine 11 chỗ',
+				'text'  => 'Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 ghế khách, riêng tư hơn xe khách lớn cho hành trình ~6 giờ.',
 			),
 			array(
 				'icon'  => 'clock',
@@ -258,7 +254,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'icon'  => 'pin',
 				'title' => 'Đón trả tiện lợi',
-				'text'  => 'Phố Cổ & nhiều điểm Hà Nội; Sapa đón trả khách sạn trong 5 km thị trấn.',
+				'text'  => 'Nhiều điểm Hà Nội (Phố Cổ, Royal City…); Sapa đón trả khách sạn trong khu vực thị trấn.',
 			),
 			array(
 				'icon'  => 'zap',
@@ -283,7 +279,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 		'faq'           => array(
 			array(
 				'question' => 'Vé Limousine Hà Nội Sapa giá bao nhiêu?',
-				'answer'   => 'Giá niêm yết: ghế giữa 500.000đ/ghế/chiều, ghế đầu/cuối 450.000đ/ghế/chiều, bao nguyên xe 4.200.000đ/xe/chiều. Áp dụng cả hai chiều trong phạm vi đón/trả tiêu chuẩn.',
+				'answer'   => 'Giá niêm yết: ghế giữa 500.000đ/ghế/chiều, ghế đầu/cuối 450.000đ/ghế/chiều, bao nguyên xe 4.500.000đ/xe/chiều (toàn bộ 10 ghế khách trên xe 11 chỗ gồm tài xế). Áp dụng cả hai chiều trong phạm vi đón/trả tiêu chuẩn.',
 			),
 			array(
 				'question' => 'Ghế giữa và ghế đầu/cuối khác nhau thế nào?',
@@ -295,19 +291,19 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			),
 			array(
 				'question' => 'Đón trả ở đâu tại Hà Nội?',
-				'answer'   => 'Hỗ trợ đón/trả miễn phí tại Phố Cổ và các điểm như Minh Khai, Phố Vọng, Rạp Xiếc, Trường Chinh, Tú Mỡ, CV Hòa Bình, Lotte Tây Hồ; mốc đúng giờ tại Cầu vượt Vĩnh Ngọc. Giờ đón là dự kiến và được xác nhận trước chuyến.',
+				'answer'   => 'Hỗ trợ đón/trả tại VP 214 Trần Quang Khải & khách sạn Phố Cổ, Nhà Hát Lớn, Rạp Xiếc, Mediamart 72 Trường Chinh; mốc đúng giờ tại Sảnh Royal City; thêm VP 23 Tú Mỡ và Lotte Mall Tây Hồ sau giờ xuất phát. Giờ đón là dự kiến và được xác nhận trước chuyến.',
 			),
 			array(
 				'question' => 'Ở Sapa có đón tận khách sạn không?',
-				'answer'   => 'Có hỗ trợ đón/trả tận nơi tại khách sạn trong phạm vi khoảng 5 km khu vực thị trấn Sapa.',
+				'answer'   => 'Có hỗ trợ đón/trả tận nơi tại khách sạn trong khu vực thị trấn Sapa; chiều về có điểm tập kết VP 697 Điện Biên Phủ.',
 			),
 			array(
 				'question' => 'Có dừng sân bay Nội Bài không?',
-				'answer'   => 'Trên lộ trình có mốc qua Nội Bài (chiều đi khoảng 20 phút sau giờ xuất phát; chiều về khoảng 5 giờ sau giờ xuất phát). Liên hệ để xác nhận nhu cầu lên/xuống cụ thể.',
+				'answer'   => 'Trên lộ trình có mốc qua Nội Bài (chiều đi khoảng 40 phút sau giờ xuất phát; chiều về khoảng 5 giờ hơn sau giờ xuất phát). Liên hệ để xác nhận nhu cầu lên/xuống cụ thể.',
 			),
 			array(
 				'question' => 'Bao nguyên xe tính thế nào?',
-				'answer'   => 'Giá bao nguyên xe theo một chiều Hà Nội → Sapa hoặc Sapa → Hà Nội. Phù hợp nhóm cần riêng tư toàn xe.',
+				'answer'   => 'Bao nguyên xe theo một chiều Hà Nội → Sapa hoặc Sapa → Hà Nội, gồm toàn bộ 10 ghế khách trên xe Limousine 11 chỗ (đã gồm ghế tài xế). Phù hợp nhóm cần riêng tư toàn xe.',
 			),
 			array(
 				'question' => 'Đón ngoài phạm vi có phụ thu không?',
@@ -326,17 +322,17 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			array( 'id' => 'faq', 'label' => 'FAQ' ),
 		),
 		'sections'      => array(
-			'hero'     => true,
-			'pricing'  => true,
-			'schedule' => true,
-			'pickup'   => true,
-			'gallery'  => true,
-			'video'    => true,
-			'why'      => true,
-			'steps'    => true,
-			'faq'      => true,
-			'final_cta'=> true,
-			'seo'      => true,
+			'hero'      => true,
+			'pricing'   => true,
+			'schedule'  => true,
+			'pickup'    => true,
+			'gallery'   => true,
+			'video'     => true,
+			'why'       => true,
+			'steps'     => true,
+			'faq'       => true,
+			'final_cta' => true,
+			'seo'       => true,
 		),
 	);
 

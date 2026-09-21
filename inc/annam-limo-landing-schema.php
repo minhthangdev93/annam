@@ -42,7 +42,7 @@ function annam_limo_landing_get_schema_graph() {
 	$service = array(
 		'@type'       => 'Service',
 		'@id'         => trailingslashit( (string) $page_url ) . '#limo-sapa-service',
-		'name'        => isset( $config['product_name'] ) ? (string) $config['product_name'] : 'Vé Limousine 10 chỗ Hà Nội ⇄ Sapa',
+		'name'        => isset( $config['product_name'] ) ? (string) $config['product_name'] : 'Vé Limousine 11 chỗ Hà Nội ⇄ Sapa',
 		'description' => isset( $config['hero']['subtitle'] ) ? wp_strip_all_tags( (string) $config['hero']['subtitle'] ) : '',
 		'url'         => $page_url,
 		'provider'    => array( '@id' => $org_id ),
