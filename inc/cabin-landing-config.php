@@ -170,8 +170,8 @@ function annam_cabin_landing_get_default_config( $page_id = 0 ) {
 		'product_name' => 'Xe Cabin VIP 22 phòng',
 		'hero'         => array(
 			'title'       => 'Đặt Vé Xe Cabin VIP 22 Phòng Hà Nội ⇄ Sapa',
-			'subtitle'    => 'Giá từ 420.000đ, cabin riêng tư, có nhân viên xác nhận vé nhanh',
-			'price_from'  => '420.000đ',
+			'subtitle'    => 'Giá từ 450.000đ, cabin riêng tư, có nhân viên xác nhận vé nhanh',
+			'price_from'  => '450.000đ',
 			'badges'      => array(
 				'Cabin đơn / cabin đôi',
 				'Lịch chạy hằng ngày',
@@ -228,19 +228,19 @@ function annam_cabin_landing_get_default_config( $page_id = 0 ) {
 				array(
 					'type'  => 'single_floor2',
 					'label' => 'Cabin đơn tầng 2',
-					'price' => '420.000đ',
+					'price' => '450.000đ',
 					'desc'  => 'Tiết kiệm, cabin riêng có rèm che — phù hợp đi một mình.',
 				),
 				array(
 					'type'  => 'single_floor1',
 					'label' => 'Cabin đơn tầng 1',
-					'price' => '500.000đ',
+					'price' => '530.000đ',
 					'desc'  => 'Dễ lên xuống, thoải mái hơn cho hành trình dài.',
 				),
 				array(
 					'type'  => 'double',
 					'label' => 'Cabin đôi',
-					'price' => '720.000đ',
+					'price' => '780.000đ',
 					'desc'  => 'Rộng rãi cho 2 khách — được chọn nhiều nhất.',
 					'badge' => 'Phổ biến',
 				),
@@ -278,7 +278,7 @@ function annam_cabin_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'type'        => 'single_floor2',
 				'name'        => 'Cabin đơn tầng 2',
-				'price_from'  => '420.000đ',
+				'price_from'  => '450.000đ',
 				'description' => 'Phù hợp khách đi một mình, muốn tiết kiệm chi phí nhưng vẫn có không gian nghỉ ngơi riêng tư.',
 				'image'       => 'cabin-single-2',
 				'tag'         => 'Tiết kiệm',
@@ -287,7 +287,7 @@ function annam_cabin_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'type'        => 'single_floor1',
 				'name'        => 'Cabin đơn tầng 1',
-				'price_from'  => '500.000đ',
+				'price_from'  => '530.000đ',
 				'description' => 'Phù hợp khách muốn vị trí thuận tiện hơn, dễ lên xuống, ưu tiên sự thoải mái trong hành trình.',
 				'image'       => 'cabin-single-1',
 				'tag'         => 'Thuận tiện',
@@ -296,7 +296,7 @@ function annam_cabin_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'type'        => 'double',
 				'name'        => 'Cabin đôi',
-				'price_from'  => '720.000đ',
+				'price_from'  => '780.000đ',
 				'description' => 'Phù hợp cặp đôi, gia đình có trẻ nhỏ hoặc 2 khách muốn nghỉ chung một khoang rộng rãi hơn.',
 				'image'       => 'cabin-double',
 				'tag'         => 'Được chọn nhiều',
@@ -588,7 +588,7 @@ function annam_cabin_landing_default_faq_items() {
 	return array(
 		array(
 			'question' => 'Vé xe cabin Hà Nội Sapa giá bao nhiêu?',
-			'answer'   => 'Giá tham khảo: cabin đơn tầng 2 từ 420.000đ, cabin đơn tầng 1 từ 500.000đ, cabin đôi từ 720.000đ (tuyến Hà Nội ⇄ Sapa). Giá có thể thay đổi theo ngày — liên hệ để kiểm tra chính xác.',
+			'answer'   => 'Giá tham khảo: cabin đơn tầng 2 từ 450.000đ, cabin đơn tầng 1 từ 530.000đ, cabin đôi từ 780.000đ (tuyến Hà Nội ⇄ Sapa, cả hai chiều). Giá có thể thay đổi theo ngày — liên hệ để kiểm tra chính xác.',
 		),
 		array(
 			'question' => 'Cabin đơn tầng 1 và tầng 2 khác gì nhau?',

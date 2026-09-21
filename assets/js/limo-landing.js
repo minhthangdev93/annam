@@ -66,7 +66,7 @@
 	}
 
 	var placeNotePlaceholders = {
-		hanoi: 'VD: 23 Tú Mỡ / khách sạn Phố Cổ…',
+		hanoi: 'VD: Royal City / Nội Bài / 23 Tú Mỡ…',
 		sapa: 'VD: khách sạn Fansipan / gần chợ Sapa…'
 	};
 

@@ -69,6 +69,47 @@ function annam_limo_landing_get_cta() {
 }
 
 /**
+ * URL trang cabin VIP (cross-sell từ limo).
+ *
+ * @return string
+ */
+function annam_limo_landing_get_cabin_upsell_base_url() {
+	$page = get_page_by_path( 'dat-ve-xe-ha-noi-sapa' );
+	$url  = ( $page instanceof WP_Post ) ? get_permalink( $page ) : home_url( '/dat-ve-xe-ha-noi-sapa/' );
+	return (string) apply_filters( 'annam_limo_cabin_upsell_url', $url );
+}
+
+/**
+ * Link giữ chỗ cabin kèm loại cabin (query) + hash form.
+ *
+ * @param string $cabin_type single_floor2|single_floor1|double|''.
+ * @return string
+ */
+function annam_limo_landing_get_cabin_upsell_link( $cabin_type = '' ) {
+	$url   = annam_limo_landing_get_cabin_upsell_base_url();
+	$valid = array( 'single_floor2', 'single_floor1', 'double' );
+	$type  = sanitize_key( (string) $cabin_type );
+	if ( in_array( $type, $valid, true ) ) {
+		$url = add_query_arg( 'cabin', $type, $url );
+	}
+	return $url . '#annam-cabin-booking';
+}
+
+/**
+ * Danh sách cabin để upsell trên landing limo (từ config cabin VIP).
+ *
+ * @return array<int,array<string,mixed>>
+ */
+function annam_limo_landing_get_cabin_upsell_cards() {
+	if ( ! function_exists( 'annam_cabin_landing_get_config' ) ) {
+		return array();
+	}
+	$cabin_config = annam_cabin_landing_get_config();
+	$cabins       = isset( $cabin_config['cabins'] ) && is_array( $cabin_config['cabins'] ) ? $cabin_config['cabins'] : array();
+	return $cabins;
+}
+
+/**
  * Config đầy đủ landing Limousine HN–Sapa.
  *
  * @param int $page_id Page ID.
@@ -165,21 +206,26 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'hanoi-sapa' => array(
 				'heading' => 'Lộ trình Hà Nội → Sapa (mốc dự kiến)',
 				'steps'   => array(
-					array( 'place' => 'Đón nội thành (Phố Cổ, 214 TQK, Nhà Hát Lớn…)', 'note' => 'Trước giờ xuất phát tùy điểm' ),
+					array( 'place' => 'VP 214 Trần Quang Khải & khách sạn Phố Cổ', 'note' => 'Đón ~30–45 phút trước giờ xuất phát' ),
+					array( 'place' => 'Nhà Hát Lớn', 'note' => 'Đón ~30–45 phút trước giờ xuất phát' ),
+					array( 'place' => 'Rạp Xiếc Trung Ương', 'note' => 'Đón ~20 phút trước giờ xuất phát' ),
+					array( 'place' => 'Mediamart 72 Trường Chinh', 'note' => 'Đón ~10 phút trước giờ xuất phát' ),
 					array( 'place' => 'Sảnh Royal City', 'note' => 'Đúng giờ chuyến 07:00 hoặc 14:30' ),
+					array( 'place' => 'VP 23 Tú Mỡ', 'note' => '~10 phút sau giờ xuất phát' ),
+					array( 'place' => 'Lotte Mall Tây Hồ', 'note' => '~20 phút sau giờ xuất phát' ),
 					array( 'place' => 'Sân bay Nội Bài', 'note' => '~40 phút sau giờ xuất phát' ),
-					array( 'place' => 'TP. Lào Cai (VP IC19 Cốc San)', 'note' => '~05 giờ sau giờ xuất phát' ),
+					array( 'place' => 'TP. Lào Cai / VP IC19 Cốc San', 'note' => '~05 giờ sau giờ xuất phát' ),
 					array( 'place' => 'Thị trấn Sapa', 'note' => '~06 giờ sau giờ xuất phát' ),
 				),
 			),
 			'sapa-hanoi' => array(
 				'heading' => 'Lộ trình Sapa → Hà Nội (mốc dự kiến)',
 				'steps'   => array(
-					array( 'place' => 'Đón thị trấn Sapa / VP 697 Điện Biên Phủ', 'note' => 'KS trung tâm ~30–45 phút trước; VP ~15 phút trước' ),
+					array( 'place' => 'VP 697 Điện Biên Phủ & khu vực thị trấn Sapa', 'note' => 'KS trung tâm ~30–45 phút trước; VP ~15 phút trước giờ xuất phát' ),
 					array( 'place' => 'Xuất phát đúng giờ', 'note' => '07:30 hoặc 14:30' ),
-					array( 'place' => 'TP. Lào Cai (VP IC19 Cốc San)', 'note' => '~30 phút sau giờ xuất phát' ),
+					array( 'place' => 'TP. Lào Cai & VP IC19 Cốc San', 'note' => '~30 phút sau giờ xuất phát' ),
 					array( 'place' => 'Sân bay Nội Bài', 'note' => '~05 giờ hơn sau giờ xuất phát' ),
-					array( 'place' => 'Nội thành Hà Nội', 'note' => '~06 giờ sau giờ xuất phát' ),
+					array( 'place' => 'Nội thành Hà Nội', 'note' => '~06 giờ sau giờ xuất phát (các điểm đón/trả tiêu chuẩn)' ),
 				),
 			),
 		),
@@ -196,8 +242,18 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 					array( 'name' => 'Sảnh Royal City', 'time' => 'Đúng giờ xuất phát' ),
 					array( 'name' => 'VP 23 Tú Mỡ', 'time' => '~10 phút sau giờ xuất phát' ),
 					array( 'name' => 'Lotte Mall Tây Hồ', 'time' => '~20 phút sau giờ xuất phát' ),
+					array( 'name' => 'Sân bay Nội Bài', 'time' => '~40 phút sau giờ XP chiều đi · ~5 giờ hơn chiều về' ),
 				),
 				'note'    => 'Giờ đón thực tế được xác nhận trước chuyến. Có thể dùng xe trung chuyển nếu điểm đón ghép ngược hướng (đặc biệt khu Phố Cổ).',
+			),
+			array(
+				'id'      => 'laocai',
+				'label'   => 'Lào Cai',
+				'heading' => 'Đón/trả khu vực Lào Cai',
+				'items'   => array(
+					array( 'name' => 'VP IC19 Cốc San (TP. Lào Cai)', 'time' => 'Chiều đi ~05 giờ sau XP · Chiều về ~30 phút sau XP' ),
+				),
+				'note'    => 'Xe trả/đón tại VP IC19 Cốc San theo lộ trình. Giờ thực tế xác nhận trước chuyến.',
 			),
 			array(
 				'id'      => 'sapa',
@@ -254,7 +310,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			array(
 				'icon'  => 'pin',
 				'title' => 'Đón trả tiện lợi',
-				'text'  => 'Nhiều điểm Hà Nội (Phố Cổ, Royal City…); Sapa đón trả khách sạn trong khu vực thị trấn.',
+				'text'  => 'Nhiều điểm Hà Nội (Phố Cổ, Royal City, Nội Bài…); Lào Cai (IC19 Cốc San); Sapa đón trả khách sạn trong khu vực thị trấn.',
 			),
 			array(
 				'icon'  => 'zap',
@@ -291,15 +347,15 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			),
 			array(
 				'question' => 'Đón trả ở đâu tại Hà Nội?',
-				'answer'   => 'Hỗ trợ đón/trả tại VP 214 Trần Quang Khải & khách sạn Phố Cổ, Nhà Hát Lớn, Rạp Xiếc, Mediamart 72 Trường Chinh; mốc đúng giờ tại Sảnh Royal City; thêm VP 23 Tú Mỡ và Lotte Mall Tây Hồ sau giờ xuất phát. Giờ đón là dự kiến và được xác nhận trước chuyến.',
+				'answer'   => 'Hỗ trợ đón/trả tại VP 214 Trần Quang Khải & khách sạn Phố Cổ, Nhà Hát Lớn, Rạp Xiếc Trung Ương, Mediamart 72 Trường Chinh; mốc đúng giờ tại Sảnh Royal City; thêm VP 23 Tú Mỡ, Lotte Mall Tây Hồ và Sân bay Nội Bài theo lộ trình. Giờ đón là dự kiến và được xác nhận trước chuyến.',
 			),
 			array(
 				'question' => 'Ở Sapa có đón tận khách sạn không?',
 				'answer'   => 'Có hỗ trợ đón/trả tận nơi tại khách sạn trong khu vực thị trấn Sapa; chiều về có điểm tập kết VP 697 Điện Biên Phủ.',
 			),
 			array(
-				'question' => 'Có dừng sân bay Nội Bài không?',
-				'answer'   => 'Trên lộ trình có mốc qua Nội Bài (chiều đi khoảng 40 phút sau giờ xuất phát; chiều về khoảng 5 giờ hơn sau giờ xuất phát). Liên hệ để xác nhận nhu cầu lên/xuống cụ thể.',
+				'question' => 'Có dừng sân bay Nội Bài và Lào Cai không?',
+				'answer'   => 'Có. Chiều Hà Nội → Sapa: Nội Bài khoảng 40 phút sau giờ xuất phát; TP. Lào Cai / VP IC19 Cốc San khoảng 05 giờ sau giờ xuất phát. Chiều Sapa → Hà Nội: Lào Cai khoảng 30 phút sau giờ xuất phát; Nội Bài khoảng 5 giờ hơn sau giờ xuất phát. Liên hệ để xác nhận nhu cầu lên/xuống cụ thể.',
 			),
 			array(
 				'question' => 'Bao nguyên xe tính thế nào?',
@@ -314,25 +370,32 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'title'    => 'Sẵn sàng giữ chỗ Limousine Hà Nội ⇄ Sapa?',
 			'subtitle' => 'Chọn giờ theo chiều (HN→Sapa 07:00/14:30 · Sapa→HN 07:30/14:30) — nhân viên xác nhận ghế và điểm đón nhanh.',
 		),
+		'cabin_upsell'  => array(
+			'title'        => 'Muốn nghỉ giường nằm? Chọn cabin VIP',
+			'lead'         => 'Limousine 11 chỗ phù hợp ghế ngồi ban ngày. Nếu muốn ngủ trên đường, xem thêm xe cabin giường nằm Hà Nội ⇄ Sapa — giá từ trang đặt vé cabin.',
+			'footer_label' => 'Xem đầy đủ lịch & điểm đón cabin',
+		),
 		'anchors'       => array(
 			array( 'id' => 'gia-ve', 'label' => 'Bảng giá' ),
 			array( 'id' => 'lich-xe', 'label' => 'Lịch xe' ),
 			array( 'id' => 'diem-don', 'label' => 'Đón trả' ),
 			array( 'id' => 'anh-xe', 'label' => 'Ảnh xe' ),
+			array( 'id' => 'cabin-giuong-nam', 'label' => 'Cabin' ),
 			array( 'id' => 'faq', 'label' => 'FAQ' ),
 		),
 		'sections'      => array(
-			'hero'      => true,
-			'pricing'   => true,
-			'schedule'  => true,
-			'pickup'    => true,
-			'gallery'   => true,
-			'video'     => true,
-			'why'       => true,
-			'steps'     => true,
-			'faq'       => true,
-			'final_cta' => true,
-			'seo'       => true,
+			'hero'         => true,
+			'pricing'      => true,
+			'schedule'     => true,
+			'pickup'       => true,
+			'gallery'      => true,
+			'video'        => true,
+			'why'          => true,
+			'cabin_upsell' => true,
+			'steps'        => true,
+			'faq'          => true,
+			'final_cta'    => true,
+			'seo'          => true,
 		),
 	);
 

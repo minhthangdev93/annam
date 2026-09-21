@@ -308,6 +308,76 @@ if ( has_post_thumbnail() ) {
 	</section>
 	<?php endif; ?>
 
+	<?php
+	$cabin_upsell = isset( $config['cabin_upsell'] ) && is_array( $config['cabin_upsell'] ) ? $config['cabin_upsell'] : array();
+	$cabin_cards  = ( ! empty( $secs['cabin_upsell'] ) && function_exists( 'annam_limo_landing_get_cabin_upsell_cards' ) )
+		? annam_limo_landing_get_cabin_upsell_cards()
+		: array();
+	$cabin_base   = function_exists( 'annam_limo_landing_get_cabin_upsell_base_url' )
+		? annam_limo_landing_get_cabin_upsell_base_url()
+		: '';
+	?>
+	<?php if ( ! empty( $secs['cabin_upsell'] ) && ! empty( $cabin_cards ) ) : ?>
+	<section class="annam-limo-section annam-limo-section--cabin-upsell" id="cabin-giuong-nam">
+		<div class="annam-limo-container">
+			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $cabin_upsell['title'] ) ? $cabin_upsell['title'] : __( 'Muốn nghỉ giường nằm? Chọn cabin VIP', 'generatepress_child' ) ); ?></h2>
+			<?php if ( ! empty( $cabin_upsell['lead'] ) ) : ?>
+				<p class="annam-limo-section__lead"><?php echo esc_html( $cabin_upsell['lead'] ); ?></p>
+			<?php endif; ?>
+			<div class="annam-limo-cabin-grid">
+				<?php foreach ( $cabin_cards as $cabin ) :
+					$cabin_type = isset( $cabin['type'] ) ? (string) $cabin['type'] : '';
+					$cabin_name = isset( $cabin['name'] ) ? (string) $cabin['name'] : '';
+					$cabin_href = function_exists( 'annam_limo_landing_get_cabin_upsell_link' )
+						? annam_limo_landing_get_cabin_upsell_link( $cabin_type )
+						: $cabin_base;
+					$featured   = ! empty( $cabin['featured'] );
+					?>
+					<article class="annam-limo-cabin-card<?php echo $featured ? ' annam-limo-cabin-card--featured' : ''; ?>">
+						<?php if ( ! empty( $cabin['tag'] ) ) : ?>
+							<span class="annam-limo-cabin-card__tag"><?php echo esc_html( (string) $cabin['tag'] ); ?></span>
+						<?php endif; ?>
+						<div class="annam-limo-cabin-card__media">
+							<?php
+							$cabin_img_key = ! empty( $cabin['image'] ) ? (string) $cabin['image'] : '';
+							if ( $cabin_img_key && function_exists( 'annam_cabin_landing_print_image' ) ) {
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image.
+								echo annam_cabin_landing_print_image(
+									$cabin_img_key,
+									array(
+										'alt'     => $cabin_name,
+										'width'   => '400',
+										'height'  => '280',
+										'loading' => 'lazy',
+									)
+								);
+							} elseif ( ! empty( $cabin['image_url'] ) ) {
+								?>
+								<img src="<?php echo esc_url( (string) $cabin['image_url'] ); ?>" alt="<?php echo esc_attr( $cabin_name ); ?>" width="400" height="280" loading="lazy" decoding="async" />
+							<?php } ?>
+						</div>
+						<div class="annam-limo-cabin-card__body">
+							<h3 class="annam-limo-cabin-card__title"><?php echo esc_html( $cabin_name ); ?></h3>
+							<?php if ( ! empty( $cabin['price_from'] ) ) : ?>
+								<p class="annam-limo-cabin-card__price"><?php printf( esc_html__( 'Từ %s', 'generatepress_child' ), esc_html( (string) $cabin['price_from'] ) ); ?></p>
+							<?php endif; ?>
+							<?php if ( ! empty( $cabin['description'] ) ) : ?>
+								<p class="annam-limo-cabin-card__desc"><?php echo esc_html( (string) $cabin['description'] ); ?></p>
+							<?php endif; ?>
+							<a class="annam-limo-btn annam-limo-btn--outline annam-limo-btn--block" href="<?php echo esc_url( $cabin_href ); ?>" data-track="limo_cabin_upsell"><?php printf( esc_html__( 'Chọn %s', 'generatepress_child' ), esc_html( $cabin_name ) ); ?></a>
+						</div>
+					</article>
+				<?php endforeach; ?>
+			</div>
+			<?php if ( '' !== $cabin_base ) : ?>
+				<p class="annam-limo-section__cta-row annam-limo-cabin-upsell__footer">
+					<a class="annam-limo-cabin-upsell__more" href="<?php echo esc_url( $cabin_base . '#annam-cabin-booking' ); ?>"><?php echo esc_html( ! empty( $cabin_upsell['footer_label'] ) ? $cabin_upsell['footer_label'] : __( 'Xem đầy đủ lịch & điểm đón cabin', 'generatepress_child' ) ); ?></a>
+				</p>
+			<?php endif; ?>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $secs['steps'] ) ) : ?>
 	<section class="annam-limo-section annam-limo-section--alt" id="dat-ve">
 		<div class="annam-limo-container">

@@ -1092,6 +1092,120 @@ body.annam-limo-landing-page {
 	line-height: 1.55;
 }
 
+/* Cross-sell cabin giường nằm */
+.annam-limo-section--cabin-upsell {
+	background: linear-gradient(180deg, #ecfdf5 0%, #f8fafc 45%, #fff 100%);
+}
+
+.annam-limo-cabin-grid {
+	display: grid;
+	gap: 18px;
+}
+
+@media (min-width: 700px) {
+	.annam-limo-cabin-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+		align-items: stretch;
+	}
+}
+
+.annam-limo-cabin-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border: 1px solid rgba(15, 118, 110, 0.14);
+	border-radius: var(--annam-limo-radius);
+	overflow: hidden;
+	box-shadow: 0 8px 24px rgba(15, 118, 110, 0.07);
+	height: 100%;
+}
+
+.annam-limo-cabin-card--featured {
+	border: 2px solid var(--annam-limo-orange);
+	box-shadow: 0 12px 32px rgba(234, 88, 12, 0.18);
+}
+
+.annam-limo-cabin-card__tag {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 2;
+	padding: 5px 12px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	line-height: 1.2;
+	background: var(--annam-limo-orange);
+	color: #fff;
+	border-radius: 999px;
+}
+
+.annam-limo-cabin-card__media {
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: #e2e8f0;
+}
+
+.annam-limo-cabin-card__media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.annam-limo-cabin-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 16px 16px 18px;
+	flex: 1;
+}
+
+.annam-limo-cabin-card__title {
+	margin: 0;
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--annam-limo-green-dark);
+}
+
+.annam-limo-cabin-card__price {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--annam-limo-orange);
+}
+
+.annam-limo-cabin-card__desc {
+	margin: 0 0 8px;
+	font-size: 0.875rem;
+	line-height: 1.55;
+	color: var(--annam-limo-muted);
+	flex: 1;
+}
+
+.annam-limo-cabin-card__body .annam-limo-btn {
+	margin-top: auto;
+	text-align: center;
+	text-decoration: none;
+}
+
+.annam-limo-cabin-upsell__footer {
+	margin-top: 8px;
+}
+
+.annam-limo-cabin-upsell__more {
+	font-weight: 600;
+	color: var(--annam-limo-green);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.annam-limo-cabin-upsell__more:hover,
+.annam-limo-cabin-upsell__more:focus {
+	color: var(--annam-limo-green-dark);
+}
+
 .annam-limo-steps {
 	list-style: none;
 	margin: 0;

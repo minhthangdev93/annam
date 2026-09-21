@@ -58,17 +58,19 @@ Lead: hai chiều + “Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 g
 Ba thẻ: ghế giữa (Phổ biến, 500k) · ghế đầu/cuối (450k) · bao nguyên xe (Nhóm, **4.500.000đ** — bao 10 ghế khách). Nút “Chọn vé này” đổ ghế vào form. Ghi chú dưới: giải thích 11 chỗ / 10 ghế khách + phụ thu ngoài phạm vi.
 
 ### Lịch xe (`#lich-xe`)
-Tabs **Hà Nội → Sapa** / **Sapa → Hà Nội**. Nút giờ lớn + timeline:
+Tabs **Hà Nội → Sapa** / **Sapa → Hà Nội**. Nút giờ lớn + timeline đầy đủ theo phụ lục:
 
-- HN→Sapa: đón nội thành → **Sảnh Royal City** (đúng giờ) → Nội Bài (~40 phút) → Lào Cai (~5 giờ) → Sapa (~6 giờ).
-- Sapa→HN: đón Sapa/VP 697 → xuất phát 07:30/14:30 → Lào Cai (~30 phút) → Nội Bài (~5 giờ hơn) → nội thành HN (~6 giờ).
+- HN→Sapa (10 mốc): 214 TQK & Phố Cổ → Nhà Hát Lớn → Rạp Xiếc → Mediamart 72 Trường Chinh → **Sảnh Royal City** (đúng giờ) → 23 Tú Mỡ → Lotte Mall Tây Hồ → **Sân bay Nội Bài** (~40 phút) → Lào Cai / IC19 Cốc San (~5 giờ) → Thị trấn Sapa (~6 giờ).
+- Sapa→HN: VP 697 & KS thị trấn → xuất phát 07:30/14:30 → Lào Cai / IC19 (~30 phút) → **Nội Bài** (~5 giờ hơn) → nội thành HN (~6 giờ).
 
-CTA “Chọn giờ này và giữ chỗ”. Lào Cai chỉ là mốc lộ trình.
+CTA “Chọn giờ này và giữ chỗ”.
 
 ### Điểm đón & trả (`#diem-don`)
-**Hà Nội:** 214 TQK & Phố Cổ · Nhà Hát Lớn · Rạp Xiếc · Mediamart 72 Trường Chinh · **Sảnh Royal City** (đúng giờ) · 23 Tú Mỡ · Lotte Mall Tây Hồ.
+Ba tab:
 
-**Sapa:** KS khu vực thị trấn · VP 697 Điện Biên Phủ (chiều về).
+- **Hà Nội:** 214 TQK & Phố Cổ · Nhà Hát Lớn · Rạp Xiếc · Mediamart 72 Trường Chinh · **Sảnh Royal City** (đúng giờ) · 23 Tú Mỡ · Lotte Mall Tây Hồ · **Sân bay Nội Bài**.
+- **Lào Cai:** VP IC19 Cốc San.
+- **Sapa:** KS khu vực thị trấn · VP 697 Điện Biên Phủ (chiều về).
 
 Note: giờ xác nhận trước chuyến; phụ thu ngoài phạm vi; có thể trung chuyển Phố Cổ.
 
@@ -80,6 +82,9 @@ Embed YouTube 16:9, URL admin.
 
 ### Vì sao chọn (`#uu-diem`)
 4 thẻ: 11 chỗ (gồm tài xế / tối đa 10 ghế khách) · lịch cố định · đón trả tiện · giữ chỗ nhanh.
+
+### Cross-sell cabin (`#cabin-giuong-nam`)
+Gợi ý 3 loại cabin giường nằm (data từ `annam_cabin_landing_get_config()` → `cabins`): đơn tầng 2 / đơn tầng 1 / đôi — ảnh, giá “Từ …”, mô tả, CTA link sang `/dat-ve-xe-ha-noi-sapa/?cabin=…#annam-cabin-booking`. Không form cabin trên trang limo. Footer link xem đủ lịch & điểm đón cabin.
 
 ### Đặt vé 3 bước (`#dat-ve`)
 Chọn tuyến & giờ → gửi form → xác nhận lên xe.
@@ -100,7 +105,7 @@ Dock nổi: icon + **Gọi** | **Zalo** | **Giữ chỗ**.
 
 ## 4. Map kỹ thuật nhanh
 
-Banner → Hero+form → Giá → Lịch → Đón trả → Gallery → Video → Why → 3 bước → FAQ → Final CTA → SEO → Sticky + lightbox.
+Banner → Hero+form → Giá → Lịch → Đón trả → Gallery → Video → Why → **Cabin upsell** → 3 bước → FAQ → Final CTA → SEO → Sticky + lightbox.
 
 ---
 
@@ -176,13 +181,14 @@ Nguồn sự thật: `annam_limo_landing_get_schedule_times_map()` / `annam_limo
 | Hà Nội → Sapa | **07:00** | **14:30** |
 | Sapa → Hà Nội | **07:30** | **14:30** |
 
-Timeline / pickup: xem mục 3 (Royal City = mốc đúng giờ HN→Sapa).
+Timeline / pickup: xem mục 3 & 9 (Royal City = mốc đúng giờ HN→Sapa; Nội Bài & Lào Cai có trong cả timeline và tabs đón/trả).
 
 ---
 
 ## 9. Điểm đón/trả (tabs)
 
-- **Hà Nội:** 214 TQK & Phố Cổ, Nhà Hát Lớn, Rạp Xiếc, 72 Trường Chinh, **Sảnh Royal City**, 23 Tú Mỡ, Lotte Tây Hồ.
+- **Hà Nội:** 214 TQK & Phố Cổ, Nhà Hát Lớn, Rạp Xiếc, 72 Trường Chinh, **Sảnh Royal City**, 23 Tú Mỡ, Lotte Tây Hồ, **Sân bay Nội Bài**.
+- **Lào Cai:** VP IC19 Cốc San.
 - **Sapa:** KS khu vực thị trấn + VP 697 Điện Biên Phủ.
 - Số thứ tự + giờ dự kiến; note phụ thu / trung chuyển.
 
@@ -271,7 +277,7 @@ Hai site có thể **cùng sản phẩm / cùng thứ tự section / cùng số 
 
 ### Giữ nguyên giữa các site
 
-- Thứ tự khối: Banner → Hero+form → Giá → Lịch → Đón trả → Media → Why → 3 bước → FAQ → CTA → Sticky.
+- Thứ tự khối: Banner → Hero+form → Giá → Lịch → Đón trả → Media → Why → Cabin upsell (tuỳ) → 3 bước → FAQ → CTA → Sticky.
 - Logic: lịch theo chiều, form giữ chỗ, giá niêm yết, điểm đón, không wording đại lý.
 - Spec này vẫn là nguồn sự thật nghiệp vụ (giờ, giá, ghế, pickup).
 

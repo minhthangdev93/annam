@@ -117,7 +117,7 @@ $place_labels = array(
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-pickup"><?php esc_html_e( 'Điểm đón mong muốn (tuỳ chọn)', 'generatepress_child' ); ?></label>
-				<input type="text" name="annam_limo_pickup" id="annam-limo-pickup" maxlength="200" placeholder="<?php esc_attr_e( 'VD: 23 Tú Mỡ / khách sạn Phố Cổ…', 'generatepress_child' ); ?>" />
+				<input type="text" name="annam_limo_pickup" id="annam-limo-pickup" maxlength="200" placeholder="<?php esc_attr_e( 'VD: Royal City / Nội Bài / 23 Tú Mỡ…', 'generatepress_child' ); ?>" />
 			</div>
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-dropoff"><?php esc_html_e( 'Điểm trả mong muốn (tuỳ chọn)', 'generatepress_child' ); ?></label>

@@ -691,6 +691,17 @@
 		});
 	}
 
+	function initCabinFromQuery() {
+		var params = new URLSearchParams(window.location.search || '');
+		var cabin = (params.get('cabin') || '').replace(/[^a-z0-9_]/gi, '');
+		var valid = { single_floor2: 1, single_floor1: 1, double: 1 };
+		if (!cabin || !valid[cabin]) {
+			return false;
+		}
+		setField('cabin_type', cabin);
+		return true;
+	}
+
 	function init() {
 		initTabs();
 		initRouteSync();
@@ -715,7 +726,8 @@
 			}
 		}, 60000);
 
-		if (window.location.hash === '#annam-cabin-booking') {
+		var fromQuery = initCabinFromQuery();
+		if (fromQuery || window.location.hash === '#annam-cabin-booking') {
 			scrollToForm();
 		}
 	}
