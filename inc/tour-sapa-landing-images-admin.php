@@ -63,39 +63,39 @@ function annam_tour_sapa_landing_gallery_size_hint( $index ) {
 
 	if ( 0 === $index ) {
 		return array(
-			'size'  => '1200 × 1600 px',
-			'ratio' => '3:4 (dọc)',
-			'note'  => __( 'Ô lớn desktop (cột trái)', 'generatepress_child' ),
+			'size'  => '1200 × 800 px',
+			'ratio' => '3:2 (ngang)',
+			'note'  => __( 'Ô lớn desktop (cột trái) — đúng 3:2 không bị cắt', 'generatepress_child' ),
 		);
 	}
 
 	if ( $index >= 1 && $index <= 3 ) {
 		return array(
-			'size'  => '1200 × 900 px',
-			'ratio' => '4:3 (ngang)',
+			'size'  => '1200 × 800 px',
+			'ratio' => '3:2 (ngang)',
 			'note'  => __( 'Ô phụ mosaic', 'generatepress_child' ),
 		);
 	}
 
 	if ( 4 === $index ) {
 		return array(
-			'size'  => '1200 × 900 px',
-			'ratio' => '4:3 (ngang)',
+			'size'  => '1200 × 800 px',
+			'ratio' => '3:2 (ngang)',
 			'note'  => __( 'Ô phụ + nút Gallery (desktop)', 'generatepress_child' ),
 		);
 	}
 
 	if ( 5 === $index ) {
 		return array(
-			'size'  => '1200 × 900 px',
-			'ratio' => '4:3 (ngang)',
+			'size'  => '1200 × 800 px',
+			'ratio' => '3:2 (ngang)',
 			'note'  => __( 'Chỉ hiện trên mobile (+ lightbox)', 'generatepress_child' ),
 		);
 	}
 
 	return array(
-		'size'  => '1600 × 1200 px',
-		'ratio' => '4:3 (ngang)',
+		'size'  => '1600 × 1067 px',
+		'ratio' => '3:2 (ngang)',
 		'note'  => __( 'Chỉ lightbox (không vào mosaic)', 'generatepress_child' ),
 	);
 }
@@ -423,7 +423,7 @@ function annam_tour_sapa_landing_images_admin_render() {
 
 			<h2><?php esc_html_e( '1. Thư viện ảnh đầu trang', 'generatepress_child' ); ?></h2>
 			<p class="description">
-				<?php esc_html_e( 'Desktop: 5 ô (ảnh 1 lớn + 4 ô phụ, nút Gallery góc ảnh 5). Mobile: 6 ô. Ảnh từ 7 trở đi chỉ hiện trong lightbox. JPG/WebP, dưới 400KB khuyến nghị.', 'generatepress_child' ); ?>
+				<?php esc_html_e( 'Desktop: 5 ô (ảnh 1 lớn + 4 ô phụ). Mobile: 6 ô. Tất cả ô mosaic: 1200×800 px (3:2). Ảnh từ 7 trở đi chỉ lightbox. JPG/WebP, dưới 400KB.', 'generatepress_child' ); ?>
 			</p>
 
 			<table class="widefat striped" id="annam-tour-sapa-gallery-table" style="max-width:1100px;margin:12px 0 24px;">

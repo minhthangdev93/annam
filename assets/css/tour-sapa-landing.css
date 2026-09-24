@@ -202,20 +202,27 @@ body.annam-tour-sapa-landing-page {
 	position: relative;
 	overflow: hidden;
 	background: #061210;
-	aspect-ratio: 4 / 3;
+	aspect-ratio: 3 / 2;
 }
 
 @media (min-width: 800px) {
 	/*
-	 * Desktop: 5 ảnh (hero 3:4 + ô phụ 4:3).
-	 * Cột 1.125:1:1 → ô lớn đúng 3:4 khi 2 hàng ô phụ 4:3 (khớp gợi ý admin 1200×1600).
+	 * Desktop: 5 ảnh, tất cả 3:2 (khớp upload 1200×800).
+	 * Cột 2fr 1fr 1fr → ô lớn trái cũng đúng 3:2 khi 2 hàng ô phụ 3:2.
+	 * Giữ tỷ lệ: khi chạm max-height thì thu width (không bẹp ô → không cắt trên/dưới).
 	 */
+	.annam-tour-sapa-mosaic-wrap {
+		display: flex;
+		justify-content: center;
+	}
+
 	.annam-tour-sapa-mosaic {
-		grid-template-columns: 1.125fr 1fr 1fr;
+		--annam-ts-mosaic-h: min(70vh, 720px, calc(100vw * 1 / 3));
+		grid-template-columns: 2fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr;
-		width: 100%;
-		aspect-ratio: 25 / 12;
-		max-height: min(70vh, 720px);
+		width: min(100vw, calc(var(--annam-ts-mosaic-h) * 3));
+		height: var(--annam-ts-mosaic-h);
+		max-height: none;
 		min-height: 0;
 		gap: 4px;
 	}
@@ -254,12 +261,11 @@ body.annam-tour-sapa-landing-page {
 		display: none;
 	}
 
-	/* Ảnh 1: không zoom → không cắt mép khi đúng 3:4 */
 	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__img,
 	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger img {
 		transform: none;
 		object-fit: cover;
-		object-position: center center;
+		object-position: center top;
 	}
 
 	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger:hover .annam-tour-sapa-mosaic__img,
@@ -331,6 +337,7 @@ body.annam-tour-sapa-landing-page {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	object-position: center top;
 	transform: none;
 	transition: transform 0.6s var(--annam-ts-ease);
 	filter: none;
@@ -837,9 +844,9 @@ body.annam-tour-sapa-landing-page {
 
 .annam-tour-sapa-highlights {
 	display: grid;
-	gap: 1px;
-	background: var(--annam-ts-line);
-	border: 1px solid var(--annam-ts-line);
+	gap: 0;
+	background: #fff;
+	border: 1px solid rgba(var(--color-primary-dark), 0.18);
 }
 
 @media (min-width: 640px) {
@@ -858,7 +865,45 @@ body.annam-tour-sapa-landing-page {
 	padding: 28px 24px;
 	background: #fff;
 	border: 0;
+	border-bottom: 1px solid rgba(var(--color-primary-dark), 0.18);
 	border-radius: 0;
+}
+
+.annam-tour-sapa-highlight:last-child {
+	border-bottom: 0;
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+	.annam-tour-sapa-highlight {
+		border-right: 1px solid rgba(var(--color-primary-dark), 0.18);
+	}
+
+	.annam-tour-sapa-highlight:nth-child(2n) {
+		border-right: 0;
+	}
+
+	.annam-tour-sapa-highlight:nth-last-child(-n + 2) {
+		border-bottom: 0;
+	}
+
+	.annam-tour-sapa-highlight:last-child:nth-child(odd) {
+		border-bottom: 0;
+	}
+}
+
+@media (min-width: 1024px) {
+	.annam-tour-sapa-highlight {
+		border-right: 1px solid rgba(var(--color-primary-dark), 0.18);
+		border-bottom: 1px solid rgba(var(--color-primary-dark), 0.18);
+	}
+
+	.annam-tour-sapa-highlight:nth-child(3n) {
+		border-right: 0;
+	}
+
+	.annam-tour-sapa-highlight:nth-child(n + 4) {
+		border-bottom: 0;
+	}
 }
 
 .annam-tour-sapa-highlight__num {
