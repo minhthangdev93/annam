@@ -48,7 +48,13 @@ function annam_cabin_landing_query_tour_sapa_products( $limit = 8 ) {
 		return null;
 	}
 
-	$limit = max( 1, min( 24, (int) apply_filters( 'annam_cabin_landing_tour_sapa_limit', $limit ) ) );
+	$limit = (int) apply_filters( 'annam_cabin_landing_tour_sapa_limit', $limit );
+	// -1 = tất cả; trần 100 để tránh query quá nặng.
+	if ( $limit < 0 ) {
+		$limit = -1;
+	} else {
+		$limit = max( 1, min( 100, $limit ) );
+	}
 
 	$q = new WP_Query(
 		array(
