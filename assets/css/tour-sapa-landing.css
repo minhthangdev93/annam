@@ -206,12 +206,17 @@ body.annam-tour-sapa-landing-page {
 }
 
 @media (min-width: 800px) {
-	/* Desktop: 5 ảnh (hero + 2×2) — ẩn ô 6 vì bị cắt / dàn hàng phụ quá bẹp */
+	/*
+	 * Desktop: 5 ảnh (hero 3:4 + ô phụ 4:3).
+	 * Cột 1.125:1:1 → ô lớn đúng 3:4 khi 2 hàng ô phụ 4:3 (khớp gợi ý admin 1200×1600).
+	 */
 	.annam-tour-sapa-mosaic {
-		grid-template-columns: 1.5fr 1fr 1fr;
+		grid-template-columns: 1.125fr 1fr 1fr;
 		grid-template-rows: 1fr 1fr;
-		min-height: min(58vh, 620px);
-		max-height: 680px;
+		width: 100%;
+		aspect-ratio: 25 / 12;
+		max-height: min(70vh, 720px);
+		min-height: 0;
 		gap: 4px;
 	}
 
@@ -247,6 +252,21 @@ body.annam-tour-sapa-landing-page {
 
 	.annam-tour-sapa-mosaic__cell:nth-child(6) {
 		display: none;
+	}
+
+	/* Ảnh 1: không zoom → không cắt mép khi đúng 3:4 */
+	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__img,
+	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger img {
+		transform: none;
+		object-fit: cover;
+		object-position: center center;
+	}
+
+	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger:hover .annam-tour-sapa-mosaic__img,
+	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger:hover img,
+	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger:focus-visible .annam-tour-sapa-mosaic__img,
+	.annam-tour-sapa-mosaic__cell--hero .annam-tour-sapa-mosaic__trigger:focus-visible img {
+		transform: scale(1.03);
 	}
 
 	/* Gallery CTA: nút nhỏ góc phải dưới ô 5 (desktop) */
