@@ -30,19 +30,73 @@ function annam_tour_sapa_landing_get_itinerary_image_slots() {
 			'section'         => 'itinerary',
 			'fallback'        => 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=1200&q=80',
 			'default_caption' => 'Ngày 01 — Bản Cát Cát',
+			'recommended'     => '1200 × 800 px',
+			'ratio'           => '3:2 (ngang)',
 		),
 		'itinerary-day-2' => array(
 			'label'           => __( 'Ngày 02 — Fansipan / Moana', 'generatepress_child' ),
 			'section'         => 'itinerary',
 			'fallback'        => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
 			'default_caption' => 'Ngày 02 — Fansipan & Moana',
+			'recommended'     => '1200 × 800 px',
+			'ratio'           => '3:2 (ngang)',
 		),
 		'itinerary-day-3' => array(
 			'label'           => __( 'Ngày 03 — Sapa → Hà Nội', 'generatepress_child' ),
 			'section'         => 'itinerary',
 			'fallback'        => 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80',
 			'default_caption' => 'Ngày 03 — Sapa về Hà Nội',
+			'recommended'     => '1200 × 800 px',
+			'ratio'           => '3:2 (ngang)',
 		),
+	);
+}
+
+/**
+ * Gợi ý kích thước upload theo vị trí trong thư viện mosaic.
+ *
+ * @param int $index 0-based.
+ * @return array{size:string,ratio:string,note:string}
+ */
+function annam_tour_sapa_landing_gallery_size_hint( $index ) {
+	$index = (int) $index;
+
+	if ( 0 === $index ) {
+		return array(
+			'size'  => '1200 × 1600 px',
+			'ratio' => '3:4 (dọc)',
+			'note'  => __( 'Ô lớn desktop (cột trái)', 'generatepress_child' ),
+		);
+	}
+
+	if ( $index >= 1 && $index <= 3 ) {
+		return array(
+			'size'  => '1200 × 900 px',
+			'ratio' => '4:3 (ngang)',
+			'note'  => __( 'Ô phụ mosaic', 'generatepress_child' ),
+		);
+	}
+
+	if ( 4 === $index ) {
+		return array(
+			'size'  => '1200 × 900 px',
+			'ratio' => '4:3 (ngang)',
+			'note'  => __( 'Ô phụ + nút Gallery (desktop)', 'generatepress_child' ),
+		);
+	}
+
+	if ( 5 === $index ) {
+		return array(
+			'size'  => '1200 × 900 px',
+			'ratio' => '4:3 (ngang)',
+			'note'  => __( 'Chỉ hiện trên mobile (+ lightbox)', 'generatepress_child' ),
+		);
+	}
+
+	return array(
+		'size'  => '1600 × 1200 px',
+		'ratio' => '4:3 (ngang)',
+		'note'  => __( 'Chỉ lightbox (không vào mosaic)', 'generatepress_child' ),
 	);
 }
 
@@ -368,13 +422,16 @@ function annam_tour_sapa_landing_images_admin_render() {
 			<?php wp_nonce_field( 'annam_tour_sapa_images_save', 'annam_tour_sapa_images_nonce' ); ?>
 
 			<h2><?php esc_html_e( '1. Thư viện ảnh đầu trang', 'generatepress_child' ); ?></h2>
-			<p class="description"><?php esc_html_e( 'Ảnh 1 = ô lớn. Ảnh 6 trong mosaic = nút Gallery. Caption hiện trên ảnh / lightbox.', 'generatepress_child' ); ?></p>
+			<p class="description">
+				<?php esc_html_e( 'Desktop: 5 ô (ảnh 1 lớn + 4 ô phụ, nút Gallery góc ảnh 5). Mobile: 6 ô. Ảnh từ 7 trở đi chỉ hiện trong lightbox. JPG/WebP, dưới 400KB khuyến nghị.', 'generatepress_child' ); ?>
+			</p>
 
-			<table class="widefat striped" id="annam-tour-sapa-gallery-table" style="max-width:960px;margin:12px 0 24px;">
+			<table class="widefat striped" id="annam-tour-sapa-gallery-table" style="max-width:1100px;margin:12px 0 24px;">
 				<thead>
 					<tr>
-						<th style="width:56px;">#</th>
+						<th style="width:48px;">#</th>
 						<th style="width:140px;"><?php esc_html_e( 'Ảnh', 'generatepress_child' ); ?></th>
+						<th style="width:200px;"><?php esc_html_e( 'Kích thước', 'generatepress_child' ); ?></th>
 						<th><?php esc_html_e( 'Caption', 'generatepress_child' ); ?></th>
 						<th style="width:220px;"><?php esc_html_e( 'Thao tác', 'generatepress_child' ); ?></th>
 					</tr>
@@ -385,6 +442,7 @@ function annam_tour_sapa_landing_images_admin_render() {
 						$cap     = isset( $row['caption'] ) ? (string) $row['caption'] : '';
 						$fb      = isset( $row['fallback'] ) ? (string) $row['fallback'] : ( isset( $defaults[ min( (int) $i, 5 ) ]['fallback'] ) ? (string) $defaults[ min( (int) $i, 5 ) ]['fallback'] : '' );
 						$preview = $aid ? wp_get_attachment_image_url( $aid, 'medium' ) : $fb;
+						$hint    = annam_tour_sapa_landing_gallery_size_hint( (int) $i );
 						?>
 						<tr class="annam-tour-sapa-gallery-row" data-index="<?php echo esc_attr( (string) $i ); ?>">
 							<td class="annam-tour-sapa-gallery-num"><?php echo esc_html( (string) ( (int) $i + 1 ) ); ?></td>
@@ -392,6 +450,11 @@ function annam_tour_sapa_landing_images_admin_render() {
 								<img src="<?php echo esc_url( (string) $preview ); ?>" alt="" class="annam-tour-sapa-gallery-prev" style="width:120px;height:80px;object-fit:cover;border-radius:8px;background:#eee;" />
 								<input type="hidden" name="annam_tour_sapa_gallery[<?php echo esc_attr( (string) $i ); ?>][id]" class="annam-tour-sapa-gallery-id" value="<?php echo esc_attr( (string) $aid ); ?>" />
 								<input type="hidden" name="annam_tour_sapa_gallery[<?php echo esc_attr( (string) $i ); ?>][fallback]" value="<?php echo esc_attr( $fb ); ?>" />
+							</td>
+							<td class="annam-tour-sapa-gallery-size">
+								<strong class="annam-tour-sapa-gallery-size__px"><?php echo esc_html( $hint['size'] ); ?></strong><br />
+								<span class="description annam-tour-sapa-gallery-size__ratio"><?php echo esc_html( $hint['ratio'] ); ?></span><br />
+								<span class="description annam-tour-sapa-gallery-size__note"><?php echo esc_html( $hint['note'] ); ?></span>
 							</td>
 							<td>
 								<input type="text" class="large-text annam-tour-sapa-gallery-caption" name="annam_tour_sapa_gallery[<?php echo esc_attr( (string) $i ); ?>][caption]" value="<?php echo esc_attr( $cap ); ?>" placeholder="<?php esc_attr_e( 'Mô tả ảnh', 'generatepress_child' ); ?>" />
@@ -410,10 +473,13 @@ function annam_tour_sapa_landing_images_admin_render() {
 			</p>
 
 			<h2><?php esc_html_e( '2. Ảnh lịch trình (3 ngày)', 'generatepress_child' ); ?></h2>
+			<p class="description"><?php esc_html_e( 'Khuyến nghị: 1200 × 800 px · tỷ lệ 3:2 (ngang) · JPG/WebP.', 'generatepress_child' ); ?></p>
 			<table class="form-table" role="presentation">
 				<?php foreach ( $itin_slots as $key => $slot ) :
 					$aid     = isset( $images[ $key ] ) ? absint( $images[ $key ] ) : 0;
 					$preview = $aid ? wp_get_attachment_image_url( $aid, 'medium' ) : $slot['fallback'];
+					$rec     = isset( $slot['recommended'] ) ? (string) $slot['recommended'] : '1200 × 800 px';
+					$ratio   = isset( $slot['ratio'] ) ? (string) $slot['ratio'] : '3:2 (ngang)';
 					?>
 					<tr>
 						<th scope="row"><label for="annam-tour-sapa-img-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $slot['label'] ); ?></label></th>
@@ -424,6 +490,10 @@ function annam_tour_sapa_landing_images_admin_render() {
 									<input type="hidden" name="annam_tour_sapa_img_<?php echo esc_attr( $key ); ?>" id="annam-tour-sapa-img-<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( (string) $aid ); ?>" />
 									<button type="button" class="button annam-tour-sapa-pick" data-slot="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Chọn ảnh', 'generatepress_child' ); ?></button>
 									<button type="button" class="button annam-tour-sapa-clear" data-slot="<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Xóa', 'generatepress_child' ); ?></button>
+									<p class="description" style="margin:8px 0 0;">
+										<strong><?php esc_html_e( 'Kích thước:', 'generatepress_child' ); ?></strong>
+										<?php echo esc_html( $rec ); ?> · <?php echo esc_html( $ratio ); ?>
+									</p>
 									<p class="description"><?php echo esc_html( $slot['default_caption'] ); ?></p>
 								</div>
 							</div>
@@ -449,6 +519,20 @@ function annam_tour_sapa_landing_images_admin_render() {
 	<script>
 	(function($){
 		var defaultFallback = <?php echo wp_json_encode( isset( $defaults[0]['fallback'] ) ? $defaults[0]['fallback'] : '' ); ?>;
+		var sizeHints = <?php
+			$hints_js = array();
+			for ( $hi = 0; $hi < 12; $hi++ ) {
+				$hints_js[ $hi ] = annam_tour_sapa_landing_gallery_size_hint( $hi );
+			}
+			echo wp_json_encode( $hints_js );
+		?>;
+
+		function sizeHintHtml(i) {
+			var h = sizeHints[i] || sizeHints[6] || { size: '1600 × 1200 px', ratio: '4:3 (ngang)', note: 'Lightbox' };
+			return '<strong class="annam-tour-sapa-gallery-size__px">' + h.size + '</strong><br/>' +
+				'<span class="description annam-tour-sapa-gallery-size__ratio">' + h.ratio + '</span><br/>' +
+				'<span class="description annam-tour-sapa-gallery-size__note">' + h.note + '</span>';
+		}
 
 		function reindexGallery() {
 			$('#annam-tour-sapa-gallery-body .annam-tour-sapa-gallery-row').each(function(i){
@@ -458,6 +542,7 @@ function annam_tour_sapa_landing_images_admin_render() {
 				$row.find('.annam-tour-sapa-gallery-id').attr('name', 'annam_tour_sapa_gallery[' + i + '][id]');
 				$row.find('input[name*="[fallback]"]').attr('name', 'annam_tour_sapa_gallery[' + i + '][fallback]');
 				$row.find('.annam-tour-sapa-gallery-caption').attr('name', 'annam_tour_sapa_gallery[' + i + '][caption]');
+				$row.find('.annam-tour-sapa-gallery-size').html(sizeHintHtml(i));
 			});
 			var count = $('#annam-tour-sapa-gallery-body .annam-tour-sapa-gallery-row').length;
 			$('#annam-tour-sapa-gallery-body .annam-tour-sapa-gallery-remove').prop('disabled', count <= 6);
@@ -523,6 +608,7 @@ function annam_tour_sapa_landing_images_admin_render() {
 				'<input type="hidden" name="annam_tour_sapa_gallery[' + i + '][id]" class="annam-tour-sapa-gallery-id" value="0" />' +
 				'<input type="hidden" name="annam_tour_sapa_gallery[' + i + '][fallback]" value="' + defaultFallback + '" /></td>'
 			);
+			$row.append('<td class="annam-tour-sapa-gallery-size">' + sizeHintHtml(i) + '</td>');
 			$row.append('<td><input type="text" class="large-text annam-tour-sapa-gallery-caption" name="annam_tour_sapa_gallery[' + i + '][caption]" value="" placeholder="Mô tả ảnh" /></td>');
 			$row.append(
 				'<td><button type="button" class="button annam-tour-sapa-gallery-pick">Chọn ảnh</button> ' +

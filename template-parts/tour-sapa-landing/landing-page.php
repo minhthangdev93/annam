@@ -38,8 +38,14 @@ $brand  = isset( $cta['brand'] ) ? $cta['brand'] : 'An Nam Discovery';
 					$slot = isset( $item['slot'] ) ? (string) $item['slot'] : '';
 					$cap  = isset( $item['caption'] ) ? (string) $item['caption'] : '';
 					$mod  = 0 === $i ? ' annam-tour-sapa-mosaic__cell--hero' : '';
-					if ( $i === $mosaic_last ) {
-						$mod .= ' annam-tour-sapa-mosaic__cell--gallery-btn';
+					// Desktop: Gallery trên ô 5; mobile: Gallery trên ô 6.
+					$gallery_desktop = ( 4 === $i );
+					$gallery_mobile  = ( $i === $mosaic_last );
+					if ( $gallery_desktop ) {
+						$mod .= ' annam-tour-sapa-mosaic__cell--gallery-btn-desktop';
+					}
+					if ( $gallery_mobile ) {
+						$mod .= ' annam-tour-sapa-mosaic__cell--gallery-btn-mobile';
 					}
 					?>
 					<figure class="annam-tour-sapa-mosaic__cell<?php echo esc_attr( $mod ); ?>">
@@ -57,15 +63,19 @@ $brand  = isset( $cta['brand'] ) ? $cta['brand'] : 'An Nam Discovery';
 							}
 							?>
 							<span class="annam-tour-sapa-mosaic__veil" aria-hidden="true"></span>
-							<?php if ( $i === $mosaic_last ) : ?>
+							<?php if ( $gallery_desktop || $gallery_mobile ) : ?>
 								<span class="annam-tour-sapa-mosaic__gallery-label">
 									<?php
-									$extra = max( 0, count( $exp ) - 5 );
+									$shown = $gallery_desktop ? 4 : 5;
+									$extra = max( 1, count( $exp ) - $shown );
 									?>
-									<span class="annam-tour-sapa-mosaic__gallery-count">+<?php echo esc_html( (string) max( 1, $extra ) ); ?></span>
+									<span class="annam-tour-sapa-mosaic__gallery-count">+<?php echo esc_html( (string) $extra ); ?></span>
 									<span><?php esc_html_e( 'Gallery', 'generatepress_child' ); ?></span>
 								</span>
-							<?php elseif ( $cap ) : ?>
+							<?php endif; ?>
+							<?php if ( $cap && ! $gallery_desktop && ! $gallery_mobile ) : ?>
+								<span class="annam-tour-sapa-mosaic__cap"><?php echo esc_html( $cap ); ?></span>
+							<?php elseif ( $cap && $gallery_desktop ) : ?>
 								<span class="annam-tour-sapa-mosaic__cap"><?php echo esc_html( $cap ); ?></span>
 							<?php endif; ?>
 						</button>

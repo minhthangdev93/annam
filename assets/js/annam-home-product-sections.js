@@ -138,6 +138,7 @@
 		}
 
 		var viewport = getViewport(section);
+		var slides = getSlides(sectionRoot);
 		var prev = section.querySelector('.annam-home-product-section__nav--prev');
 		var next = section.querySelector('.annam-home-product-section__nav--next');
 
@@ -145,7 +146,42 @@
 			return;
 		}
 
+		function maxScrollLeft() {
+			return Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+		}
+
 		function scrollStep(direction) {
+			var maxScroll = maxScrollLeft();
+			var epsilon = 12;
+			var atStart = viewport.scrollLeft <= epsilon;
+			var atEnd = viewport.scrollLeft >= maxScroll - epsilon;
+
+			// Hết bên phải → về đầu; hết bên trái → về cuối (xoay vòng).
+			if (direction > 0 && (atEnd || maxScroll < epsilon)) {
+				viewport.scrollTo({ left: 0, behavior: 'smooth' });
+				return;
+			}
+			if (direction < 0 && atStart) {
+				viewport.scrollTo({ left: maxScroll, behavior: 'smooth' });
+				return;
+			}
+
+			// Ưu tiên nhảy theo từng card nếu có; không thì theo ~1 viewport.
+			if (slides.length > 1) {
+				var activeIndex = getNearestSlideIndex(viewport, slides);
+				var targetIndex = activeIndex + direction;
+				if (targetIndex < 0) {
+					viewport.scrollTo({ left: maxScroll, behavior: 'smooth' });
+					return;
+				}
+				if (targetIndex >= slides.length) {
+					viewport.scrollTo({ left: 0, behavior: 'smooth' });
+					return;
+				}
+				scrollToSlide(viewport, slides[targetIndex]);
+				return;
+			}
+
 			var delta = Math.max(120, Math.floor(viewport.clientWidth * 0.92));
 			viewport.scrollBy({
 				left: direction * delta,
