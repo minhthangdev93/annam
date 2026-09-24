@@ -20,6 +20,125 @@ if ( ! defined( 'ANNAM_TOUR_SAPA_SETTINGS_OPTION' ) ) {
 	define( 'ANNAM_TOUR_SAPA_SETTINGS_OPTION', 'annam_tour_sapa_landing_settings' );
 }
 
+if ( ! defined( 'ANNAM_TOUR_SAPA_VIDEOS_OPTION' ) ) {
+	define( 'ANNAM_TOUR_SAPA_VIDEOS_OPTION', 'annam_tour_sapa_landing_videos' );
+}
+
+/**
+ * Lấy YouTube video ID từ URL hoặc ID thuần.
+ *
+ * @param string $url YouTube URL / ID.
+ * @return string
+ */
+function annam_tour_sapa_landing_youtube_video_id( $url ) {
+	$url = trim( (string) $url );
+	if ( '' === $url ) {
+		return '';
+	}
+	if ( preg_match( '/(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/', $url, $m ) ) {
+		return $m[1];
+	}
+	if ( preg_match( '/^[A-Za-z0-9_-]{6,}$/', $url ) ) {
+		return $url;
+	}
+	return '';
+}
+
+/**
+ * Embed src privacy-enhanced.
+ *
+ * @param string $url YouTube URL.
+ * @return string
+ */
+function annam_tour_sapa_landing_youtube_embed_src( $url ) {
+	$id = annam_tour_sapa_landing_youtube_video_id( $url );
+	if ( '' === $id ) {
+		return '';
+	}
+	return 'https://www.youtube-nocookie.com/embed/' . rawurlencode( $id );
+}
+
+/**
+ * Thumbnail YouTube (hqdefault).
+ *
+ * @param string $url YouTube URL.
+ * @return string
+ */
+function annam_tour_sapa_landing_youtube_thumb_url( $url ) {
+	$id = annam_tour_sapa_landing_youtube_video_id( $url );
+	if ( '' === $id ) {
+		return '';
+	}
+	return 'https://i.ytimg.com/vi/' . rawurlencode( $id ) . '/hqdefault.jpg';
+}
+
+/**
+ * Danh sách video map từ admin.
+ *
+ * @return array<int,array{url:string,title:string,id:string,embed:string}>
+ */
+function annam_tour_sapa_landing_get_videos() {
+	$raw = get_option( ANNAM_TOUR_SAPA_VIDEOS_OPTION, array() );
+	if ( ! is_array( $raw ) ) {
+		$raw = array();
+	}
+
+	$out = array();
+	foreach ( $raw as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+		$url   = isset( $row['url'] ) ? trim( (string) $row['url'] ) : '';
+		$title = isset( $row['title'] ) ? trim( (string) $row['title'] ) : '';
+		$id    = annam_tour_sapa_landing_youtube_video_id( $url );
+		if ( '' === $id ) {
+			continue;
+		}
+		$embed = annam_tour_sapa_landing_youtube_embed_src( $url );
+		if ( '' === $embed ) {
+			continue;
+		}
+		$out[] = array(
+			'url'   => $url,
+			'title' => $title,
+			'id'    => $id,
+			'embed' => $embed,
+			'thumb' => annam_tour_sapa_landing_youtube_thumb_url( $url ),
+		);
+	}
+
+	return apply_filters( 'annam_tour_sapa_landing_videos', $out );
+}
+
+/**
+ * @param mixed $raw POST videos.
+ * @return array<int,array{url:string,title:string}>
+ */
+function annam_tour_sapa_landing_sanitize_videos_post( $raw ) {
+	$out = array();
+	if ( ! is_array( $raw ) ) {
+		return $out;
+	}
+	foreach ( $raw as $row ) {
+		if ( ! is_array( $row ) ) {
+			continue;
+		}
+		$url   = isset( $row['url'] ) ? esc_url_raw( trim( wp_unslash( (string) $row['url'] ) ) ) : '';
+		$title = isset( $row['title'] ) ? sanitize_text_field( wp_unslash( (string) $row['title'] ) ) : '';
+		if ( '' === $url && '' === $title ) {
+			continue;
+		}
+		if ( '' === $url || ! annam_tour_sapa_landing_youtube_video_id( $url ) ) {
+			continue;
+		}
+		$out[] = array(
+			'url'   => $url,
+			'title' => $title,
+		);
+	}
+	return array_values( $out );
+}
+
 /**
  * @return array<string,array{label:string,section:string,fallback:string,default_caption:string}>
  */
@@ -329,7 +448,7 @@ function annam_tour_sapa_landing_get_lead_emails() {
  */
 function annam_tour_sapa_landing_images_admin_menu() {
 	add_theme_page(
-		__( 'Tour Sapa 3N2Đ — Ảnh & Email', 'generatepress_child' ),
+		__( 'Tour Sapa 3N2Đ — Ảnh, Video & Email', 'generatepress_child' ),
 		__( 'Tour Sapa Landing', 'generatepress_child' ),
 		'edit_theme_options',
 		'annam-tour-sapa-landing',
@@ -396,10 +515,13 @@ function annam_tour_sapa_landing_images_admin_render() {
 		$gallery_raw = isset( $_POST['annam_tour_sapa_gallery'] ) ? wp_unslash( $_POST['annam_tour_sapa_gallery'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		update_option( ANNAM_TOUR_SAPA_GALLERY_OPTION, annam_tour_sapa_landing_sanitize_gallery_post( $gallery_raw ), false );
 
+		$videos_raw = isset( $_POST['annam_tour_sapa_videos'] ) ? wp_unslash( $_POST['annam_tour_sapa_videos'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		update_option( ANNAM_TOUR_SAPA_VIDEOS_OPTION, annam_tour_sapa_landing_sanitize_videos_post( $videos_raw ), false );
+
 		$emails = isset( $_POST['annam_tour_sapa_lead_emails'] ) ? sanitize_text_field( wp_unslash( $_POST['annam_tour_sapa_lead_emails'] ) ) : '';
 		update_option( ANNAM_TOUR_SAPA_SETTINGS_OPTION, array( 'lead_emails' => $emails ), false );
 
-		echo '<div class="notice notice-success"><p>' . esc_html__( 'Đã lưu ảnh thư viện, lịch trình và email lead.', 'generatepress_child' ) . '</p></div>';
+		echo '<div class="notice notice-success"><p>' . esc_html__( 'Đã lưu ảnh, video YouTube và email lead.', 'generatepress_child' ) . '</p></div>';
 	}
 
 	$images     = annam_tour_sapa_landing_get_images();
@@ -411,11 +533,20 @@ function annam_tour_sapa_landing_images_admin_render() {
 	$defaults = annam_tour_sapa_landing_get_gallery_defaults();
 	$settings = get_option( ANNAM_TOUR_SAPA_SETTINGS_OPTION, array() );
 	$emails   = isset( $settings['lead_emails'] ) ? (string) $settings['lead_emails'] : '';
+	$videos   = get_option( ANNAM_TOUR_SAPA_VIDEOS_OPTION, array() );
+	if ( ! is_array( $videos ) || empty( $videos ) ) {
+		$videos = array(
+			array(
+				'url'   => '',
+				'title' => '',
+			),
+		);
+	}
 
 	wp_enqueue_media();
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Tour Sapa 3N2Đ — Ảnh & Email', 'generatepress_child' ); ?></h1>
+		<h1><?php esc_html_e( 'Tour Sapa 3N2Đ — Ảnh, Video & Email', 'generatepress_child' ); ?></h1>
 		<p class="description"><?php esc_html_e( 'Thư viện đầu trang: mosaic 6 ô + lightbox toàn bộ. Có thể thêm nhiều hơn 6 ảnh.', 'generatepress_child' ); ?></p>
 
 		<form method="post" id="annam-tour-sapa-images-form">
@@ -502,7 +633,42 @@ function annam_tour_sapa_landing_images_admin_render() {
 				<?php endforeach; ?>
 			</table>
 
-			<h2><?php esc_html_e( '3. Email nhận lead', 'generatepress_child' ); ?></h2>
+			<h2><?php esc_html_e( '3. Video YouTube', 'generatepress_child' ); ?></h2>
+			<p class="description"><?php esc_html_e( 'Dán link YouTube (watch / youtu.be / shorts). Có thể thêm nhiều video — hiện trên landing tại khối Video.', 'generatepress_child' ); ?></p>
+			<table class="widefat striped" id="annam-tour-sapa-videos-table" style="max-width:960px;margin:12px 0 12px;">
+				<thead>
+					<tr>
+						<th style="width:48px;">#</th>
+						<th><?php esc_html_e( 'Link YouTube', 'generatepress_child' ); ?></th>
+						<th style="width:240px;"><?php esc_html_e( 'Tiêu đề (tuỳ chọn)', 'generatepress_child' ); ?></th>
+						<th style="width:100px;"><?php esc_html_e( 'Thao tác', 'generatepress_child' ); ?></th>
+					</tr>
+				</thead>
+				<tbody id="annam-tour-sapa-videos-body">
+					<?php foreach ( $videos as $vi => $vrow ) :
+						$vurl   = isset( $vrow['url'] ) ? (string) $vrow['url'] : '';
+						$vtitle = isset( $vrow['title'] ) ? (string) $vrow['title'] : '';
+						?>
+						<tr class="annam-tour-sapa-video-row">
+							<td class="annam-tour-sapa-video-num"><?php echo esc_html( (string) ( (int) $vi + 1 ) ); ?></td>
+							<td>
+								<input type="url" class="large-text annam-tour-sapa-video-url" name="annam_tour_sapa_videos[<?php echo esc_attr( (string) $vi ); ?>][url]" value="<?php echo esc_attr( $vurl ); ?>" placeholder="https://www.youtube.com/watch?v=..." />
+							</td>
+							<td>
+								<input type="text" class="large-text annam-tour-sapa-video-title" name="annam_tour_sapa_videos[<?php echo esc_attr( (string) $vi ); ?>][title]" value="<?php echo esc_attr( $vtitle ); ?>" placeholder="<?php esc_attr_e( 'VD: Review tour Sapa 3N2Đ', 'generatepress_child' ); ?>" />
+							</td>
+							<td>
+								<button type="button" class="button link-delete annam-tour-sapa-video-remove"><?php esc_html_e( 'Gỡ', 'generatepress_child' ); ?></button>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<p>
+				<button type="button" class="button button-secondary" id="annam-tour-sapa-video-add"><?php esc_html_e( '+ Thêm video YouTube', 'generatepress_child' ); ?></button>
+			</p>
+
+			<h2><?php esc_html_e( '4. Email nhận lead', 'generatepress_child' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
 					<th><label for="annam_tour_sapa_lead_emails"><?php esc_html_e( 'Email', 'generatepress_child' ); ?></label></th>
@@ -617,6 +783,38 @@ function annam_tour_sapa_landing_images_admin_render() {
 			);
 			$('#annam-tour-sapa-gallery-body').append($row);
 			reindexGallery();
+		});
+
+		function reindexVideos() {
+			$('#annam-tour-sapa-videos-body .annam-tour-sapa-video-row').each(function(i){
+				var $row = $(this);
+				$row.find('.annam-tour-sapa-video-num').text(i + 1);
+				$row.find('.annam-tour-sapa-video-url').attr('name', 'annam_tour_sapa_videos[' + i + '][url]');
+				$row.find('.annam-tour-sapa-video-title').attr('name', 'annam_tour_sapa_videos[' + i + '][title]');
+			});
+		}
+
+		$('#annam-tour-sapa-video-add').on('click', function(e){
+			e.preventDefault();
+			var i = $('#annam-tour-sapa-videos-body .annam-tour-sapa-video-row').length;
+			var $row = $('<tr class="annam-tour-sapa-video-row"/>');
+			$row.append('<td class="annam-tour-sapa-video-num">' + (i + 1) + '</td>');
+			$row.append('<td><input type="url" class="large-text annam-tour-sapa-video-url" name="annam_tour_sapa_videos[' + i + '][url]" value="" placeholder="https://www.youtube.com/watch?v=..." /></td>');
+			$row.append('<td><input type="text" class="large-text annam-tour-sapa-video-title" name="annam_tour_sapa_videos[' + i + '][title]" value="" placeholder="VD: Review tour Sapa 3N2Đ" /></td>');
+			$row.append('<td><button type="button" class="button link-delete annam-tour-sapa-video-remove">Gỡ</button></td>');
+			$('#annam-tour-sapa-videos-body').append($row);
+			reindexVideos();
+		});
+
+		$(document).on('click', '.annam-tour-sapa-video-remove', function(e){
+			e.preventDefault();
+			var $rows = $('#annam-tour-sapa-videos-body .annam-tour-sapa-video-row');
+			if ($rows.length <= 1) {
+				$rows.find('.annam-tour-sapa-video-url, .annam-tour-sapa-video-title').val('');
+				return;
+			}
+			$(this).closest('.annam-tour-sapa-video-row').remove();
+			reindexVideos();
 		});
 	})(jQuery);
 	</script>

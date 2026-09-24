@@ -271,6 +271,10 @@ $brand  = isset( $cta['brand'] ) ? $cta['brand'] : 'An Nam Discovery';
 	</section>
 	<?php endif; ?>
 
+	<?php if ( ! empty( $secs['videos'] ) ) : ?>
+		<?php get_template_part( 'template-parts/tour-sapa-landing/part', 'videos' ); ?>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $secs['faq'] ) && ! empty( $config['faq'] ) ) : ?>
 	<section class="annam-tour-sapa-section" id="faq">
 		<div class="annam-tour-sapa-container">

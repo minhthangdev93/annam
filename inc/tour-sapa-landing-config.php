@@ -210,6 +210,10 @@ function annam_tour_sapa_landing_get_default_config( $page_id = 0 ) {
 			'limit'         => -1,
 			'title'         => 'Tour & Combo Sapa khác',
 		),
+		'videos'        => array(
+			'title' => 'Video trải nghiệm Tour Sapa',
+			'lead'  => 'Xem thực tế hành trình Cát Cát – Fansipan – Moana trước khi giữ chỗ.',
+		),
 		'seo'           => array(
 			'title'       => 'Tour Sapa 3 Ngày 2 Đêm (3N2Đ) | Du Lịch Sapa Từ 2.990.000đ',
 			'description' => 'Du lịch Sapa 3 ngày 2 đêm: Cát Cát – Fansipan – Moana. Giá tour Sapa từ 2.990.000đ, đã gồm xe limo/cabin VIP HN ⇄ Sapa. Khởi hành hàng ngày — giữ chỗ nhanh.',
@@ -221,6 +225,7 @@ function annam_tour_sapa_landing_get_default_config( $page_id = 0 ) {
 			'pricing'       => true,
 			'itinerary'     => true,
 			'includes'      => true,
+			'videos'        => true,
 			'faq'           => true,
 			'reviews'       => true,
 			'related_tours' => true,
