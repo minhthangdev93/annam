@@ -15,10 +15,17 @@ $secs   = isset( $config['sections'] ) ? $config['sections'] : array();
 $settings    = function_exists( 'annam_limo_charter_landing_get_settings' ) ? annam_limo_charter_landing_get_settings() : array();
 $default_map = function_exists( 'annam_limo_charter_landing_default_maps_url' )
 	? annam_limo_charter_landing_default_maps_url()
-	: 'https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7';
+	: ( function_exists( 'annam_contact_default_maps_place_url' ) ? annam_contact_default_maps_place_url() : '' );
 $map_query   = ! empty( $settings['map_address'] ) ? (string) $settings['map_address'] : $default_map;
 $map_embed   = ( $map_query && function_exists( 'annam_contact_maps_embed_url' ) ) ? annam_contact_maps_embed_url( $map_query ) : '';
-$maps_link   = ! empty( $cta['maps_url'] ) ? (string) $cta['maps_url'] : $default_map;
+// Nút mở Maps: ưu tiên link place đầy đủ (có nhãn), không dùng short link nếu admin chưa đổi.
+$maps_link   = $default_map;
+if ( ! empty( $cta['maps_url'] ) && ! preg_match( '#(maps\.app\.goo\.gl|goo\.gl/maps)/#i', (string) $cta['maps_url'] ) ) {
+	$maps_link = (string) $cta['maps_url'];
+}
+if ( ! empty( $settings['map_address'] ) && preg_match( '#^https?://#i', (string) $settings['map_address'] ) ) {
+	$maps_link = (string) $settings['map_address'];
+}
 // Hiển thị địa chỉ chữ; short link Maps → dùng address CTA.
 $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 	? ( isset( $cta['address'] ) ? (string) $cta['address'] : '' )

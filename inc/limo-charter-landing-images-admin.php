@@ -391,15 +391,19 @@ function annam_limo_charter_landing_get_settings() {
 	}
 	$default_maps = function_exists( 'annam_limo_charter_landing_default_maps_url' )
 		? annam_limo_charter_landing_default_maps_url()
-		: 'https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7';
-	$map_saved    = isset( $raw['map_address'] ) ? trim( (string) $raw['map_address'] ) : '';
+		: ( function_exists( 'annam_contact_default_maps_place_url' ) ? annam_contact_default_maps_place_url() : '' );
+	$map_saved = isset( $raw['map_address'] ) ? trim( (string) $raw['map_address'] ) : '';
+	// Short link cũ → place URL đầy đủ (để iframe lấy đúng nhãn An Nam Discovery).
+	if ( '' !== $map_saved && false !== strpos( $map_saved, '6mQkPgdUMFhRfRnK7' ) ) {
+		$map_saved = $default_maps;
+	}
 
 	$lead_saved = isset( $raw['lead_emails'] ) ? trim( (string) $raw['lead_emails'] ) : '';
 
 	return array(
 		// Mặc định luôn nhận lead tại annamdiscoveryvn@gmail.com nếu admin để trống.
 		'lead_emails' => '' !== $lead_saved ? $lead_saved : 'annamdiscoveryvn@gmail.com',
-		// Mặc định dùng link Maps cố định — không bắt buộc cấu hình trong admin.
+		// Mặc định dùng link place Maps — không bắt buộc cấu hình trong admin.
 		'map_address' => '' !== $map_saved ? $map_saved : $default_maps,
 	);
 }
@@ -939,12 +943,12 @@ function annam_limo_charter_landing_images_render_admin_page() {
 			<p class="description"><?php esc_html_e( 'Mặc định: annamdiscoveryvn@gmail.com — chỉ đổi nếu cần thêm/đổi địa chỉ nhận lead.', 'generatepress_child' ); ?></p>
 			<p>
 				<label for="annam_limo_charter_map_address"><strong><?php esc_html_e( 'Địa chỉ / link nhúng Google Maps (tuỳ chọn)', 'generatepress_child' ); ?></strong></label><br />
-				<input type="text" class="large-text" id="annam_limo_charter_map_address" name="annam_limo_charter_map_address" value="<?php echo esc_attr( $map ); ?>" placeholder="https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7" />
+				<input type="text" class="large-text" id="annam_limo_charter_map_address" name="annam_limo_charter_map_address" value="<?php echo esc_attr( $map ); ?>" placeholder="https://www.google.com/maps/place/An+Nam+Discovery/..." />
 			</p>
 			<p class="description">
 				<?php
 				esc_html_e(
-					'Mặc định đã dùng https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7 — chỉ đổi nếu muốn map khác.',
+					'Mặc định dùng link place An Nam Discovery (có nhãn trên bản đồ). Dán link /maps/place/... nếu muốn đổi.',
 					'generatepress_child'
 				);
 				?>

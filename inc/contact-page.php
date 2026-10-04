@@ -600,9 +600,22 @@ function annam_contact_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'annam_contact_customize_register' );
 
 /**
+ * Link Google Maps place mặc định (An Nam Discovery) — có nhãn doanh nghiệp.
+ *
+ * @return string
+ */
+function annam_contact_default_maps_place_url() {
+	return (string) apply_filters(
+		'annam_contact_default_maps_place_url',
+		'https://www.google.com/maps/place/An+Nam+Discovery/@21.026181,105.8588833,17z/data=!4m6!3m5!1s0x3135ab005b3f19bf:0xce344276f19dadff!8m2!3d21.026181!4d105.8588833!16s%2Fg%2F11ms6qz7q5'
+	);
+}
+
+/**
  * URL embed Google Maps từ địa chỉ / link Maps (không cần API key, output=embed).
  *
  * Lưu ý: maps.app.goo.gl không nhúng được nếu đưa nguyên URL vào q= (sẽ ra bản đồ thế giới).
+ * Link /maps/place/... lấy tên place (+ ftid) để iframe hiện nhãn như trên Maps.
  *
  * @param string $address Địa chỉ chữ, tọa độ "lat,lng", hoặc URL Google Maps.
  * @return string
@@ -619,22 +632,33 @@ function annam_contact_maps_embed_url( $address ) {
 	}
 
 	$query = $address;
+	$ftid  = '';
+	$lat   = '';
+	$lng   = '';
 
-	// URL Maps đầy đủ: lấy @lat,lng.
-	if ( preg_match( '#@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)#', $address, $m ) ) {
-		$query = $m[1] . ',' . $m[2];
-	} elseif ( preg_match( '#/maps/place/([^/@?#]+)#i', $address, $m ) ) {
+	if ( preg_match( '#!1s(0x[0-9a-fA-F]+:0x[0-9a-fA-F]+)#', $address, $m ) ) {
+		$ftid = $m[1];
+	}
+	if ( preg_match( '#!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)#', $address, $m ) ) {
+		$lat = $m[1];
+		$lng = $m[2];
+	}
+
+	// Ưu tiên tên place (hiện nhãn); chỉ fallback tọa độ khi không có place.
+	if ( preg_match( '#/maps/place/([^/@?#]+)#i', $address, $m ) ) {
 		$query = rawurldecode( str_replace( '+', ' ', $m[1] ) );
+	} elseif ( preg_match( '#@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)#', $address, $m ) ) {
+		$query = $m[1] . ',' . $m[2];
 	} elseif ( preg_match( '#^https?://(maps\.app\.goo\.gl|goo\.gl/maps)/#i', $address ) ) {
 		/**
-		 * Short link không dùng làm q= được. Cho phép map slug → query nhúng.
+		 * Short link không dùng làm q= được. Map slug → query nhúng (tên place để hiện nhãn).
 		 *
 		 * @param array<string,string> $map Short-link path/slug => embed query.
 		 */
 		$known = apply_filters(
 			'annam_contact_maps_shortlink_embed_queries',
 			array(
-				'6mQkPgdUMFhRfRnK7' => '21.026181,105.8588833', // An Nam Discovery
+				'6mQkPgdUMFhRfRnK7' => 'An Nam Discovery',
 			)
 		);
 		$query = '';
@@ -645,11 +669,25 @@ function annam_contact_maps_embed_url( $address ) {
 			}
 		}
 		if ( '' === $query ) {
-			$query = 'An Nam Discovery, Hà Nội';
+			$query = 'An Nam Discovery';
+		}
+		// Short link An Nam: gắn ftid/coords từ place URL chuẩn.
+		if ( 'An Nam Discovery' === $query && '' === $ftid ) {
+			$ftid = '0x3135ab005b3f19bf:0xce344276f19dadff';
+			$lat  = '21.026181';
+			$lng  = '105.8588833';
 		}
 	}
 
-	return 'https://www.google.com/maps?q=' . rawurlencode( $query ) . '&hl=vi&z=17&output=embed';
+	$embed = 'https://www.google.com/maps?q=' . rawurlencode( $query ) . '&hl=vi&z=18&ie=UTF8&iwloc=B&output=embed';
+	if ( '' !== $ftid ) {
+		$embed .= '&ftid=' . rawurlencode( $ftid );
+	}
+	if ( '' !== $lat && '' !== $lng ) {
+		$embed .= '&ll=' . rawurlencode( $lat . ',' . $lng );
+	}
+
+	return $embed;
 }
 
 /**

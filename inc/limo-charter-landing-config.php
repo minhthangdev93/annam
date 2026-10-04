@@ -27,27 +27,33 @@ function annam_limo_charter_landing_get_cta() {
 			'hotline2_tel'     => 'tel:' . $mobile_digits,
 			'zalo_url'         => isset( $d['zalo_url'] ) ? (string) $d['zalo_url'] : 'http://zalo.me/2127942034358673568',
 			'address'          => isset( $d['address'] ) ? (string) $d['address'] : '214 Đ. Trần Quang Khải, Hoàn Kiếm, Hà Nội',
-			'maps_url'         => 'https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7',
+			'maps_url'         => function_exists( 'annam_contact_default_maps_place_url' )
+				? annam_contact_default_maps_place_url()
+				: 'https://www.google.com/maps/place/An+Nam+Discovery/@21.026181,105.8588833,17z/data=!4m6!3m5!1s0x3135ab005b3f19bf:0xce344276f19dadff!8m2!3d21.026181!4d105.8588833!16s%2Fg%2F11ms6qz7q5',
 		)
 	);
 }
 
 /**
- * Link Google Maps mặc định (nút “Mở Google Maps”).
+ * Link Google Maps mặc định (nút “Mở Google Maps” + nguồn embed).
  *
  * @return string
  */
 function annam_limo_charter_landing_default_maps_url() {
-	return (string) apply_filters( 'annam_limo_charter_landing_default_maps_url', 'https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7' );
+	$default = function_exists( 'annam_contact_default_maps_place_url' )
+		? annam_contact_default_maps_place_url()
+		: 'https://www.google.com/maps/place/An+Nam+Discovery/@21.026181,105.8588833,17z/data=!4m6!3m5!1s0x3135ab005b3f19bf:0xce344276f19dadff!8m2!3d21.026181!4d105.8588833!16s%2Fg%2F11ms6qz7q5';
+
+	return (string) apply_filters( 'annam_limo_charter_landing_default_maps_url', $default );
 }
 
 /**
- * Query nhúng iframe (tọa độ / tên địa điểm) — short link không dùng được cho embed.
+ * Query nhúng iframe (tên place để hiện nhãn) — short link không dùng được cho embed.
  *
  * @return string
  */
 function annam_limo_charter_landing_default_maps_embed_query() {
-	return (string) apply_filters( 'annam_limo_charter_landing_default_maps_embed_query', '21.026181,105.8588833' );
+	return (string) apply_filters( 'annam_limo_charter_landing_default_maps_embed_query', 'An Nam Discovery' );
 }
 
 /**
