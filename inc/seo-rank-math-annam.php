@@ -301,9 +301,14 @@ add_filter( 'rank_math/frontend/canonical', 'annam_seo_rank_math_canonical', 50 
 
 /**
  * Redirect attachment URLs to file (tránh thin attachment pages).
+ * Bỏ qua khi slug trùng product_cat (ưu tiên archive danh mục).
  */
 function annam_seo_redirect_attachment_to_file() {
 	if ( ! is_attachment() ) {
+		return;
+	}
+	$post = get_queried_object();
+	if ( $post instanceof WP_Post && annam_seo_get_product_cat_by_slug( (string) $post->post_name ) ) {
 		return;
 	}
 	$url = wp_get_attachment_url( get_queried_object_id() );
@@ -377,10 +382,61 @@ function annam_seo_resolve_legacy_product_cat_url( $path ) {
 }
 
 /**
+ * Lấy slug có thể trùng product_cat từ query vars (attachment / name / attachment_id).
+ *
+ * @param array<string,mixed> $query_vars Query vars.
+ * @return string
+ */
+function annam_seo_collision_slug_from_query_vars( $query_vars ) {
+	if ( ! is_array( $query_vars ) ) {
+		return '';
+	}
+	if ( ! empty( $query_vars['attachment'] ) ) {
+		return (string) $query_vars['attachment'];
+	}
+	if ( ! empty( $query_vars['attachment_id'] ) ) {
+		$post = get_post( (int) $query_vars['attachment_id'] );
+		if ( $post instanceof WP_Post && 'attachment' === $post->post_type && ! empty( $post->post_name ) ) {
+			return (string) $post->post_name;
+		}
+	}
+	// Root pretty permalink đôi khi chỉ có `name` (chưa gắn post_type).
+	if ( ! empty( $query_vars['name'] ) && empty( $query_vars['post_type'] ) && empty( $query_vars['pagename'] ) && empty( $query_vars['page_id'] ) && empty( $query_vars['p'] ) ) {
+		return (string) $query_vars['name'];
+	}
+	return '';
+}
+
+/**
+ * Gán query vars archive product_cat (xoá attachment / name).
+ *
+ * @param array<string,mixed> $query_vars Query vars.
+ * @param WP_Term             $term       Term product_cat.
+ * @return array<string,mixed>
+ */
+function annam_seo_query_vars_as_product_cat( $query_vars, WP_Term $term ) {
+	unset(
+		$query_vars['attachment'],
+		$query_vars['attachment_id'],
+		$query_vars['name'],
+		$query_vars['error'],
+		$query_vars['page'],
+		$query_vars['pagename'],
+		$query_vars['page_id'],
+		$query_vars['p']
+	);
+	$query_vars['product_cat'] = $term->slug;
+	$query_vars['taxonomy']    = 'product_cat';
+	$query_vars['term']        = $term->slug;
+	return $query_vars;
+}
+
+/**
  * Media attachment trùng slug với product_cat → ưu tiên danh mục tour.
  *
  * Rank Math “Redirect Attachments” (không có parent) hay đẩy về trang chủ;
- * ảnh danh mục (tour-sapa.jpg, …) dùng cùng slug với term nên menu bị redirect home.
+ * ảnh danh mục (tour-sapa.jpg, …) dùng cùng slug với term nên menu bị redirect home
+ * hoặc ERR_TOO_MANY_REDIRECTS khi redirect về chính URL danh mục.
  *
  * @param array<string,mixed> $query_vars Query vars.
  * @return array<string,mixed>
@@ -390,41 +446,96 @@ function annam_seo_prefer_product_cat_over_attachment( $query_vars ) {
 		return $query_vars;
 	}
 
-	// Chỉ can thiệp khi WP resolve thành attachment (trùng slug ảnh upload).
-	if ( empty( $query_vars['attachment'] ) ) {
+	$slug = annam_seo_collision_slug_from_query_vars( $query_vars );
+	if ( '' === $slug ) {
 		return $query_vars;
 	}
-	$slug = (string) $query_vars['attachment'];
 
 	$term = annam_seo_get_product_cat_by_slug( $slug );
 	if ( ! $term ) {
 		return $query_vars;
 	}
 
-	unset( $query_vars['attachment'], $query_vars['name'], $query_vars['error'] );
-	$query_vars['product_cat'] = $term->slug;
-
-	return $query_vars;
+	return annam_seo_query_vars_as_product_cat( $query_vars, $term );
 }
 add_filter( 'request', 'annam_seo_prefer_product_cat_over_attachment', 1 );
 
 /**
- * Rank Math attachment redirect: trùng slug product_cat → về archive danh mục (không về home).
+ * Fallback pre_get_posts: ép main query thành archive product_cat khi vẫn dính attachment.
  *
- * @param string  $redirect URL Rank Math tính được.
- * @param WP_Post $post     Attachment.
- * @return string
+ * @param WP_Query $query Query.
+ */
+function annam_seo_force_product_cat_over_attachment_query( $query ) {
+	if ( is_admin() || ! $query instanceof WP_Query || ! $query->is_main_query() ) {
+		return;
+	}
+	if ( $query->get( 'product_cat' ) ) {
+		return;
+	}
+
+	$slug = '';
+	if ( $query->get( 'attachment' ) ) {
+		$slug = (string) $query->get( 'attachment' );
+	} elseif ( $query->get( 'attachment_id' ) ) {
+		$post = get_post( (int) $query->get( 'attachment_id' ) );
+		if ( $post instanceof WP_Post && ! empty( $post->post_name ) ) {
+			$slug = (string) $post->post_name;
+		}
+	} elseif ( $query->get( 'name' ) && ! $query->get( 'post_type' ) && ! $query->get( 'pagename' ) && ! $query->get( 'page_id' ) ) {
+		$slug = (string) $query->get( 'name' );
+	}
+
+	if ( '' === $slug ) {
+		return;
+	}
+
+	$term = annam_seo_get_product_cat_by_slug( $slug );
+	if ( ! $term ) {
+		return;
+	}
+
+	$query->set( 'attachment', '' );
+	$query->set( 'attachment_id', '' );
+	$query->set( 'name', '' );
+	$query->set( 'p', 0 );
+	$query->set( 'page_id', 0 );
+	$query->set( 'pagename', '' );
+	$query->set( 'post_type', 'product' );
+	$query->set( 'product_cat', $term->slug );
+	$query->set( 'taxonomy', 'product_cat' );
+	$query->set( 'term', $term->slug );
+
+	$query->is_attachment         = false;
+	$query->is_single             = false;
+	$query->is_singular           = false;
+	$query->is_page               = false;
+	$query->is_home               = false;
+	$query->is_404                = false;
+	$query->is_archive            = true;
+	$query->is_tax                = true;
+	$query->is_post_type_archive  = false;
+}
+add_action( 'pre_get_posts', 'annam_seo_force_product_cat_over_attachment_query', 1 );
+
+/**
+ * Rank Math attachment redirect: trùng slug product_cat → HUỶ redirect (không về home / không tự redirect).
+ *
+ * Trước đây trả về get_term_link() gây ERR_TOO_MANY_REDIRECTS vì URL attachment
+ * (sau khi bỏ category base) trùng URL danh mục.
+ *
+ * @param string|false $redirect URL Rank Math tính được.
+ * @param WP_Post      $post     Attachment.
+ * @return string|false
  */
 function annam_seo_rank_math_attachment_redirect_prefer_product_cat( $redirect, $post ) {
 	if ( ! $post instanceof WP_Post || empty( $post->post_name ) ) {
 		return $redirect;
 	}
-	$term = annam_seo_get_product_cat_by_slug( $post->post_name );
-	if ( ! $term ) {
+	if ( ! annam_seo_get_product_cat_by_slug( $post->post_name ) ) {
 		return $redirect;
 	}
-	$link = get_term_link( $term );
-	return ( ! is_wp_error( $link ) && $link ) ? $link : $redirect;
+	// false = Rank Math bỏ redirect; request/pre_get_posts sẽ serve product_cat.
+	return false;
 }
 add_filter( 'rank_math/frontend/attachment/redirect_url', 'annam_seo_rank_math_attachment_redirect_prefer_product_cat', 5, 2 );
 
