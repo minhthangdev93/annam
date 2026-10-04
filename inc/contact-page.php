@@ -600,9 +600,11 @@ function annam_contact_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'annam_contact_customize_register' );
 
 /**
- * URL embed Google Maps từ địa chỉ (không cần API key, output=embed).
+ * URL embed Google Maps từ địa chỉ / link Maps (không cần API key, output=embed).
  *
- * @param string $address Địa chỉ.
+ * Lưu ý: maps.app.goo.gl không nhúng được nếu đưa nguyên URL vào q= (sẽ ra bản đồ thế giới).
+ *
+ * @param string $address Địa chỉ chữ, tọa độ "lat,lng", hoặc URL Google Maps.
  * @return string
  */
 function annam_contact_maps_embed_url( $address ) {
@@ -610,7 +612,44 @@ function annam_contact_maps_embed_url( $address ) {
 	if ( '' === $address ) {
 		return '';
 	}
-	return 'https://www.google.com/maps?q=' . rawurlencode( $address ) . '&hl=vi&z=16&output=embed';
+
+	// Đã là URL embed.
+	if ( preg_match( '#(/maps/embed|output=embed)#i', $address ) ) {
+		return $address;
+	}
+
+	$query = $address;
+
+	// URL Maps đầy đủ: lấy @lat,lng.
+	if ( preg_match( '#@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)#', $address, $m ) ) {
+		$query = $m[1] . ',' . $m[2];
+	} elseif ( preg_match( '#/maps/place/([^/@?#]+)#i', $address, $m ) ) {
+		$query = rawurldecode( str_replace( '+', ' ', $m[1] ) );
+	} elseif ( preg_match( '#^https?://(maps\.app\.goo\.gl|goo\.gl/maps)/#i', $address ) ) {
+		/**
+		 * Short link không dùng làm q= được. Cho phép map slug → query nhúng.
+		 *
+		 * @param array<string,string> $map Short-link path/slug => embed query.
+		 */
+		$known = apply_filters(
+			'annam_contact_maps_shortlink_embed_queries',
+			array(
+				'6mQkPgdUMFhRfRnK7' => '21.026181,105.8588833', // An Nam Discovery
+			)
+		);
+		$query = '';
+		foreach ( $known as $slug => $embed_q ) {
+			if ( false !== strpos( $address, (string) $slug ) ) {
+				$query = (string) $embed_q;
+				break;
+			}
+		}
+		if ( '' === $query ) {
+			$query = 'An Nam Discovery, Hà Nội';
+		}
+	}
+
+	return 'https://www.google.com/maps?q=' . rawurlencode( $query ) . '&hl=vi&z=17&output=embed';
 }
 
 /**

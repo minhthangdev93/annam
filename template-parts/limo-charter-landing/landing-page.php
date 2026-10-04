@@ -19,7 +19,7 @@ $default_map = function_exists( 'annam_limo_charter_landing_default_maps_url' )
 $map_query   = ! empty( $settings['map_address'] ) ? (string) $settings['map_address'] : $default_map;
 $map_embed   = ( $map_query && function_exists( 'annam_contact_maps_embed_url' ) ) ? annam_contact_maps_embed_url( $map_query ) : '';
 $maps_link   = ! empty( $cta['maps_url'] ) ? (string) $cta['maps_url'] : $default_map;
-// Hiển thị địa chỉ chữ; nếu cấu hình là URL Maps thì dùng address CTA.
+// Hiển thị địa chỉ chữ; short link Maps → dùng address CTA.
 $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 	? ( isset( $cta['address'] ) ? (string) $cta['address'] : '' )
 	: $map_query;

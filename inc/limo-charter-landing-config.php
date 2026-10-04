@@ -33,12 +33,21 @@ function annam_limo_charter_landing_get_cta() {
 }
 
 /**
- * Link Google Maps mặc định cho landing thuê limo (nhúng + “Mở Google Maps”).
+ * Link Google Maps mặc định (nút “Mở Google Maps”).
  *
  * @return string
  */
 function annam_limo_charter_landing_default_maps_url() {
 	return (string) apply_filters( 'annam_limo_charter_landing_default_maps_url', 'https://maps.app.goo.gl/6mQkPgdUMFhRfRnK7' );
+}
+
+/**
+ * Query nhúng iframe (tọa độ / tên địa điểm) — short link không dùng được cho embed.
+ *
+ * @return string
+ */
+function annam_limo_charter_landing_default_maps_embed_query() {
+	return (string) apply_filters( 'annam_limo_charter_landing_default_maps_embed_query', '21.026181,105.8588833' );
 }
 
 /**
