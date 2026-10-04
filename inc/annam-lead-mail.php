@@ -18,8 +18,8 @@ function annam_lead_get_recipient_emails() {
 		}
 	}
 
-	$admin = get_option( 'admin_email' );
-	return is_email( $admin ) ? array( $admin ) : array();
+	$default = 'annamdiscoveryvn@gmail.com';
+	return is_email( $default ) ? array( $default ) : array();
 }
 
 /**

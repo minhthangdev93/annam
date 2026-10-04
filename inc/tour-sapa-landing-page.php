@@ -25,6 +25,27 @@ function annam_tour_sapa_landing_is_template() {
 }
 
 /**
+ * SVG icon cho điểm nổi bật (stroke, 24×24).
+ *
+ * @param string $icon Icon key.
+ * @return string Safe SVG markup.
+ */
+function annam_tour_sapa_landing_highlight_icon_svg( $icon ) {
+	$icon = sanitize_key( (string) $icon );
+	$paths = array(
+		'village' => '<path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/>',
+		'peak'    => '<path d="m3 20 6.5-11 3.5 5 2.5-4L21 20"/><path d="M12 4v3"/>',
+		'sun'     => '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+		'car'     => '<path d="M5 17h14v-5l-2-4H7l-2 4v5z"/><path d="M5 12h14"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/>',
+		'gift'    => '<path d="M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8"/><path d="M4 8h16v4H4z"/><path d="M12 8v13"/><path d="M12 8c-1.5-3-4-3.5-5-2s0 3.5 2.5 3h2.5"/><path d="M12 8c1.5-3 4-3.5 5-2s0 3.5-2.5 3H12"/>',
+		'stay'    => '<path d="M3 18V9a2 2 0 0 1 2-2h6v11"/><path d="M11 11h8a2 2 0 0 1 2 2v5"/><path d="M3 18h18"/><path d="M7 7V5"/>',
+	);
+	$inner = isset( $paths[ $icon ] ) ? $paths[ $icon ] : $paths['village'];
+
+	return '<svg class="annam-tour-sapa-highlight__svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $inner . '</svg>';
+}
+
+/**
  * @param int $page_id Page ID.
  * @return array<string,mixed>
  */

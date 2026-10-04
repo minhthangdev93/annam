@@ -130,18 +130,33 @@ $brand  = isset( $cta['brand'] ) ? $cta['brand'] : 'An Nam Discovery';
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['highlights'] ) && ! empty( $config['highlights'] ) ) : ?>
-	<section class="annam-tour-sapa-section" id="diem-noi-bat">
+	<section class="annam-tour-sapa-section annam-tour-sapa-section--highlights" id="diem-noi-bat">
 		<div class="annam-tour-sapa-container">
 			<header class="annam-tour-sapa-section__head annam-tour-sapa-reveal">
 				<p class="annam-tour-sapa-kicker"><?php esc_html_e( 'Hành trình', 'generatepress_child' ); ?></p>
 				<h2 class="annam-tour-sapa-section__title"><?php esc_html_e( 'Điểm Nổi Bật Trong Tour', 'generatepress_child' ); ?></h2>
+				<p class="annam-tour-sapa-section__lead"><?php esc_html_e( 'Sáu điểm chính của tour 3N2Đ — từ bản làng đến Fansipan, đã gồm xe VIP Hà Nội ⇄ Sapa.', 'generatepress_child' ); ?></p>
 			</header>
 			<div class="annam-tour-sapa-highlights">
 				<?php foreach ( $config['highlights'] as $hi => $h ) : ?>
-					<article class="annam-tour-sapa-highlight annam-tour-sapa-reveal">
-						<span class="annam-tour-sapa-highlight__num" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $hi + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-						<h3><?php echo esc_html( $h['title'] ); ?></h3>
-						<p><?php echo esc_html( $h['text'] ); ?></p>
+					<?php
+					$icon = ! empty( $h['icon'] ) ? (string) $h['icon'] : 'village';
+					$num  = str_pad( (string) ( $hi + 1 ), 2, '0', STR_PAD_LEFT );
+					?>
+					<article class="annam-tour-sapa-highlight annam-tour-sapa-highlight--<?php echo esc_attr( $icon ); ?> annam-tour-sapa-reveal" style="--annam-hl-i: <?php echo esc_attr( (string) $hi ); ?>">
+						<span class="annam-tour-sapa-highlight__watermark" aria-hidden="true"><?php echo esc_html( $num ); ?></span>
+						<div class="annam-tour-sapa-highlight__top">
+							<span class="annam-tour-sapa-highlight__icon" aria-hidden="true">
+								<?php
+								if ( function_exists( 'annam_tour_sapa_landing_highlight_icon_svg' ) ) {
+									echo annam_tour_sapa_landing_highlight_icon_svg( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Fixed SVG paths.
+								}
+								?>
+							</span>
+							<span class="annam-tour-sapa-highlight__num"><?php echo esc_html( $num ); ?></span>
+						</div>
+						<h3 class="annam-tour-sapa-highlight__title"><?php echo esc_html( $h['title'] ); ?></h3>
+						<p class="annam-tour-sapa-highlight__text"><?php echo esc_html( $h['text'] ); ?></p>
 					</article>
 				<?php endforeach; ?>
 			</div>

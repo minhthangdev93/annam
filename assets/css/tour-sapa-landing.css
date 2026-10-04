@@ -842,91 +842,187 @@ body.annam-tour-sapa-landing-page {
 	line-height: 1.6;
 }
 
+/* —— Điểm nổi bật (redesign) —— */
+.annam-tour-sapa-section--highlights {
+	position: relative;
+	overflow: clip;
+	background:
+		radial-gradient(ellipse 55% 45% at 8% 20%, rgba(var(--color-primary), 0.1), transparent 60%),
+		radial-gradient(ellipse 50% 40% at 92% 80%, rgba(var(--color-tertiary), 0.12), transparent 55%),
+		linear-gradient(180deg, #fff 0%, rgb(var(--color-body-bg)) 100%);
+}
+
 .annam-tour-sapa-highlights {
 	display: grid;
-	gap: 0;
-	background: #fff;
-	border: 1px solid rgba(var(--color-primary-dark), 0.18);
+	gap: 16px;
 }
 
 @media (min-width: 640px) {
 	.annam-tour-sapa-highlights {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 18px;
 	}
 }
 
 @media (min-width: 1024px) {
 	.annam-tour-sapa-highlights {
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 20px;
 	}
 }
 
 .annam-tour-sapa-highlight {
-	padding: 28px 24px;
-	background: #fff;
-	border: 0;
-	border-bottom: 1px solid rgba(var(--color-primary-dark), 0.18);
-	border-radius: 0;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-height: 100%;
+	padding: 26px 22px 24px;
+	border: 1px solid rgba(var(--color-primary-dark), 0.1);
+	border-radius: 16px;
+	background:
+		linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(var(--color-body-bg), 0.88) 100%);
+	box-shadow: 0 1px 0 rgba(15, 76, 76, 0.04);
+	overflow: hidden;
+	transition:
+		transform 0.35s var(--annam-ts-ease),
+		border-color 0.35s var(--annam-ts-ease),
+		box-shadow 0.35s var(--annam-ts-ease);
 }
 
-.annam-tour-sapa-highlight:last-child {
-	border-bottom: 0;
+.annam-tour-sapa-highlight::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 18px;
+	bottom: 18px;
+	width: 3px;
+	border-radius: 0 3px 3px 0;
+	background: linear-gradient(180deg, rgb(var(--color-primary)), rgba(var(--color-tertiary), 0.85));
+	opacity: 0.85;
+	transition: opacity 0.35s var(--annam-ts-ease), transform 0.35s var(--annam-ts-ease);
 }
 
-@media (min-width: 640px) and (max-width: 1023px) {
-	.annam-tour-sapa-highlight {
-		border-right: 1px solid rgba(var(--color-primary-dark), 0.18);
-	}
-
-	.annam-tour-sapa-highlight:nth-child(2n) {
-		border-right: 0;
-	}
-
-	.annam-tour-sapa-highlight:nth-last-child(-n + 2) {
-		border-bottom: 0;
-	}
-
-	.annam-tour-sapa-highlight:last-child:nth-child(odd) {
-		border-bottom: 0;
-	}
+.annam-tour-sapa-highlight:hover,
+.annam-tour-sapa-highlight:focus-within {
+	transform: translateY(-4px);
+	border-color: rgba(var(--color-primary), 0.35);
+	box-shadow:
+		0 14px 32px rgba(15, 76, 76, 0.1),
+		0 0 0 1px rgba(var(--color-primary), 0.06);
 }
 
-@media (min-width: 1024px) {
-	.annam-tour-sapa-highlight {
-		border-right: 1px solid rgba(var(--color-primary-dark), 0.18);
-		border-bottom: 1px solid rgba(var(--color-primary-dark), 0.18);
-	}
+.annam-tour-sapa-highlight:hover::before,
+.annam-tour-sapa-highlight:focus-within::before {
+	opacity: 1;
+	transform: scaleY(1.06);
+}
 
-	.annam-tour-sapa-highlight:nth-child(3n) {
-		border-right: 0;
-	}
+.annam-tour-sapa-highlight__watermark {
+	position: absolute;
+	right: 10px;
+	bottom: -6px;
+	font-size: clamp(3.5rem, 8vw, 4.75rem);
+	font-weight: 700;
+	line-height: 1;
+	letter-spacing: -0.04em;
+	color: rgba(var(--color-primary), 0.08);
+	pointer-events: none;
+	user-select: none;
+	transition: color 0.35s var(--annam-ts-ease), transform 0.45s var(--annam-ts-ease);
+}
 
-	.annam-tour-sapa-highlight:nth-child(n + 4) {
-		border-bottom: 0;
-	}
+.annam-tour-sapa-highlight:hover .annam-tour-sapa-highlight__watermark,
+.annam-tour-sapa-highlight:focus-within .annam-tour-sapa-highlight__watermark {
+	color: rgba(var(--color-primary), 0.14);
+	transform: translateY(-4px);
+}
+
+.annam-tour-sapa-highlight__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 4px;
+}
+
+.annam-tour-sapa-highlight__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 12px;
+	color: rgb(var(--color-primary-dark));
+	background:
+		linear-gradient(145deg, rgba(var(--color-primary), 0.16), rgba(var(--color-tertiary), 0.14));
+	border: 1px solid rgba(var(--color-primary), 0.18);
+	transition: background 0.35s var(--annam-ts-ease), color 0.35s var(--annam-ts-ease), transform 0.35s var(--annam-ts-ease);
+}
+
+.annam-tour-sapa-highlight:hover .annam-tour-sapa-highlight__icon,
+.annam-tour-sapa-highlight:focus-within .annam-tour-sapa-highlight__icon {
+	color: #fff;
+	background: linear-gradient(145deg, rgb(var(--color-primary)), rgb(var(--color-primary-dark)));
+	border-color: transparent;
+	transform: scale(1.04);
+}
+
+.annam-tour-sapa-highlight__svg {
+	display: block;
 }
 
 .annam-tour-sapa-highlight__num {
-	display: block;
-	margin-bottom: 14px;
 	font-size: 0.75rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
+	font-weight: 600;
+	letter-spacing: 0.14em;
 	color: var(--annam-ts-teal);
 }
 
-.annam-tour-sapa-highlight h3 {
-	margin: 0 0 8px;
-	font-size: 1.0625rem;
+.annam-tour-sapa-highlight__title {
+	position: relative;
+	z-index: 1;
+	margin: 0;
+	font-size: 1.125rem;
 	font-weight: 600;
+	letter-spacing: -0.02em;
 	color: var(--annam-ts-ink);
+	line-height: 1.3;
 }
 
-.annam-tour-sapa-highlight p {
+.annam-tour-sapa-highlight__text {
+	position: relative;
+	z-index: 1;
 	margin: 0;
+	max-width: 28ch;
 	font-size: 0.9375rem;
 	color: var(--annam-ts-muted);
 	line-height: 1.6;
+}
+
+/* 3 điểm đầu: điểm đến · 3 điểm sau: tiện ích tour */
+.annam-tour-sapa-highlight--car,
+.annam-tour-sapa-highlight--gift,
+.annam-tour-sapa-highlight--stay {
+	background:
+		linear-gradient(165deg, rgba(var(--color-primary-dark), 0.04) 0%, #fff 55%);
+}
+
+.annam-tour-sapa-highlight.is-in {
+	transition-delay: calc(var(--annam-hl-i, 0) * 60ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.annam-tour-sapa-highlight,
+	.annam-tour-sapa-highlight__icon,
+	.annam-tour-sapa-highlight__watermark {
+		transition: none;
+	}
+
+	.annam-tour-sapa-highlight:hover,
+	.annam-tour-sapa-highlight:focus-within {
+		transform: none;
+	}
 }
 
 .annam-tour-sapa-price-grid {

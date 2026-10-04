@@ -1,0 +1,1148 @@
+/**
+ * Landing thuê limo HN–Sapa (Ads).
+ */
+:root {
+	--annam-lc-green: #0f766e;
+	--annam-lc-green-dark: #0d5c56;
+	--annam-lc-orange: #ea580c;
+	--annam-lc-zalo: #0068ff;
+	--annam-lc-text: #1f2937;
+	--annam-lc-muted: #6b7280;
+	--annam-lc-border: #e5e7eb;
+	--annam-lc-bg: #f8fafc;
+	--annam-lc-radius: 14px;
+}
+
+body.annam-limo-charter-landing-page #page.site.grid-container,
+body.annam-limo-charter-landing-page #page.site.container {
+	max-width: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body.annam-limo-charter-landing-page .site-content,
+body.annam-limo-charter-landing-page #content,
+body.annam-limo-charter-landing-page #primary,
+body.annam-limo-charter-landing-page .content-area,
+body.annam-limo-charter-landing-page .site-main {
+	padding: 0;
+	margin: 0;
+	max-width: none;
+	width: 100%;
+	float: none;
+}
+
+body.annam-limo-charter-landing-page.separate-containers .site-main > *,
+body.annam-limo-charter-landing-page.separate-containers .inside-article {
+	margin: 0;
+	padding: 0;
+	max-width: none;
+	box-shadow: none;
+	background: transparent;
+}
+
+body.annam-limo-charter-landing-page {
+	overflow-x: clip;
+	padding-bottom: 72px;
+}
+
+.annam-limo-charter-landing {
+	color: var(--annam-lc-text);
+	line-height: 1.55;
+}
+
+.annam-limo-charter-container {
+	width: min(1120px, calc(100% - 32px));
+	margin-inline: auto;
+}
+
+.annam-limo-charter-hero {
+	padding: 28px 0 36px;
+	background:
+		radial-gradient(ellipse 80% 60% at 10% 0%, rgba(15, 118, 110, 0.12), transparent 55%),
+		linear-gradient(180deg, #ecfdf5 0%, #fff 70%);
+}
+
+.annam-limo-charter-hero__grid {
+	display: grid;
+	gap: 24px;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-charter-hero__grid {
+		grid-template-columns: 1.05fr 0.95fr;
+		align-items: start;
+	}
+}
+
+.annam-limo-charter-hero__title {
+	margin: 0 0 10px;
+	font-size: clamp(1.55rem, 2.6vw, 2.15rem);
+	line-height: 1.2;
+	font-weight: 800;
+}
+
+.annam-limo-charter-hero__subtitle {
+	margin: 0 0 14px;
+	font-size: 1.05rem;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-hero__badges {
+	list-style: none;
+	margin: 0 0 14px;
+	padding: 0;
+	display: grid;
+	gap: 8px;
+}
+
+.annam-limo-charter-hero__badge {
+	position: relative;
+	padding-left: 22px;
+	font-size: 0.95rem;
+}
+
+.annam-limo-charter-hero__badge::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.45em;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--annam-lc-green);
+	box-shadow: inset 0 0 0 2px #fff;
+	outline: 2px solid var(--annam-lc-green);
+}
+
+.annam-limo-charter-hero__note {
+	margin: 0 0 16px;
+	font-size: 0.9rem;
+	color: #9a3412;
+	background: #fff7ed;
+	border: 1px solid #fed7aa;
+	border-radius: 10px;
+	padding: 10px 12px;
+}
+
+.annam-limo-charter-hero__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 18px;
+}
+
+.annam-limo-charter-hero__media {
+	margin: 0;
+	border-radius: var(--annam-lc-radius);
+	overflow: hidden;
+	aspect-ratio: 3 / 2;
+	background: #0f172a;
+}
+
+.annam-limo-charter-lb-trigger {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	margin: 0;
+	background: transparent;
+	cursor: zoom-in;
+	line-height: 0;
+}
+
+.annam-limo-charter-hero__media img,
+.annam-limo-charter-hero__img,
+.annam-limo-charter-lb-trigger img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.annam-limo-charter-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	min-height: 44px;
+	padding: 0.7rem 1.1rem;
+	border-radius: 12px;
+	border: 1px solid transparent;
+	font-weight: 700;
+	font-size: 0.95rem;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.annam-limo-charter-btn--primary {
+	background: var(--annam-lc-orange);
+	color: #fff;
+}
+
+.annam-limo-charter-btn--primary:hover {
+	background: #c2410c;
+	color: #fff;
+}
+
+.annam-limo-charter-btn--zalo {
+	background: var(--annam-lc-zalo);
+	color: #fff;
+}
+
+.annam-limo-charter-btn--zalo:hover {
+	background: #0052cc;
+	color: #fff;
+}
+
+.annam-limo-charter-btn--outline {
+	background: #fff;
+	border-color: var(--annam-lc-border);
+	color: var(--annam-lc-text);
+}
+
+.annam-limo-charter-btn--outline:hover {
+	border-color: var(--annam-lc-green);
+	color: var(--annam-lc-green-dark);
+}
+
+.annam-limo-charter-btn--block {
+	width: 100%;
+}
+
+.annam-limo-charter-form-wrap {
+	background: #fff;
+	border: 1px solid var(--annam-lc-border);
+	border-radius: var(--annam-lc-radius);
+	padding: 18px 18px 16px;
+	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.annam-limo-charter-form__title {
+	margin: 0 0 6px;
+	font-size: 1.2rem;
+}
+
+.annam-limo-charter-form__subtitle {
+	margin: 0 0 14px;
+	font-size: 0.92rem;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-form__hp {
+	position: absolute;
+	left: -9999px;
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.annam-limo-charter-form__row--2 {
+	display: grid;
+	gap: 12px;
+}
+
+@media (min-width: 520px) {
+	.annam-limo-charter-form__row--2 {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.annam-limo-charter-form__field {
+	margin-bottom: 12px;
+}
+
+.annam-limo-charter-form__field label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 0.88rem;
+	font-weight: 600;
+}
+
+.annam-limo-charter-req {
+	color: #dc2626;
+}
+
+.annam-limo-charter-form__field input,
+.annam-limo-charter-form__field select {
+	width: 100%;
+	min-height: 44px;
+	border: 1px solid var(--annam-lc-border);
+	border-radius: 10px;
+	padding: 0.55rem 0.75rem;
+	font: inherit;
+	background: #fff;
+}
+
+.annam-limo-charter-form__actions {
+	margin-top: 4px;
+}
+
+.annam-limo-charter-form__note {
+	margin: 10px 0 0;
+	font-size: 0.85rem;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-notice {
+	margin-top: 12px;
+	padding: 10px 12px;
+	border-radius: 10px;
+	font-size: 0.92rem;
+}
+
+.annam-limo-charter-notice--success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+}
+
+.annam-limo-charter-notice--error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+}
+
+.annam-limo-charter-section {
+	padding: 40px 0;
+}
+
+.annam-limo-charter-section--alt {
+	background: var(--annam-lc-bg);
+}
+
+.annam-limo-charter-section__title {
+	margin: 0 0 8px;
+	font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+	text-align: center;
+}
+
+.annam-limo-charter-section__lead {
+	margin: 0 auto 22px;
+	max-width: 640px;
+	text-align: center;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-section__note {
+	margin: 10px 0 0;
+	font-size: 0.92rem;
+	color: var(--annam-lc-muted);
+	text-align: center;
+}
+
+.annam-limo-charter-section__note--strong {
+	color: #9a3412;
+	font-weight: 600;
+}
+
+.annam-limo-charter-price-grid {
+	display: grid;
+	gap: 18px;
+}
+
+@media (min-width: 760px) {
+	.annam-limo-charter-price-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.annam-limo-charter-price-card {
+	position: relative;
+	background: #fff;
+	border: 1px solid var(--annam-lc-border);
+	border-radius: var(--annam-lc-radius);
+	overflow: hidden;
+	padding-bottom: 16px;
+}
+
+.annam-limo-charter-price-card--highlight {
+	border-color: #fdba74;
+	box-shadow: 0 8px 24px rgba(234, 88, 12, 0.08);
+}
+
+.annam-limo-charter-price-card__badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 1;
+	background: var(--annam-lc-orange);
+	color: #fff;
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 4px 8px;
+	border-radius: 999px;
+}
+
+.annam-limo-charter-price-card__media {
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	background: #0f172a;
+}
+
+.annam-limo-charter-price-card__media img,
+.annam-limo-charter-price-card__media .annam-limo-charter-lb-trigger {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.annam-limo-charter-price-card__media img {
+	object-fit: cover;
+}
+
+.annam-limo-charter-price-card__name,
+.annam-limo-charter-price-card__price,
+.annam-limo-charter-price-card__bullets,
+.annam-limo-charter-price-card .annam-limo-charter-btn {
+	margin-left: 16px;
+	margin-right: 16px;
+}
+
+.annam-limo-charter-price-card__name {
+	margin-top: 14px;
+	margin-bottom: 4px;
+	font-size: 1.15rem;
+}
+
+.annam-limo-charter-price-card__price {
+	margin: 0 16px 10px;
+}
+
+.annam-limo-charter-price-card__price strong {
+	font-size: 1.55rem;
+	color: var(--annam-lc-orange);
+}
+
+.annam-limo-charter-price-card__price span {
+	color: var(--annam-lc-muted);
+	font-size: 0.9rem;
+}
+
+.annam-limo-charter-price-card__bullets {
+	margin: 0 16px 14px;
+	padding-left: 1.1rem;
+	color: var(--annam-lc-muted);
+	font-size: 0.92rem;
+}
+
+.annam-limo-charter-trust-strip {
+	padding: 18px 0;
+	color: #ecfdf5;
+	background:
+		radial-gradient(ellipse 50% 120% at 0% 50%, rgba(45, 212, 191, 0.22), transparent 55%),
+		radial-gradient(ellipse 45% 120% at 100% 50%, rgba(251, 146, 60, 0.16), transparent 55%),
+		linear-gradient(90deg, #0b5f58 0%, #0f766e 45%, #115e59 100%);
+	border-block: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.annam-limo-charter-trust-strip__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+}
+
+@media (min-width: 800px) {
+	.annam-limo-charter-trust-strip__list {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 12px;
+	}
+}
+
+.annam-limo-charter-trust-strip__item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 52px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	backdrop-filter: blur(4px);
+	transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.annam-limo-charter-trust-strip__item:hover {
+	background: rgba(255, 255, 255, 0.16);
+	transform: translateY(-1px);
+}
+
+.annam-limo-charter-trust-strip__icon {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	color: #fff;
+	background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.annam-limo-charter-trust-strip__label {
+	font-size: 0.9rem;
+	font-weight: 700;
+	line-height: 1.25;
+	color: #fff;
+}
+
+.annam-limo-charter-gallery {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px 12px;
+	align-items: start;
+}
+
+@media (min-width: 760px) {
+	.annam-limo-charter-gallery {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.annam-limo-charter-gallery__item {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 0;
+	min-width: 0;
+}
+
+.annam-limo-charter-gallery__btn,
+.annam-limo-charter-gallery__btn.annam-limo-charter-lb-trigger {
+	display: block;
+	width: 100%;
+	/* Ghi đè .lb-trigger { height:100% } — tránh ảnh phủ figcaption. */
+	height: auto;
+	padding: 0;
+	border: 0;
+	border-radius: 12px;
+	overflow: hidden;
+	aspect-ratio: 3 / 2;
+	cursor: pointer;
+	background: #0f172a;
+	flex: 0 0 auto;
+}
+
+.annam-limo-charter-gallery__btn img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.annam-limo-charter-gallery__caption {
+	margin: 0;
+	position: relative;
+	z-index: 1;
+	font-size: 0.85rem;
+	line-height: 1.35;
+	color: var(--annam-lc-muted);
+	text-align: center;
+}
+
+.annam-limo-charter-proof-grid {
+	display: grid;
+	gap: 18px;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-charter-proof-grid {
+		grid-template-columns: 1.1fr 0.9fr;
+		align-items: start;
+	}
+}
+
+.annam-limo-charter-staff {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-rows: repeat(2, minmax(0, 1fr));
+	gap: 10px;
+	align-self: stretch;
+}
+
+.annam-limo-charter-staff__item {
+	margin: 0;
+	border-radius: 12px;
+	overflow: hidden;
+	aspect-ratio: 4 / 3;
+	min-height: 0;
+	background: #e2e8f0;
+}
+
+.annam-limo-charter-staff__item .annam-limo-charter-lb-trigger {
+	height: 100%;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-charter-proof-grid {
+		align-items: stretch;
+	}
+
+	.annam-limo-charter-staff {
+		height: 100%;
+	}
+
+	.annam-limo-charter-staff__item {
+		aspect-ratio: auto;
+		height: 100%;
+	}
+
+	.annam-limo-charter-map-block {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.annam-limo-charter-map {
+		flex: 1 1 auto;
+		min-height: 280px;
+	}
+}
+
+.annam-limo-charter-staff__item img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.annam-limo-charter-map {
+	width: 100%;
+	min-height: 260px;
+	border: 0;
+	border-radius: 12px;
+	background: #e2e8f0;
+}
+
+.annam-limo-charter-map-block__meta {
+	margin: 12px 0 0;
+	font-size: 0.92rem;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-map-block__meta a {
+	color: var(--annam-lc-green-dark);
+	font-weight: 600;
+}
+
+.annam-limo-charter-section--why {
+	padding: 48px 0;
+	background:
+		radial-gradient(ellipse 70% 50% at 85% 10%, rgba(234, 88, 12, 0.08), transparent 55%),
+		radial-gradient(ellipse 60% 45% at 8% 90%, rgba(15, 118, 110, 0.1), transparent 50%),
+		linear-gradient(180deg, #f0fdfa 0%, #f8fafc 55%, #fff 100%);
+}
+
+.annam-limo-charter-why-head {
+	margin-bottom: 8px;
+}
+
+.annam-limo-charter-why-grid {
+	display: grid;
+	gap: 14px;
+}
+
+@media (min-width: 640px) {
+	.annam-limo-charter-why-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 960px) {
+	.annam-limo-charter-why-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 16px;
+	}
+}
+
+.annam-limo-charter-why-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	min-height: 100%;
+	padding: 22px 18px 20px;
+	border-radius: 16px;
+	border: 1px solid transparent;
+	background: #fff;
+	overflow: hidden;
+	isolation: isolate;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.annam-limo-charter-why-card::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 4px;
+}
+
+.annam-limo-charter-why-card--teal {
+	border-color: rgba(15, 118, 110, 0.18);
+	box-shadow: 0 10px 28px rgba(15, 118, 110, 0.06);
+}
+
+.annam-limo-charter-why-card--teal::before {
+	background: linear-gradient(90deg, #0f766e, #2dd4bf);
+}
+
+.annam-limo-charter-why-card--orange {
+	border-color: rgba(234, 88, 12, 0.2);
+	box-shadow: 0 10px 28px rgba(234, 88, 12, 0.07);
+}
+
+.annam-limo-charter-why-card--orange::before {
+	background: linear-gradient(90deg, #ea580c, #fb923c);
+}
+
+.annam-limo-charter-why-card:hover {
+	transform: translateY(-3px);
+}
+
+.annam-limo-charter-why-card__index {
+	position: absolute;
+	top: 12px;
+	right: 14px;
+	font-size: 1.65rem;
+	font-weight: 800;
+	letter-spacing: -0.04em;
+	line-height: 1;
+	opacity: 0.12;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.annam-limo-charter-why-card--teal .annam-limo-charter-why-card__index {
+	color: #0f766e;
+}
+
+.annam-limo-charter-why-card--orange .annam-limo-charter-why-card__index {
+	color: #ea580c;
+}
+
+.annam-limo-charter-why-card__icon {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 14px;
+	flex: 0 0 auto;
+}
+
+.annam-limo-charter-why-card--teal .annam-limo-charter-why-card__icon {
+	color: #0f766e;
+	background: linear-gradient(160deg, #ccfbf1, #ecfdf5);
+	border: 1px solid rgba(15, 118, 110, 0.15);
+}
+
+.annam-limo-charter-why-card--orange .annam-limo-charter-why-card__icon {
+	color: #c2410c;
+	background: linear-gradient(160deg, #ffedd5, #fff7ed);
+	border: 1px solid rgba(234, 88, 12, 0.18);
+}
+
+.annam-limo-charter-why-card__body {
+	position: relative;
+	z-index: 1;
+}
+
+.annam-limo-charter-why-card__title {
+	margin: 0 0 6px;
+	font-size: 1.05rem;
+	font-weight: 800;
+	line-height: 1.25;
+	color: var(--annam-lc-text);
+}
+
+.annam-limo-charter-why-card__text {
+	margin: 0;
+	font-size: 0.92rem;
+	line-height: 1.45;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-steps {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 14px;
+}
+
+@media (min-width: 760px) {
+	.annam-limo-charter-steps {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.annam-limo-charter-steps li {
+	display: flex;
+	gap: 12px;
+	background: #fff;
+	border: 1px solid var(--annam-lc-border);
+	border-radius: 12px;
+	padding: 16px;
+}
+
+.annam-limo-charter-steps__num {
+	flex: 0 0 auto;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: var(--annam-lc-green);
+	color: #fff;
+	font-weight: 800;
+}
+
+.annam-limo-charter-steps h3 {
+	margin: 0 0 4px;
+	font-size: 1rem;
+}
+
+.annam-limo-charter-steps p {
+	margin: 0;
+	font-size: 0.9rem;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-section--compare {
+	padding-bottom: 8px;
+}
+
+.annam-limo-charter-section--compare + .annam-limo-charter-section--alt {
+	padding-top: 20px;
+}
+
+.annam-limo-charter-compare {
+	max-width: 760px;
+	margin: 0 auto;
+	background: #fff7ed;
+	border: 1px solid #fed7aa;
+	border-radius: 12px;
+	padding: 18px 20px;
+	text-align: center;
+}
+
+.annam-limo-charter-compare__title {
+	margin: 0 0 8px;
+	font-size: 1.15rem;
+}
+
+.annam-limo-charter-compare p {
+	margin: 0;
+	color: #9a3412;
+}
+
+.annam-limo-charter-faq {
+	max-width: 760px;
+	margin: 0 auto;
+	display: grid;
+	gap: 8px;
+}
+
+.annam-limo-charter-faq__item {
+	background: #fff;
+	border: 1px solid var(--annam-lc-border);
+	border-radius: 10px;
+	padding: 12px 14px;
+}
+
+.annam-limo-charter-faq__item summary {
+	cursor: pointer;
+	font-weight: 700;
+}
+
+.annam-limo-charter-faq__item p {
+	margin: 10px 0 0;
+	color: var(--annam-lc-muted);
+	font-size: 0.95rem;
+}
+
+.annam-limo-charter-cross-grid {
+	display: grid;
+	gap: 16px;
+}
+
+@media (min-width: 900px) {
+	.annam-limo-charter-cross-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.annam-limo-charter-cross-card {
+	background: #fff;
+	border: 1px solid var(--annam-lc-border);
+	border-radius: var(--annam-lc-radius);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.annam-limo-charter-cross-card__media {
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: #0f172a;
+}
+
+.annam-limo-charter-cross-card__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.annam-limo-charter-cross-card__body {
+	padding: 14px 16px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	flex: 1;
+}
+
+.annam-limo-charter-cross-card__body h3 {
+	margin: 0;
+	font-size: 1.05rem;
+}
+
+.annam-limo-charter-cross-card__line,
+.annam-limo-charter-cross-card__price {
+	margin: 0;
+	font-size: 0.9rem;
+	color: var(--annam-lc-muted);
+}
+
+.annam-limo-charter-cross-card__price {
+	font-weight: 700;
+	color: var(--annam-lc-orange);
+}
+
+.annam-limo-charter-cross-card__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.annam-limo-charter-cross-card__ctas .annam-limo-charter-btn {
+	min-height: 40px;
+	padding: 0.55rem 0.8rem;
+	font-size: 0.85rem;
+}
+
+/* Tour & Combo Sapa — cùng UI home product section / tour-sapa landing */
+.annam-limo-charter-section--woo-tours {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background: rgb(var(--color-body-bg, 250, 250, 250));
+}
+
+.annam-limo-charter-woo-tours-wrap .annam-limo-charter-woo-tours-section {
+	margin: 0;
+	padding: 0;
+}
+
+.annam-limo-charter-woo-tours-wrap .annam-home-product-section__inner {
+	max-width: 100%;
+}
+
+.annam-limo-charter-woo-tours-wrap .annam-home-product-section__header {
+	margin-top: 0;
+}
+
+.annam-limo-charter-woo-tours-wrap .annam-home-product-section__desc {
+	margin-top: 8px;
+}
+
+.annam-limo-charter-final {
+	padding: 48px 0;
+	background:
+		linear-gradient(180deg, rgba(15, 118, 110, 0.92), rgba(13, 92, 86, 0.96)),
+		#0f766e;
+	color: #fff;
+	text-align: center;
+}
+
+.annam-limo-charter-final h2 {
+	margin: 0 0 8px;
+	font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+}
+
+.annam-limo-charter-final p {
+	margin: 0 0 18px;
+	opacity: 0.92;
+}
+
+.annam-limo-charter-final__ctas {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+}
+
+.annam-limo-charter-final .annam-limo-charter-btn--outline {
+	background: transparent;
+	border-color: rgba(255, 255, 255, 0.55);
+	color: #fff;
+}
+
+.annam-limo-charter-sticky {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 90;
+	background: rgba(255, 255, 255, 0.96);
+	border-top: 1px solid var(--annam-lc-border);
+	backdrop-filter: blur(8px);
+}
+
+.annam-limo-charter-sticky__inner {
+	width: min(1120px, calc(100% - 16px));
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+	padding: 10px 0;
+}
+
+.annam-limo-charter-sticky__btn {
+	min-height: 44px;
+	border: 0;
+	border-radius: 10px;
+	font-weight: 700;
+	font-size: 0.9rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.annam-limo-charter-sticky__btn--call {
+	background: var(--annam-lc-orange);
+	color: #fff;
+}
+
+.annam-limo-charter-sticky__btn--zalo {
+	background: var(--annam-lc-zalo);
+	color: #fff;
+}
+
+.annam-limo-charter-sticky__btn--form {
+	background: var(--annam-lc-green);
+	color: #fff;
+}
+
+.annam-limo-charter-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 120;
+	background: rgba(15, 23, 42, 0.88);
+	display: grid;
+	place-items: center;
+	padding: 24px;
+}
+
+.annam-limo-charter-lightbox[hidden] {
+	display: none !important;
+}
+
+.annam-limo-charter-lightbox__figure {
+	margin: 0;
+	max-width: min(960px, 100%);
+}
+
+.annam-limo-charter-lightbox__img {
+	display: block;
+	max-width: 100%;
+	max-height: 78vh;
+	margin: 0 auto;
+	border-radius: 8px;
+}
+
+.annam-limo-charter-lightbox__cap {
+	margin-top: 8px;
+	text-align: center;
+	color: #e2e8f0;
+}
+
+.annam-limo-charter-lightbox__count {
+	margin: 6px 0 0;
+	text-align: center;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: rgba(226, 232, 240, 0.85);
+	letter-spacing: 0.04em;
+}
+
+.annam-limo-charter-lightbox__ctrl {
+	position: absolute;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: rgba(255, 255, 255, 0.14);
+	color: #fff;
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	font-size: 1.5rem;
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: 0;
+	text-align: center;
+	text-indent: 0;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.annam-limo-charter-lightbox__close {
+	top: 16px;
+	right: 16px;
+	font-size: 1.35rem;
+}
+
+.annam-limo-charter-lightbox__nav--prev {
+	left: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	/* Glyph ‹ thường lệch phải trong font — chỉnh nhẹ về tâm. */
+	padding-right: 2px;
+}
+
+.annam-limo-charter-lightbox__nav--next {
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	/* Glyph › thường lệch trái trong font — chỉnh nhẹ về tâm. */
+	padding-left: 2px;
+}
+
+body.annam-limo-charter-lb-open {
+	overflow: hidden;
+}
+
+.annam-limo-charter-trustindex {
+	padding: 8px 0 36px;
+}
+
+.annam-limo-charter-trustindex .ti-widget,
+.annam-limo-charter-trustindex [class*='ti-'] {
+	max-width: 100%;
+}

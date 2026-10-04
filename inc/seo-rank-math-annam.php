@@ -315,6 +315,162 @@ function annam_seo_redirect_attachment_to_file() {
 add_action( 'template_redirect', 'annam_seo_redirect_attachment_to_file', 1 );
 
 /**
+ * Base URL danh mục Woo còn sót (trước khi Rank Math bỏ base).
+ *
+ * @return string[]
+ */
+function annam_seo_legacy_product_cat_bases() {
+	$bases = array( 'product-category', 'danh-muc-san-pham' );
+	if ( function_exists( 'wc_get_permalink_structure' ) ) {
+		$structure = wc_get_permalink_structure();
+		foreach ( array( 'category_base', 'category_rewrite_slug' ) as $key ) {
+			if ( empty( $structure[ $key ] ) ) {
+				continue;
+			}
+			$bases[] = trim( (string) $structure[ $key ], '/' );
+		}
+	}
+	$bases = array_values( array_unique( array_filter( $bases ) ) );
+	return apply_filters( 'annam_seo_legacy_product_cat_bases', $bases );
+}
+
+/**
+ * Term product_cat theo slug (nếu có).
+ *
+ * @param string $slug Term slug.
+ * @return WP_Term|null
+ */
+function annam_seo_get_product_cat_by_slug( $slug ) {
+	$slug = sanitize_title( rawurldecode( (string) $slug ) );
+	if ( '' === $slug || ! taxonomy_exists( 'product_cat' ) ) {
+		return null;
+	}
+	$term = get_term_by( 'slug', $slug, 'product_cat' );
+	return $term instanceof WP_Term ? $term : null;
+}
+
+/**
+ * Resolve legacy /{category-base}/{slug}/ → permalink danh mục (đã bỏ base).
+ *
+ * @param string $path Request path (có hoặc không leading slash).
+ * @return string|false Absolute URL or false.
+ */
+function annam_seo_resolve_legacy_product_cat_url( $path ) {
+	$path  = trim( (string) $path, '/' );
+	$bases = array_map( 'preg_quote', annam_seo_legacy_product_cat_bases() );
+	if ( empty( $bases ) ) {
+		return false;
+	}
+	$pattern = '#(?:^|/)(?:' . implode( '|', $bases ) . ')/([^/]+)/?$#i';
+	if ( ! preg_match( $pattern, $path, $m ) ) {
+		return false;
+	}
+	$term = annam_seo_get_product_cat_by_slug( $m[1] );
+	if ( ! $term ) {
+		return false;
+	}
+	$link = get_term_link( $term );
+	if ( is_wp_error( $link ) || ! $link ) {
+		return false;
+	}
+	return $link;
+}
+
+/**
+ * Media attachment trùng slug với product_cat → ưu tiên danh mục tour.
+ *
+ * Rank Math “Redirect Attachments” (không có parent) hay đẩy về trang chủ;
+ * ảnh danh mục (tour-sapa.jpg, …) dùng cùng slug với term nên menu bị redirect home.
+ *
+ * @param array<string,mixed> $query_vars Query vars.
+ * @return array<string,mixed>
+ */
+function annam_seo_prefer_product_cat_over_attachment( $query_vars ) {
+	if ( ! is_array( $query_vars ) || ! empty( $query_vars['product_cat'] ) ) {
+		return $query_vars;
+	}
+
+	// Chỉ can thiệp khi WP resolve thành attachment (trùng slug ảnh upload).
+	if ( empty( $query_vars['attachment'] ) ) {
+		return $query_vars;
+	}
+	$slug = (string) $query_vars['attachment'];
+
+	$term = annam_seo_get_product_cat_by_slug( $slug );
+	if ( ! $term ) {
+		return $query_vars;
+	}
+
+	unset( $query_vars['attachment'], $query_vars['name'], $query_vars['error'] );
+	$query_vars['product_cat'] = $term->slug;
+
+	return $query_vars;
+}
+add_filter( 'request', 'annam_seo_prefer_product_cat_over_attachment', 1 );
+
+/**
+ * Rank Math attachment redirect: trùng slug product_cat → về archive danh mục (không về home).
+ *
+ * @param string  $redirect URL Rank Math tính được.
+ * @param WP_Post $post     Attachment.
+ * @return string
+ */
+function annam_seo_rank_math_attachment_redirect_prefer_product_cat( $redirect, $post ) {
+	if ( ! $post instanceof WP_Post || empty( $post->post_name ) ) {
+		return $redirect;
+	}
+	$term = annam_seo_get_product_cat_by_slug( $post->post_name );
+	if ( ! $term ) {
+		return $redirect;
+	}
+	$link = get_term_link( $term );
+	return ( ! is_wp_error( $link ) && $link ) ? $link : $redirect;
+}
+add_filter( 'rank_math/frontend/attachment/redirect_url', 'annam_seo_rank_math_attachment_redirect_prefer_product_cat', 5, 2 );
+
+/**
+ * Rank Math (Remove category base) hay redirect /product-category/{slug}/ → trang chủ.
+ * Chặn sớm trên pre_search + wp (trước Rank Math Product_Redirection).
+ *
+ * @param mixed  $pre      Null hoặc mảng redirect.
+ * @param string $uri      URI không query.
+ * @param string $full_uri URI đầy đủ.
+ * @return mixed
+ */
+function annam_seo_fix_wc_category_base_pre_search( $pre, $uri = '', $full_uri = '' ) {
+	$link = annam_seo_resolve_legacy_product_cat_url( (string) $uri );
+	if ( ! $link && $full_uri ) {
+		$link = annam_seo_resolve_legacy_product_cat_url( (string) $full_uri );
+	}
+	if ( ! $link ) {
+		return $pre;
+	}
+	return array(
+		'url_to'      => $link,
+		'header_code' => 301,
+	);
+}
+add_filter( 'rank_math/redirection/pre_search', 'annam_seo_fix_wc_category_base_pre_search', 1, 3 );
+
+/**
+ * Fallback trên hook `wp` (Rank Math Product_Redirection cũng chạy ở đây).
+ */
+function annam_seo_redirect_legacy_product_cat_base() {
+	if ( is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
+		return;
+	}
+	$path = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH ) : '';
+	$link = annam_seo_resolve_legacy_product_cat_url( $path );
+	if ( ! $link ) {
+		return;
+	}
+	wp_safe_redirect( $link, 301 );
+	exit;
+}
+add_action( 'wp', 'annam_seo_redirect_legacy_product_cat_base', 0 );
+add_action( 'template_redirect', 'annam_seo_redirect_legacy_product_cat_base', 0 );
+
+/**
  * Loại attachment khỏi XML sitemap Rank Math.
  *
  * @param bool   $exclude   Exclude flag.

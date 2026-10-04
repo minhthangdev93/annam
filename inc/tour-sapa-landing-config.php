@@ -59,12 +59,36 @@ function annam_tour_sapa_landing_get_default_config( $page_id = 0 ) {
 			'hotel' => '3star',
 		),
 		'highlights'    => array(
-			array( 'title' => 'Bản Cát Cát', 'text' => 'Văn hóa H’Mông, thác Tiên Sa, check-in đặc trưng.' ),
-			array( 'title' => 'Fansipan 3.143m', 'text' => 'Nóc nhà Đông Dương — vé cáp/tàu tự túc.' ),
-			array( 'title' => 'Moana Sapa', 'text' => 'Cổng trời Bali, Bàn tay vàng, hồ vô cực.' ),
-			array( 'title' => 'Xe limo / cabin VIP', 'text' => 'Hà Nội ⇄ Sapa đã gồm trong giá tour.' ),
-			array( 'title' => 'Quà tặng', 'text' => 'Lẩu cá tầm, gà bản + ngâm chân thảo mộc.' ),
-			array( 'title' => 'Ăn nghỉ đủ', 'text' => '02 sáng + 04 bữa chính · 02 đêm KS.' ),
+			array(
+				'title' => 'Bản Cát Cát',
+				'text'  => 'Văn hóa H’Mông, thác Tiên Sa, check-in đặc trưng.',
+				'icon'  => 'village',
+			),
+			array(
+				'title' => 'Fansipan 3.143m',
+				'text'  => 'Nóc nhà Đông Dương — vé cáp/tàu tự túc.',
+				'icon'  => 'peak',
+			),
+			array(
+				'title' => 'Moana Sapa',
+				'text'  => 'Cổng trời Bali, Bàn tay vàng, hồ vô cực.',
+				'icon'  => 'sun',
+			),
+			array(
+				'title' => 'Xe limo / cabin VIP',
+				'text'  => 'Hà Nội ⇄ Sapa đã gồm trong giá tour.',
+				'icon'  => 'car',
+			),
+			array(
+				'title' => 'Quà tặng',
+				'text'  => 'Lẩu cá tầm, gà bản + ngâm chân thảo mộc.',
+				'icon'  => 'gift',
+			),
+			array(
+				'title' => 'Ăn nghỉ đủ',
+				'text'  => '02 sáng + 04 bữa chính · 02 đêm KS.',
+				'icon'  => 'stay',
+			),
 		),
 		'pricing'       => array(
 			'lead' => 'Giá tour Sapa 3 ngày 2 đêm (3N2Đ) trọn gói / khách. Đã gồm xe limousine hoặc cabin VIP Hà Nội ⇄ Sapa.',
