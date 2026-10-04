@@ -540,6 +540,129 @@ function annam_seo_rank_math_attachment_redirect_prefer_product_cat( $redirect, 
 add_filter( 'rank_math/frontend/attachment/redirect_url', 'annam_seo_rank_math_attachment_redirect_prefer_product_cat', 5, 2 );
 
 /**
+ * Đổi slug attachment trùng product_cat → `{slug}-media` (không đổi file trong uploads).
+ *
+ * Đây là cách dứt điểm: URL /tour-sapa/ thuộc về danh mục, không còn tranh với trang ảnh.
+ * Chạy một lần (option flag); có thể reset option để chạy lại nếu upload ảnh mới trùng slug.
+ *
+ * @return int Số attachment đã đổi slug.
+ */
+function annam_seo_rename_attachments_colliding_with_product_cat() {
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		return 0;
+	}
+
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => false,
+			'fields'     => 'slugs',
+		)
+	);
+	if ( is_wp_error( $terms ) || empty( $terms ) || ! is_array( $terms ) ) {
+		return 0;
+	}
+
+	$renamed = 0;
+	foreach ( $terms as $slug ) {
+		$slug = sanitize_title( (string) $slug );
+		if ( '' === $slug ) {
+			continue;
+		}
+
+		$attachments = get_posts(
+			array(
+				'post_type'              => 'attachment',
+				'name'                   => $slug,
+				'post_status'            => 'inherit',
+				'posts_per_page'         => 20,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+		if ( empty( $attachments ) ) {
+			continue;
+		}
+
+		foreach ( $attachments as $att_id ) {
+			$att_id = (int) $att_id;
+			$new    = wp_unique_post_slug(
+				$slug . '-media',
+				$att_id,
+				'inherit',
+				'attachment',
+				0
+			);
+			if ( $new === $slug ) {
+				$new = $slug . '-media-' . $att_id;
+			}
+			$result = wp_update_post(
+				array(
+					'ID'        => $att_id,
+					'post_name' => $new,
+				),
+				true
+			);
+			if ( ! is_wp_error( $result ) ) {
+				++$renamed;
+			}
+		}
+	}
+
+	return $renamed;
+}
+
+/**
+ * Migration một lần: giải phóng slug danh mục khỏi attachment.
+ */
+function annam_seo_maybe_fix_attachment_product_cat_slug_collisions() {
+	$flag = 'annam_seo_attachment_cat_slug_fix_v2';
+	if ( get_option( $flag ) ) {
+		return;
+	}
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		return;
+	}
+
+	$renamed = annam_seo_rename_attachments_colliding_with_product_cat();
+	update_option( $flag, 1, false );
+	if ( $renamed > 0 ) {
+		flush_rewrite_rules( false );
+	}
+}
+add_action( 'init', 'annam_seo_maybe_fix_attachment_product_cat_slug_collisions', 99 );
+
+/**
+ * Admin: nút chạy lại rename nếu vẫn còn ảnh trùng slug (An Nam Settings không bắt buộc).
+ * Gọi bằng ?annam_fix_cat_media_slugs=1 khi user có manage_options + nonce.
+ */
+function annam_seo_admin_manual_fix_attachment_cat_slugs() {
+	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	if ( empty( $_GET['annam_fix_cat_media_slugs'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+	check_admin_referer( 'annam_fix_cat_media_slugs' );
+	delete_option( 'annam_seo_attachment_cat_slug_fix_v2' );
+	$n = annam_seo_rename_attachments_colliding_with_product_cat();
+	update_option( 'annam_seo_attachment_cat_slug_fix_v2', 1, false );
+	flush_rewrite_rules( false );
+	wp_safe_redirect(
+		add_query_arg(
+			array(
+				'annam_cat_media_fixed' => (string) (int) $n,
+			),
+			remove_query_arg( array( 'annam_fix_cat_media_slugs', '_wpnonce' ) )
+		)
+	);
+	exit;
+}
+add_action( 'admin_init', 'annam_seo_admin_manual_fix_attachment_cat_slugs', 1 );
+
+/**
  * Rank Math (Remove category base) hay redirect /product-category/{slug}/ → trang chủ.
  * Chặn sớm trên pre_search + wp (trước Rank Math Product_Redirection).
  *
