@@ -71,7 +71,7 @@ if ( ! in_array( $default_time, $time_options, true ) ) {
 				<label for="annam-limo-charter-vehicle"><?php esc_html_e( 'Loại xe', 'generatepress_child' ); ?> <span class="annam-limo-charter-req">*</span></label>
 				<select name="annam_limo_charter_vehicle" id="annam-limo-charter-vehicle" required data-annam-field="vehicle">
 					<option value="9" <?php selected( $default_vehicle, '9' ); ?>><?php esc_html_e( 'Limousine 9 chỗ — 4.200.000đ', 'generatepress_child' ); ?></option>
-					<option value="11" <?php selected( $default_vehicle, '11' ); ?>><?php esc_html_e( 'Limousine 11 chỗ — 4.500.000đ', 'generatepress_child' ); ?></option>
+					<option value="11" <?php selected( $default_vehicle, '11' ); ?>><?php esc_html_e( 'Limousine 11 chỗ — 4.200.000đ', 'generatepress_child' ); ?></option>
 					<option value="undecided" <?php selected( $default_vehicle, 'undecided' ); ?>><?php esc_html_e( 'Chưa quyết định', 'generatepress_child' ); ?></option>
 				</select>
 			</div>

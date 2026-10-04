@@ -79,7 +79,7 @@ function annam_limo_charter_landing_process_lead( array $input ) {
 	);
 	$vehicle_labels = array(
 		'9'         => 'Limousine 9 chỗ (4.200.000đ)',
-		'11'        => 'Limousine 11 chỗ (4.500.000đ)',
+		'11'        => 'Limousine 11 chỗ (4.200.000đ)',
 		'undecided' => 'Chưa quyết định',
 	);
 

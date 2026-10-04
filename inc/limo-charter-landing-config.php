@@ -136,7 +136,7 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 				array(
 					'type'    => '11',
 					'label'   => 'Limousine 11 chỗ',
-					'price'   => '4.500.000đ',
+					'price'   => '4.200.000đ',
 					'unit'    => '/ xe / chiều',
 					'image'   => 'price-11',
 					'bullets' => array(
@@ -200,7 +200,7 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 		'faq'          => array(
 			array(
 				'question' => 'Giá thuê xe limousine HN–Sapa bao nhiêu?',
-				'answer'   => 'Limousine 9 chỗ: 4.200.000đ/xe/chiều. Limousine 11 chỗ: 4.500.000đ/xe/chiều. Giá trọn gói có tài xế.',
+				'answer'   => 'Limousine 9 chỗ và 11 chỗ: cùng 4.200.000đ/xe/chiều. Giá trọn gói có tài xế.',
 			),
 			array(
 				'question' => 'Giá đã gồm những gì?',
@@ -267,7 +267,7 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 		),
 		'seo'          => array(
 			'title'       => 'Thuê Xe Limousine Hà Nội Sapa 9 & 11 Chỗ | Từ 4.200.000đ',
-			'description' => 'Thuê nguyên xe limousine Hà Nội – Sapa có tài xế. 9 chỗ 4.200.000đ · 11 chỗ 4.500.000đ/chiều. Đón tận nơi, chủ động giờ — gọi/Zalo báo giá nhanh.',
+			'description' => 'Thuê nguyên xe limousine Hà Nội – Sapa có tài xế. 9 chỗ & 11 chỗ cùng 4.200.000đ/chiều. Đón tận nơi, chủ động giờ — gọi/Zalo báo giá nhanh.',
 		),
 		'sections'     => array(
 			'hero'          => true,
