@@ -108,8 +108,8 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 		),
 		'form'         => array(
 			'title'           => 'Nhận Báo Giá Nhanh',
-			'subtitle'        => 'Để lại SĐT — nhân viên gọi tư vấn & báo giá trong ngày.',
-			'submit_label'    => 'Nhận Báo Giá — Để Lại SĐT',
+			'subtitle'        => 'Để lại SĐT — sale gọi lại ngay để tư vấn & báo giá.',
+			'submit_label'    => 'Chốt Giá & Giữ Xe Ngay',
 			'footer_note'     => 'Sale gọi tư vấn, chốt giờ & điểm đón. Không thanh toán online ngay.',
 			'success_message' => 'Cảm ơn quý khách. An Nam Discovery đã nhận SĐT và sẽ gọi tư vấn báo giá sớm.',
 		),

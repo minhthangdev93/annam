@@ -73,7 +73,7 @@ if ( ! in_array( $default_time, $time_options, true ) ) {
 
 			<div class="annam-limo-charter-form__actions">
 				<button type="submit" class="annam-limo-charter-btn annam-limo-charter-btn--primary" id="annam-limo-charter-submit">
-					<?php echo esc_html( ! empty( $form['submit_label'] ) ? $form['submit_label'] : __( 'Nhận Báo Giá — Để Lại SĐT', 'generatepress_child' ) ); ?>
+					<?php echo esc_html( ! empty( $form['submit_label'] ) ? $form['submit_label'] : __( 'Chốt Giá & Giữ Xe Ngay', 'generatepress_child' ) ); ?>
 				</button>
 			</div>
 
