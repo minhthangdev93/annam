@@ -39,22 +39,16 @@ function annam_limo_charter_landing_process_lead( array $input ) {
 		return $fail( __( 'Bạn đã gửi quá nhiều yêu cầu. Vui lòng gọi hotline hoặc nhắn Zalo.', 'generatepress_child' ), 'rate' );
 	}
 
-	$route   = isset( $input['annam_limo_charter_route'] ) ? sanitize_key( (string) $input['annam_limo_charter_route'] ) : '';
-	$date    = isset( $input['annam_limo_charter_date'] ) ? sanitize_text_field( (string) $input['annam_limo_charter_date'] ) : '';
-	$vehicle = isset( $input['annam_limo_charter_vehicle'] ) ? sanitize_key( (string) $input['annam_limo_charter_vehicle'] ) : '';
-	$time    = isset( $input['annam_limo_charter_time'] ) ? sanitize_text_field( (string) $input['annam_limo_charter_time'] ) : '';
-	$phone   = isset( $input['annam_limo_charter_phone'] ) ? sanitize_text_field( (string) $input['annam_limo_charter_phone'] ) : '';
+	$route = isset( $input['annam_limo_charter_route'] ) ? sanitize_key( (string) $input['annam_limo_charter_route'] ) : '';
+	$date  = isset( $input['annam_limo_charter_date'] ) ? sanitize_text_field( (string) $input['annam_limo_charter_date'] ) : '';
+	$time  = isset( $input['annam_limo_charter_time'] ) ? sanitize_text_field( (string) $input['annam_limo_charter_time'] ) : '';
+	$phone = isset( $input['annam_limo_charter_phone'] ) ? sanitize_text_field( (string) $input['annam_limo_charter_phone'] ) : '';
 
-	$valid_routes   = array( 'hn_sapa', 'sapa_hn' );
-	$valid_vehicles = array( '9', '11', 'undecided' );
-	$today          = wp_date( 'Y-m-d' );
+	$valid_routes = array( 'hn_sapa', 'sapa_hn' );
+	$today        = wp_date( 'Y-m-d' );
 
 	if ( ! in_array( $route, $valid_routes, true ) ) {
 		return $fail( __( 'Vui lòng chọn tuyến.', 'generatepress_child' ), 'route' );
-	}
-
-	if ( ! in_array( $vehicle, $valid_vehicles, true ) ) {
-		return $fail( __( 'Vui lòng chọn loại xe.', 'generatepress_child' ), 'vehicle' );
 	}
 
 	if ( '' === trim( $phone ) ) {
@@ -74,21 +68,15 @@ function annam_limo_charter_landing_process_lead( array $input ) {
 	}
 
 	$route_labels = array(
-		'hn_sapa' => 'Hà Nội → Sapa',
-		'sapa_hn' => 'Sapa → Hà Nội',
-	);
-	$vehicle_labels = array(
-		'9'         => 'Limousine 9 chỗ (4.200.000đ)',
-		'11'        => 'Limousine 11 chỗ (4.200.000đ)',
-		'undecided' => 'Chưa quyết định',
+		'hn_sapa' => 'Hà Nội → Sapa (3.800.000đ)',
+		'sapa_hn' => 'Sapa → Hà Nội (4.200.000đ)',
 	);
 
 	$body_lines = array(
-		__( 'Dịch vụ:', 'generatepress_child' ) . ' ' . ( isset( $config['product_name'] ) ? $config['product_name'] : 'Thuê limo HN–Sapa' ),
+		__( 'Dịch vụ:', 'generatepress_child' ) . ' ' . ( isset( $config['product_name'] ) ? $config['product_name'] : 'Thuê limo Hà Nội – Sapa' ),
 		__( 'SĐT/Zalo:', 'generatepress_child' ) . ' ' . $phone,
 		__( 'Tuyến:', 'generatepress_child' ) . ' ' . ( $route_labels[ $route ] ?? $route ),
 		__( 'Ngày đi:', 'generatepress_child' ) . ' ' . $date,
-		__( 'Loại xe:', 'generatepress_child' ) . ' ' . ( $vehicle_labels[ $vehicle ] ?? $vehicle ),
 	);
 	if ( '' !== trim( $time ) ) {
 		$body_lines[] = __( 'Giờ dự kiến:', 'generatepress_child' ) . ' ' . $time;
@@ -110,7 +98,7 @@ function annam_limo_charter_landing_process_lead( array $input ) {
 	}
 
 	$subject = sprintf(
-		'[THUE LIMO HN-SAPA] %s — %s — %s',
+		'[THUE LIMO HA NOI-SAPA] %s — %s — %s',
 		$route_labels[ $route ] ?? $route,
 		$date,
 		$phone

@@ -34,6 +34,26 @@ $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 <article class="annam-limo-charter-landing">
 
 	<?php if ( ! empty( $secs['hero'] ) ) : ?>
+	<?php
+	$hero_alt = isset( $hero['title'] ) ? (string) $hero['title'] : __( 'Limousine thuê nguyên xe', 'generatepress_child' );
+	?>
+	<div class="annam-limo-charter-banner" aria-hidden="false">
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo annam_limo_charter_landing_print_image(
+			'hero',
+			array(
+				'alt'           => $hero_alt,
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+				'class'         => 'annam-limo-charter-banner__img',
+				'width'         => '2048',
+				'height'        => '752',
+				'size'          => 'full',
+			)
+		);
+		?>
+	</div>
 	<section class="annam-limo-charter-hero">
 		<div class="annam-limo-charter-container annam-limo-charter-hero__grid">
 			<div class="annam-limo-charter-hero__content">
@@ -53,45 +73,6 @@ $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 					<a class="annam-limo-charter-btn annam-limo-charter-btn--primary" href="<?php echo esc_url( $cta['hotline_tel'] ); ?>"><?php esc_html_e( 'Gọi ngay', 'generatepress_child' ); ?></a>
 					<a class="annam-limo-charter-btn annam-limo-charter-btn--zalo" href="<?php echo esc_url( $cta['zalo_url'] ); ?>" target="_blank" rel="noopener">Zalo</a>
 				</div>
-				<figure class="annam-limo-charter-hero__media">
-					<?php
-					$hero_lb = function_exists( 'annam_limo_charter_landing_lightbox_index' )
-						? annam_limo_charter_landing_lightbox_index( 'hero' )
-						: -1;
-					$hero_alt = isset( $hero['title'] ) ? (string) $hero['title'] : __( 'Limousine thuê nguyên xe', 'generatepress_child' );
-					if ( $hero_lb >= 0 ) :
-						?>
-						<button type="button" class="annam-limo-charter-lb-trigger" data-annam-gallery-open="<?php echo esc_attr( (string) $hero_lb ); ?>" aria-label="<?php echo esc_attr( $hero_alt ); ?>">
-							<?php
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo annam_limo_charter_landing_print_image(
-								'hero',
-								array(
-									'alt'     => $hero_alt,
-									'loading' => 'eager',
-									'class'   => 'annam-limo-charter-hero__img',
-									'width'   => '1200',
-									'height'  => '800',
-								)
-							);
-							?>
-						</button>
-					<?php else : ?>
-						<?php
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						echo annam_limo_charter_landing_print_image(
-							'hero',
-							array(
-								'alt'     => $hero_alt,
-								'loading' => 'eager',
-								'class'   => 'annam-limo-charter-hero__img',
-								'width'   => '1200',
-								'height'  => '800',
-							)
-						);
-						?>
-					<?php endif; ?>
-				</figure>
 			</div>
 			<div class="annam-limo-charter-hero__form-col">
 				<?php get_template_part( 'template-parts/limo-charter-landing/part', 'form' ); ?>
@@ -104,7 +85,7 @@ $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 	<section class="annam-limo-charter-section" id="gia-thue">
 		<div class="annam-limo-charter-container">
 			<h2 class="annam-limo-charter-section__title"><?php esc_html_e( 'Bảng Giá Thuê Nguyên Xe', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-charter-section__lead"><?php esc_html_e( 'Giá trọn gói 1 chiều · có tài xế · Hà Nội ⇄ Sapa.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-charter-section__lead"><?php esc_html_e( 'Giá theo chiều · 9 chỗ & 11 chỗ cùng giá · có tài xế.', 'generatepress_child' ); ?></p>
 			<div class="annam-limo-charter-price-grid">
 				<?php foreach ( $config['pricing']['rows'] as $row ) : ?>
 					<article class="annam-limo-charter-price-card<?php echo ! empty( $row['badge'] ) ? ' annam-limo-charter-price-card--highlight' : ''; ?>">
@@ -161,8 +142,8 @@ $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 								<?php endforeach; ?>
 							</ul>
 						<?php endif; ?>
-						<button type="button" class="annam-limo-charter-btn annam-limo-charter-btn--primary annam-limo-charter-btn--block" data-annam-pick-vehicle="<?php echo esc_attr( $row['type'] ); ?>">
-							<?php echo esc_html( isset( $row['cta'] ) ? $row['cta'] : __( 'Chọn xe', 'generatepress_child' ) ); ?>
+						<button type="button" class="annam-limo-charter-btn annam-limo-charter-btn--primary annam-limo-charter-btn--block" data-annam-pick-route="<?php echo esc_attr( $row['type'] ); ?>">
+							<?php echo esc_html( isset( $row['cta'] ) ? $row['cta'] : __( 'Chọn chiều', 'generatepress_child' ) ); ?>
 						</button>
 					</article>
 				<?php endforeach; ?>
@@ -353,7 +334,7 @@ $map_address = ( preg_match( '#^https?://#i', $map_query ) )
 		<div class="annam-limo-charter-container">
 			<header class="annam-limo-charter-why-head">
 				<h2 class="annam-limo-charter-section__title"><?php esc_html_e( 'Vì Sao Thuê Nguyên Xe?', 'generatepress_child' ); ?></h2>
-				<p class="annam-limo-charter-section__lead"><?php esc_html_e( 'Bốn lý do khách chọn thuê riêng limo HN–Sapa thay vì vé ghế.', 'generatepress_child' ); ?></p>
+				<p class="annam-limo-charter-section__lead"><?php esc_html_e( 'Bốn lý do khách chọn thuê riêng limo Hà Nội – Sapa thay vì vé ghế.', 'generatepress_child' ); ?></p>
 			</header>
 			<div class="annam-limo-charter-why-grid">
 				<?php foreach ( $config['why'] as $i => $card ) :

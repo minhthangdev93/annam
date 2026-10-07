@@ -24,7 +24,7 @@ if ( ! defined( 'ANNAM_LIMO_CHARTER_SETTINGS_OPTION' ) ) {
  */
 function annam_limo_charter_landing_get_image_slots() {
 	$fallbacks = array(
-		'hero'        => 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80',
+		'hero'        => 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=2048&h=752&q=80',
 		'price-9'     => 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80',
 		'price-11'    => 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80',
 		'gallery-1'   => 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80',
@@ -46,40 +46,40 @@ function annam_limo_charter_landing_get_image_slots() {
 
 	$slots = array(
 		'hero'        => array(
-			'label'           => __( 'Hero — ảnh xe limousine', 'generatepress_child' ),
+			'label'           => __( 'Banner hero full màn hình', 'generatepress_child' ),
 			'section'         => 'hero',
-			'placement'       => __( 'Cột ảnh hero (desktop cạnh form đặt xe)', 'generatepress_child' ),
-			'recommended'     => '1400 × 933 px (tối thiểu 1200 × 800)',
-			'ratio'           => '3:2',
+			'placement'       => __( 'Banner full-width phía trên title + form', 'generatepress_child' ),
+			'recommended'     => '2048 × 752 px',
+			'ratio'           => '≈ 2.72 : 1 (ngang rộng)',
 			'formats'         => 'JPG / WebP',
-			'tip'             => __( 'Ảnh xe thật, sáng, ngang — crop đúng 3:2 để không bị cắt trên desktop.', 'generatepress_child' ),
+			'tip'             => __( 'Ảnh banner ngang full màn hình. Upload đúng 2048×752 để không bị crop lệch.', 'generatepress_child' ),
 			'has_caption'     => false,
 			'fallback'        => $fallbacks['hero'],
-			'default_caption' => 'Limousine thuê nguyên xe HN–Sapa',
+			'default_caption' => 'Limousine thuê nguyên xe Hà Nội – Sapa',
 		),
 		'price-9'     => array(
-			'label'           => __( 'Card giá — Limousine 9 chỗ', 'generatepress_child' ),
+			'label'           => __( 'Card giá — Hà Nội → Sapa', 'generatepress_child' ),
 			'section'         => 'pricing',
-			'placement'       => __( 'Ảnh trên card giá 9 chỗ', 'generatepress_child' ),
+			'placement'       => __( 'Ảnh trên card giá chiều Hà Nội → Sapa (3.800.000đ)', 'generatepress_child' ),
 			'recommended'     => '1200 × 800 px',
 			'ratio'           => '3:2',
 			'formats'         => 'JPG / WebP',
-			'tip'             => __( 'Nên là ảnh khoang ghế / ngoại thất 9 chỗ rõ biển hoặc nội thất.', 'generatepress_child' ),
+			'tip'             => __( 'Ảnh limo / tuyến Hà Nội đi Sapa. Giá theo chiều — áp dụng cả 9 & 11 chỗ.', 'generatepress_child' ),
 			'has_caption'     => false,
 			'fallback'        => $fallbacks['price-9'],
-			'default_caption' => 'Limousine 9 chỗ',
+			'default_caption' => 'Hà Nội → Sapa',
 		),
 		'price-11'    => array(
-			'label'           => __( 'Card giá — Limousine 11 chỗ', 'generatepress_child' ),
+			'label'           => __( 'Card giá — Sapa → Hà Nội', 'generatepress_child' ),
 			'section'         => 'pricing',
-			'placement'       => __( 'Ảnh trên card giá 11 chỗ', 'generatepress_child' ),
+			'placement'       => __( 'Ảnh trên card giá chiều Sapa → Hà Nội (4.200.000đ)', 'generatepress_child' ),
 			'recommended'     => '1200 × 800 px',
 			'ratio'           => '3:2',
 			'formats'         => 'JPG / WebP',
-			'tip'             => __( 'Nên là ảnh khoang ghế / ngoại thất 11 chỗ để phân biệt với card 9 chỗ.', 'generatepress_child' ),
+			'tip'             => __( 'Ảnh limo / tuyến Sapa về Hà Nội. Giá theo chiều — áp dụng cả 9 & 11 chỗ.', 'generatepress_child' ),
 			'has_caption'     => false,
 			'fallback'        => $fallbacks['price-11'],
-			'default_caption' => 'Limousine 11 chỗ',
+			'default_caption' => 'Sapa → Hà Nội',
 		),
 		'gallery-1'   => array(
 			'label'           => __( 'Gallery 1', 'generatepress_child' ),
@@ -151,7 +151,7 @@ function annam_limo_charter_landing_get_image_slots() {
 			'tip'             => __( 'Ảnh ngang 3:2. Ghi chú hiển thị dưới ảnh trên trang.', 'generatepress_child' ),
 			'has_caption'     => true,
 			'fallback'        => $fallbacks['gallery-6'],
-			'default_caption' => 'Trên đường HN ⇄ Sapa',
+			'default_caption' => 'Trên đường Hà Nội ⇄ Sapa',
 		),
 		'staff-1'     => array(
 			'label'           => __( 'Uy tín — ảnh 1', 'generatepress_child' ),
@@ -228,7 +228,7 @@ function annam_limo_charter_landing_get_image_slots() {
 		'cross-limo'  => array(
 			'label'           => __( 'Gợi ý khác — vé limousine ghế', 'generatepress_child' ),
 			'section'         => 'cross',
-			'placement'       => __( 'Card cross-sell vé ghế HN ⇄ Sapa', 'generatepress_child' ),
+			'placement'       => __( 'Card cross-sell vé ghế Hà Nội ⇄ Sapa', 'generatepress_child' ),
 			'recommended'     => '1000 × 750 px',
 			'ratio'           => '4:3',
 			'formats'         => 'JPG / WebP',
@@ -314,7 +314,8 @@ function annam_limo_charter_landing_get_lightbox_items() {
 		? annam_limo_charter_landing_get_config()
 		: array();
 
-	$ordered = array( 'hero', 'price-9', 'price-11' );
+	// Banner hero không đưa vào lightbox (chỉ hiển thị full-bleed).
+	$ordered = array( 'price-9', 'price-11' );
 
 	if ( ! empty( $config['gallery'] ) && is_array( $config['gallery'] ) ) {
 		foreach ( $config['gallery'] as $item ) {
@@ -854,12 +855,12 @@ function annam_limo_charter_landing_images_render_admin_page() {
 	$groups = array(
 		'hero'    => array(
 			'title' => __( 'Hero', 'generatepress_child' ),
-			'note'  => __( 'Ảnh cạnh form đặt xe. Khuyến nghị 1400×933 (3:2).', 'generatepress_child' ),
+			'note'  => __( 'Banner full màn hình phía trên hero. Khuyến nghị 2048×752 px.', 'generatepress_child' ),
 			'slots' => array(),
 		),
 		'pricing' => array(
-			'title' => __( 'Card giá 9 chỗ & 11 chỗ', 'generatepress_child' ),
-			'note'  => __( 'Hai ảnh trên card giá. Khuyến nghị 1200×800 (3:2).', 'generatepress_child' ),
+			'title' => __( 'Card giá theo chiều (Hà Nội → Sapa / Sapa → Hà Nội)', 'generatepress_child' ),
+			'note'  => __( 'Hai card theo chiều: Hà Nội → Sapa 3.8tr · Sapa → Hà Nội 4.2tr (9 & 11 chỗ). Khuyến nghị ảnh 1200×800 (3:2).', 'generatepress_child' ),
 			'slots' => array(),
 		),
 		'gallery' => array(

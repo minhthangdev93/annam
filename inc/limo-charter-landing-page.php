@@ -79,13 +79,15 @@ function annam_limo_charter_landing_print_image( $slot_key, array $attrs = array
 		: 0;
 
 	if ( $attachment_id > 0 ) {
+		$size = isset( $attrs['size'] ) ? (string) $attrs['size'] : 'large';
+		unset( $attrs['size'] );
 		$default = array(
 			'class'   => 'annam-limo-charter-img',
 			'loading' => 'lazy',
 			'alt'     => '',
 		);
 		$attrs = array_merge( $default, $attrs );
-		return wp_get_attachment_image( $attachment_id, 'large', false, $attrs );
+		return wp_get_attachment_image( $attachment_id, $size, false, $attrs );
 	}
 
 	$url = function_exists( 'annam_limo_charter_landing_image_url' ) ? annam_limo_charter_landing_image_url( $slot_key ) : '';
@@ -97,15 +99,17 @@ function annam_limo_charter_landing_print_image( $slot_key, array $attrs = array
 	$class   = isset( $attrs['class'] ) ? (string) $attrs['class'] : 'annam-limo-charter-img';
 	$w       = isset( $attrs['width'] ) ? (string) $attrs['width'] : '';
 	$h       = isset( $attrs['height'] ) ? (string) $attrs['height'] : '';
+	$fp      = isset( $attrs['fetchpriority'] ) ? (string) $attrs['fetchpriority'] : '';
 
 	return sprintf(
-		'<img src="%s" alt="%s" class="%s" loading="%s"%s%s decoding="async" />',
+		'<img src="%s" alt="%s" class="%s" loading="%s"%s%s%s decoding="async" />',
 		esc_url( $url ),
 		esc_attr( $alt ),
 		esc_attr( $class ),
 		esc_attr( $loading ),
 		$w ? ' width="' . esc_attr( $w ) . '"' : '',
-		$h ? ' height="' . esc_attr( $h ) . '"' : ''
+		$h ? ' height="' . esc_attr( $h ) . '"' : '',
+		$fp ? ' fetchpriority="' . esc_attr( $fp ) . '"' : ''
 	);
 }
 
@@ -251,8 +255,8 @@ function annam_limo_charter_landing_get_seo_defaults() {
 	$seo    = isset( $config['seo'] ) && is_array( $config['seo'] ) ? $config['seo'] : array();
 
 	return array(
-		'title'       => isset( $seo['title'] ) ? (string) $seo['title'] : 'Thuê Xe Limousine Hà Nội Sapa | Từ 4.200.000đ',
-		'description' => isset( $seo['description'] ) ? (string) $seo['description'] : 'Thuê nguyên xe limousine Hà Nội – Sapa có tài xế từ 4.200.000đ/chiều.',
+		'title'       => isset( $seo['title'] ) ? (string) $seo['title'] : 'Thuê Xe Limousine Hà Nội Sapa | Từ 3.800.000đ',
+		'description' => isset( $seo['description'] ) ? (string) $seo['description'] : 'Thuê nguyên xe limousine Hà Nội – Sapa có tài xế. Hà Nội → Sapa 3.800.000đ · Sapa → Hà Nội 4.200.000đ/chiều.',
 	);
 }
 

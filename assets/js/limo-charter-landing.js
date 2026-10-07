@@ -50,6 +50,31 @@
 		}
 	}
 
+	function openDatePicker(input) {
+		if (!input || input.type !== 'date') {
+			return;
+		}
+		input.focus();
+		if (typeof input.showPicker === 'function') {
+			try {
+				input.showPicker();
+			} catch (err) {
+				/* Safari / older browsers: focus is enough. */
+			}
+		}
+	}
+
+	function initDateInputs() {
+		$$('#annam-limo-charter-form input[type="date"]').forEach(function (input) {
+			input.addEventListener('click', function () {
+				openDatePicker(input);
+			});
+			input.addEventListener('focus', function () {
+				openDatePicker(input);
+			});
+		});
+	}
+
 	function fetchFreshNonce() {
 		var body = new URLSearchParams();
 		body.set('action', booking.nonceAction || 'annam_limo_charter_lead_nonce');
@@ -85,9 +110,6 @@
 		if (detail && typeof detail === 'object') {
 			if (detail.route) {
 				payload.route = detail.route;
-			}
-			if (detail.vehicle) {
-				payload.vehicle = detail.vehicle;
 			}
 			if (detail.time) {
 				payload.time = detail.time;
@@ -180,9 +202,6 @@
 							route: $('#annam-limo-charter-route', form)
 								? $('#annam-limo-charter-route', form).value
 								: '',
-							vehicle: $('#annam-limo-charter-vehicle', form)
-								? $('#annam-limo-charter-vehicle', form).value
-								: '',
 							time: $('#annam-limo-charter-time', form)
 								? $('#annam-limo-charter-time', form).value
 								: '',
@@ -191,9 +210,6 @@
 						var defs = cfg.formDefaults || {};
 						if (defs.route) {
 							setField('route', defs.route);
-						}
-						if (defs.vehicle) {
-							setField('vehicle', defs.vehicle);
 						}
 						if (defs.time) {
 							setField('time', defs.time);
@@ -227,16 +243,16 @@
 	}
 
 	function initPickers() {
-		$$('[data-annam-pick-vehicle]').forEach(function (btn) {
+		$$('[data-annam-pick-route]').forEach(function (btn) {
 			btn.addEventListener('click', function () {
-				var vehicle = btn.getAttribute('data-annam-pick-vehicle');
-				if (vehicle) {
-					setField('vehicle', vehicle);
+				var route = btn.getAttribute('data-annam-pick-route');
+				if (route) {
+					setField('route', route);
 					window.dataLayer = window.dataLayer || [];
 					window.dataLayer.push({
-						event: vehicle === '11' ? 'limo_charter_select_11' : 'limo_charter_select_9',
+						event: route === 'sapa_hn' ? 'limo_charter_select_sapa_hn' : 'limo_charter_select_hn_sapa',
 						eventCategory: 'limo_charter_landing',
-						vehicle: vehicle,
+						route: route,
 					});
 				}
 				scrollToForm();
@@ -335,6 +351,7 @@
 	document.addEventListener('DOMContentLoaded', function () {
 		initAjaxForm();
 		initPickers();
+		initDateInputs();
 		initGallery();
 	});
 })();

@@ -57,6 +57,26 @@ body.annam-limo-charter-landing-page {
 	margin-inline: auto;
 }
 
+.annam-limo-charter-banner {
+	width: 100%;
+	margin: 0;
+	background: #0f172a;
+	overflow: hidden;
+	line-height: 0;
+}
+
+.annam-limo-charter-banner__img,
+.annam-limo-charter-banner img {
+	display: block;
+	width: 100%;
+	max-width: 2048px;
+	height: auto;
+	margin-inline: auto;
+	aspect-ratio: 2048 / 752;
+	object-fit: cover;
+	object-position: center center;
+}
+
 .annam-limo-charter-hero {
 	padding: 28px 0 36px;
 	background:
@@ -130,15 +150,7 @@ body.annam-limo-charter-landing-page {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
-	margin-bottom: 18px;
-}
-
-.annam-limo-charter-hero__media {
-	margin: 0;
-	border-radius: var(--annam-lc-radius);
-	overflow: hidden;
-	aspect-ratio: 3 / 2;
-	background: #0f172a;
+	margin-bottom: 0;
 }
 
 .annam-limo-charter-lb-trigger {
@@ -153,8 +165,6 @@ body.annam-limo-charter-landing-page {
 	line-height: 0;
 }
 
-.annam-limo-charter-hero__media img,
-.annam-limo-charter-hero__img,
 .annam-limo-charter-lb-trigger img {
 	display: block;
 	width: 100%;
@@ -277,6 +287,10 @@ body.annam-limo-charter-landing-page {
 	background: #fff;
 }
 
+.annam-limo-charter-form__field input[type='date'] {
+	cursor: pointer;
+}
+
 .annam-limo-charter-form__actions {
 	margin-top: 4px;
 }
@@ -396,10 +410,17 @@ body.annam-limo-charter-landing-page {
 
 .annam-limo-charter-price-card__name,
 .annam-limo-charter-price-card__price,
-.annam-limo-charter-price-card__bullets,
-.annam-limo-charter-price-card .annam-limo-charter-btn {
+.annam-limo-charter-price-card__bullets {
 	margin-left: 16px;
 	margin-right: 16px;
+}
+
+.annam-limo-charter-price-card .annam-limo-charter-btn {
+	display: flex;
+	box-sizing: border-box;
+	width: calc(100% - 32px);
+	max-width: calc(100% - 32px);
+	margin: 0 16px;
 }
 
 .annam-limo-charter-price-card__name {

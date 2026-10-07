@@ -96,13 +96,13 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 		'product_name' => 'Thuê xe Limousine Hà Nội – Sapa 9 & 11 chỗ (có tài xế)',
 		'hero'         => array(
 			'title'      => 'Thuê Xe Limousine Hà Nội – Sapa 9 & 11 Chỗ',
-			'subtitle'   => 'Xe riêng có tài xế · Từ 4.200.000đ/chiều',
-			'price_from' => '4.200.000đ',
+			'subtitle'   => 'Xe riêng có tài xế · Từ 3.800.000đ/chiều',
+			'price_from' => '3.800.000đ',
 			'badges'     => array(
 				'Thuê nguyên xe – không ghép khách',
 				'Đón trả tận nơi Hà Nội & Sapa',
 				'Chủ động giờ khởi hành',
-				'Giá trọn gói rõ ràng',
+				'Giá theo chiều rõ ràng',
 			),
 			'note'       => 'Đây là thuê nguyên xe riêng có tài xế, không phải vé limousine tính theo ghế.',
 		),
@@ -114,42 +114,41 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 			'success_message' => 'Cảm ơn quý khách. An Nam Discovery đã nhận SĐT và sẽ gọi tư vấn báo giá sớm.',
 		),
 		'form_defaults' => array(
-			'route'   => 'hn_sapa',
-			'vehicle' => '9',
-			'time'    => '07:00',
+			'route' => 'hn_sapa',
+			'time'  => '07:00',
 		),
 		'pricing'      => array(
 			'rows' => array(
 				array(
-					'type'    => '9',
-					'label'   => 'Limousine 9 chỗ',
-					'price'   => '4.200.000đ',
+					'type'    => 'hn_sapa',
+					'label'   => 'Thuê xe Hà Nội → Sapa',
+					'price'   => '3.800.000đ',
 					'unit'    => '/ xe / chiều',
 					'image'   => 'price-9',
 					'bullets' => array(
-						'Phù hợp nhóm nhỏ / gia đình',
-						'Không ghép khách',
-						'Có tài xế',
+						'Áp dụng limo 9 chỗ & 11 chỗ',
+						'Không ghép khách · có tài xế',
+						'Đón tận nơi Hà Nội',
 					),
-					'cta'     => 'Chọn xe 9 chỗ',
+					'cta'     => 'Chọn chiều Hà Nội → Sapa',
+					'badge'   => 'Giá tốt',
 				),
 				array(
-					'type'    => '11',
-					'label'   => 'Limousine 11 chỗ',
+					'type'    => 'sapa_hn',
+					'label'   => 'Thuê xe Sapa → Hà Nội',
 					'price'   => '4.200.000đ',
 					'unit'    => '/ xe / chiều',
 					'image'   => 'price-11',
 					'bullets' => array(
-						'Rộng hơn cho đoàn đông',
-						'Không ghép khách',
-						'Có tài xế',
+						'Áp dụng limo 9 chỗ & 11 chỗ',
+						'Không ghép khách · có tài xế',
+						'Đón tận nơi Sapa',
 					),
-					'cta'     => 'Chọn xe 11 chỗ',
-					'badge'   => 'Phổ biến',
+					'cta'     => 'Chọn chiều Sapa → Hà Nội',
 				),
 			),
-			'included' => 'Giá đã gồm: xe + tài xế + nhiên liệu + phí cao tốc hành trình tiêu chuẩn HN–Sapa.',
-			'extra'    => '',
+			'included' => 'Giá theo chiều (không theo loại xe). Đã gồm: xe + tài xế + nhiên liệu + phí cao tốc hành trình tiêu chuẩn Hà Nội – Sapa.',
+			'extra'    => 'Limousine 9 chỗ và 11 chỗ cùng bảng giá theo chiều ở trên.',
 			'note'     => 'Thuê nguyên xe riêng có tài xế — không phải vé limousine theo ghế.',
 		),
 		'trust_strip'  => array(
@@ -164,7 +163,7 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 			array( 'slot' => 'gallery-3', 'caption' => '9 chỗ — khoang ghế' ),
 			array( 'slot' => 'gallery-4', 'caption' => '11 chỗ — khoang ghế' ),
 			array( 'slot' => 'gallery-5', 'caption' => 'Hành lý / sẵn sàng xuất phát' ),
-			array( 'slot' => 'gallery-6', 'caption' => 'Trên đường HN ⇄ Sapa' ),
+			array( 'slot' => 'gallery-6', 'caption' => 'Trên đường Hà Nội ⇄ Sapa' ),
 		),
 		'why'          => array(
 			array(
@@ -174,8 +173,8 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 			),
 			array(
 				'icon'  => 'tag',
-				'title' => 'Giá trọn gói',
-				'text'  => 'Đã gồm tài xế, nhiên liệu, cao tốc chuẩn.',
+				'title' => 'Giá theo chiều',
+				'text'  => 'Hà Nội → Sapa 3,8tr · Sapa → Hà Nội 4,2tr — cùng 9 & 11 chỗ.',
 			),
 			array(
 				'icon'  => 'clock',
@@ -190,17 +189,17 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 		),
 		'steps'        => array(
 			array( 'title' => 'Nhận báo giá', 'text' => 'Gọi, Zalo hoặc để lại SĐT trên form.' ),
-			array( 'title' => 'Xác nhận lịch', 'text' => 'Sale chốt giờ, điểm đón và loại xe.' ),
+			array( 'title' => 'Xác nhận lịch', 'text' => 'Sale chốt giờ, điểm đón và loại limo (9/11 chỗ).' ),
 			array( 'title' => 'Đón đúng giờ', 'text' => 'Tài xế đón tại điểm đã hẹn và khởi hành.' ),
 		),
 		'compare'      => array(
 			'title' => 'Khác vé limousine theo ghế',
-			'text'  => 'Trang này là thuê nguyên xe riêng có tài xế (4,2–4,5 triệu/chiều). Nếu cần 1–2 ghế theo lịch cố định, xem vé limousine ghế bên dưới.',
+			'text'  => 'Trang này là thuê nguyên xe riêng có tài xế (từ 3,8 triệu/chiều tùy hướng). Nếu cần 1–2 ghế theo lịch cố định, xem vé limousine ghế bên dưới.',
 		),
 		'faq'          => array(
 			array(
-				'question' => 'Giá thuê xe limousine HN–Sapa bao nhiêu?',
-				'answer'   => 'Limousine 9 chỗ và 11 chỗ: cùng 4.200.000đ/xe/chiều. Giá trọn gói có tài xế.',
+				'question' => 'Giá thuê xe limousine Hà Nội – Sapa bao nhiêu?',
+				'answer'   => 'Giá theo chiều, không theo loại xe: Hà Nội → Sapa 3.800.000đ/xe/chiều; Sapa → Hà Nội 4.200.000đ/xe/chiều. Áp dụng cả limousine 9 chỗ và 11 chỗ.',
 			),
 			array(
 				'question' => 'Giá đã gồm những gì?',
@@ -220,17 +219,17 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 			),
 			array(
 				'question' => 'Nên chọn 9 chỗ hay 11 chỗ?',
-				'answer'   => '9 chỗ phù hợp nhóm nhỏ / gia đình. 11 chỗ rộng hơn cho đoàn đông hoặc nhiều hành lý. Chưa chắc có thể chọn “Chưa quyết định” trên form.',
+				'answer'   => 'Giá giống nhau theo chiều. 9 chỗ phù hợp nhóm nhỏ / gia đình; 11 chỗ rộng hơn cho đoàn đông hoặc nhiều hành lý. Sale sẽ tư vấn loại xe khi gọi lại.',
 			),
 			array(
 				'question' => 'Phụ phí điểm đón thế nào?',
-				'answer'   => 'Trong phạm vi tiêu chuẩn HN–Sapa không phát sinh. Ngoài phạm vi sẽ báo trước khi chốt lịch.',
+				'answer'   => 'Trong phạm vi tiêu chuẩn Hà Nội – Sapa không phát sinh. Ngoài phạm vi sẽ báo trước khi chốt lịch.',
 			),
 		),
 		'cross_sell'   => array(
 			array(
 				'slot'     => 'cross-limo',
-				'title'    => 'Vé limousine ghế HN ⇄ Sapa',
+				'title'    => 'Vé limousine ghế Hà Nội ⇄ Sapa',
 				'line'     => 'Từ ~450k/ghế · lịch cố định',
 				'price'    => 'Từ 450.000đ',
 				'url'      => $limo_seat_url,
@@ -266,8 +265,8 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 			'subtitle' => 'Sale An Nam giữ xe & chốt lịch — Gọi, Zalo hoặc để lại SĐT.',
 		),
 		'seo'          => array(
-			'title'       => 'Thuê Xe Limousine Hà Nội Sapa 9 & 11 Chỗ | Từ 4.200.000đ',
-			'description' => 'Thuê nguyên xe limousine Hà Nội – Sapa có tài xế. 9 chỗ & 11 chỗ cùng 4.200.000đ/chiều. Đón tận nơi, chủ động giờ — gọi/Zalo báo giá nhanh.',
+			'title'       => 'Thuê Xe Limousine Hà Nội Sapa 9 & 11 Chỗ | Từ 3.800.000đ',
+			'description' => 'Thuê nguyên xe limousine Hà Nội – Sapa có tài xế. Hà Nội → Sapa 3.800.000đ · Sapa → Hà Nội 4.200.000đ/chiều (9 & 11 chỗ). Đón tận nơi, chủ động giờ — gọi/Zalo báo giá nhanh.',
 		),
 		'sections'     => array(
 			'hero'          => true,
@@ -277,7 +276,7 @@ function annam_limo_charter_landing_get_default_config( $page_id = 0 ) {
 			'proof'         => true,
 			'why'           => true,
 			'steps'         => true,
-			'compare'       => true,
+			'compare'       => false,
 			'faq'           => true,
 			'cross_sell'    => true,
 			'reviews'       => true,

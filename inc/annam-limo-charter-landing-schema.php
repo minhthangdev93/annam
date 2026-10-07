@@ -96,7 +96,7 @@ function annam_limo_charter_landing_get_schema_graph() {
 			array(
 				'@type'    => 'ListItem',
 				'position' => 2,
-				'name'     => isset( $config['hero']['title'] ) ? wp_strip_all_tags( (string) $config['hero']['title'] ) : 'Thuê Limo HN–Sapa',
+				'name'     => isset( $config['hero']['title'] ) ? wp_strip_all_tags( (string) $config['hero']['title'] ) : 'Thuê Limo Hà Nội – Sapa',
 				'item'     => $page_url,
 			),
 		),

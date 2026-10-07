@@ -5,6 +5,13 @@
 - Final URL: `/thue-xe-limousine-ha-noi-sapa/`
 - Template: `Landing Thuê Xe Limousine HN–Sapa`
 
+## Giá (theo chiều)
+
+| Chiều | Giá | Xe |
+|-------|-----|----|
+| Hà Nội → Sapa | 3.800.000đ/xe/chiều | 9 & 11 chỗ |
+| Sapa → Hà Nội | 4.200.000đ/xe/chiều | 9 & 11 chỗ |
+
 ## GTM — form lead only
 
 Call / Zalo đã track site-wide. Chỉ thêm conversion form:
@@ -13,7 +20,7 @@ Call / Zalo đã track site-wide. Chỉ thêm conversion form:
 |---------------------|---------|
 | `limo_charter_lead_success` | Form “Nhận báo giá” gửi OK |
 
-Optional nội bộ: `limo_charter_select_9` / `limo_charter_select_11` khi bấm chọn xe trên card giá.
+Optional nội bộ: `limo_charter_select_hn_sapa` / `limo_charter_select_sapa_hn` khi bấm card giá theo chiều.
 
 GTM: Custom Event trigger → Google Ads conversion (Primary lead form thuê limo).
 
