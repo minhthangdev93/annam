@@ -42,7 +42,12 @@ body.annam-limo-charter-landing-page.separate-containers .inside-article {
 	background: transparent;
 }
 
+html:has(body.annam-limo-charter-landing-page) {
+	overflow-x: hidden;
+}
+
 body.annam-limo-charter-landing-page {
+	overflow-x: hidden;
 	overflow-x: clip;
 	padding-bottom: 72px;
 }
@@ -50,6 +55,8 @@ body.annam-limo-charter-landing-page {
 .annam-limo-charter-landing {
 	color: var(--annam-lc-text);
 	line-height: 1.55;
+	overflow-x: clip;
+	max-width: 100%;
 }
 
 .annam-limo-charter-container {
@@ -229,6 +236,15 @@ body.annam-limo-charter-landing-page {
 	border-radius: var(--annam-lc-radius);
 	padding: 18px 18px 16px;
 	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+	max-width: 100%;
+	overflow-x: clip;
+	box-sizing: border-box;
+}
+
+.annam-limo-charter-form {
+	position: relative;
+	max-width: 100%;
+	min-width: 0;
 }
 
 .annam-limo-charter-form__title {
@@ -244,25 +260,35 @@ body.annam-limo-charter-landing-page {
 
 .annam-limo-charter-form__hp {
 	position: absolute;
-	left: -9999px;
-	opacity: 0;
-	height: 0;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
 	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+	opacity: 0;
+	pointer-events: none;
 }
 
 .annam-limo-charter-form__row--2 {
 	display: grid;
 	gap: 12px;
+	min-width: 0;
+	max-width: 100%;
 }
 
 @media (min-width: 520px) {
 	.annam-limo-charter-form__row--2 {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	}
 }
 
 .annam-limo-charter-form__field {
 	margin-bottom: 12px;
+	min-width: 0;
+	max-width: 100%;
 }
 
 .annam-limo-charter-form__field label {
@@ -279,16 +305,40 @@ body.annam-limo-charter-landing-page {
 .annam-limo-charter-form__field input,
 .annam-limo-charter-form__field select {
 	width: 100%;
+	max-width: 100%;
+	min-width: 0;
 	min-height: 44px;
 	border: 1px solid var(--annam-lc-border);
 	border-radius: 10px;
 	padding: 0.55rem 0.75rem;
 	font: inherit;
 	background: #fff;
+	box-sizing: border-box;
 }
 
+/* iOS Safari: native date (locale VN) tràn khung form + kéo ngang viewport */
 .annam-limo-charter-form__field input[type='date'] {
 	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+	line-height: 1.25;
+	text-align: left;
+	color-scheme: light;
+}
+
+.annam-limo-charter-form__field input[type='date']::-webkit-date-and-time-value {
+	min-width: 0;
+	text-align: left;
+}
+
+.annam-limo-charter-form__field input[type='date']::-webkit-datetime-edit {
+	padding: 0;
+	min-width: 0;
+}
+
+.annam-limo-charter-form__field input[type='date']::-webkit-datetime-edit-fields-wrapper {
+	padding: 0;
+	min-width: 0;
 }
 
 .annam-limo-charter-form__actions {

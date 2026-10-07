@@ -15,6 +15,8 @@ const ANNAM_LIMO_CHARTER_LANDING_RATE_MAX     = 8;
 const ANNAM_LIMO_CHARTER_LANDING_RATE_MINUTES = 10;
 const ANNAM_LIMO_CHARTER_TEMPLATE             = 'page-template-thue-xe-limousine-hn-sapa-landing.php';
 const ANNAM_LIMO_CHARTER_SLUG                 = 'thue-xe-limousine-ha-noi-sapa';
+/** Bump when SEO title/description in config change (forces Rank Math meta overwrite). */
+const ANNAM_LIMO_CHARTER_SEO_VERSION          = 2;
 
 /**
  * @return bool
@@ -261,33 +263,75 @@ function annam_limo_charter_landing_get_seo_defaults() {
 }
 
 /**
- * @param int $page_id Page ID.
+ * @return int Landing page ID or 0.
  */
-function annam_limo_charter_landing_seed_rank_math_meta( $page_id ) {
+function annam_limo_charter_landing_resolve_page_id() {
+	$page = get_page_by_path( ANNAM_LIMO_CHARTER_SLUG );
+	if ( $page ) {
+		return (int) $page->ID;
+	}
+
+	$ids = get_posts(
+		array(
+			'post_type'              => 'page',
+			'post_status'            => array( 'publish', 'draft', 'private' ),
+			'posts_per_page'         => 1,
+			'fields'                 => 'ids',
+			'meta_key'               => '_wp_page_template',
+			'meta_value'             => ANNAM_LIMO_CHARTER_TEMPLATE,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		)
+	);
+
+	return ! empty( $ids[0] ) ? (int) $ids[0] : 0;
+}
+
+/**
+ * @param int  $page_id Page ID.
+ * @param bool $force   Overwrite existing Rank Math meta.
+ */
+function annam_limo_charter_landing_seed_rank_math_meta( $page_id, $force = false ) {
 	$page_id = (int) $page_id;
 	if ( $page_id <= 0 ) {
 		return;
 	}
 	$seo = annam_limo_charter_landing_get_seo_defaults();
-	if ( '' === (string) get_post_meta( $page_id, 'rank_math_title', true ) ) {
+	if ( $force || '' === trim( (string) get_post_meta( $page_id, 'rank_math_title', true ) ) ) {
 		update_post_meta( $page_id, 'rank_math_title', $seo['title'] );
 	}
-	if ( '' === (string) get_post_meta( $page_id, 'rank_math_description', true ) ) {
+	if ( $force || '' === trim( (string) get_post_meta( $page_id, 'rank_math_description', true ) ) ) {
 		update_post_meta( $page_id, 'rank_math_description', $seo['description'] );
 	}
 }
 
 /**
+ * Force-sync Rank Math title/description when SEO version bumps (stale price copy).
+ */
+function annam_limo_charter_landing_maybe_sync_seo() {
+	$stored = (int) get_option( 'annam_limo_charter_landing_seo_version', 0 );
+	if ( $stored >= ANNAM_LIMO_CHARTER_SEO_VERSION ) {
+		return;
+	}
+	$page_id = annam_limo_charter_landing_resolve_page_id();
+	if ( $page_id <= 0 ) {
+		return;
+	}
+	annam_limo_charter_landing_seed_rank_math_meta( $page_id, true );
+	update_option( 'annam_limo_charter_landing_seo_version', ANNAM_LIMO_CHARTER_SEO_VERSION, false );
+	update_option( 'annam_limo_charter_landing_seo_seeded', 1, false );
+}
+add_action( 'init', 'annam_limo_charter_landing_maybe_sync_seo', 31 );
+
+/**
+ * Theme config is source of truth for this Ads landing (ignore stale Rank Math custom meta).
+ *
  * @param string $title Title.
  * @return string
  */
 function annam_limo_charter_landing_rank_math_title( $title ) {
 	if ( ! annam_limo_charter_landing_is_template() ) {
-		return $title;
-	}
-	$page_id = get_queried_object_id();
-	$custom  = $page_id ? (string) get_post_meta( $page_id, 'rank_math_title', true ) : '';
-	if ( '' !== trim( $custom ) ) {
 		return $title;
 	}
 	return annam_limo_charter_landing_get_seo_defaults()['title'];
@@ -302,11 +346,6 @@ function annam_limo_charter_landing_rank_math_description( $desc ) {
 	if ( ! annam_limo_charter_landing_is_template() ) {
 		return $desc;
 	}
-	$page_id = get_queried_object_id();
-	$custom  = $page_id ? (string) get_post_meta( $page_id, 'rank_math_description', true ) : '';
-	if ( '' !== trim( $custom ) ) {
-		return $desc;
-	}
 	return annam_limo_charter_landing_get_seo_defaults()['description'];
 }
 add_filter( 'rank_math/frontend/description', 'annam_limo_charter_landing_rank_math_description', 99 );
@@ -319,11 +358,6 @@ function annam_limo_charter_landing_document_title( $title ) {
 	if ( ! annam_limo_charter_landing_is_template() ) {
 		return $title;
 	}
-	$page_id = get_queried_object_id();
-	$custom  = $page_id ? (string) get_post_meta( $page_id, 'rank_math_title', true ) : '';
-	if ( '' !== trim( $custom ) ) {
-		return $title;
-	}
 	return annam_limo_charter_landing_get_seo_defaults()['title'];
 }
 add_filter( 'pre_get_document_title', 'annam_limo_charter_landing_document_title', 99 );
@@ -333,19 +367,15 @@ add_filter( 'pre_get_document_title', 'annam_limo_charter_landing_document_title
  */
 function annam_limo_charter_landing_maybe_create_page() {
 	if ( get_option( 'annam_limo_charter_landing_page_created' ) ) {
-		$page = get_page_by_path( ANNAM_LIMO_CHARTER_SLUG );
-		if ( $page && ! get_option( 'annam_limo_charter_landing_seo_seeded' ) ) {
-			annam_limo_charter_landing_seed_rank_math_meta( (int) $page->ID );
-			update_option( 'annam_limo_charter_landing_seo_seeded', 1, false );
-		}
 		return;
 	}
 	$existing = get_page_by_path( ANNAM_LIMO_CHARTER_SLUG );
 	if ( $existing ) {
 		update_post_meta( (int) $existing->ID, '_wp_page_template', ANNAM_LIMO_CHARTER_TEMPLATE );
-		annam_limo_charter_landing_seed_rank_math_meta( (int) $existing->ID );
+		annam_limo_charter_landing_seed_rank_math_meta( (int) $existing->ID, true );
 		update_option( 'annam_limo_charter_landing_page_created', 1, false );
 		update_option( 'annam_limo_charter_landing_seo_seeded', 1, false );
+		update_option( 'annam_limo_charter_landing_seo_version', ANNAM_LIMO_CHARTER_SEO_VERSION, false );
 		return;
 	}
 	$page_id = wp_insert_post(
@@ -360,9 +390,10 @@ function annam_limo_charter_landing_maybe_create_page() {
 	);
 	if ( ! is_wp_error( $page_id ) && $page_id ) {
 		update_post_meta( $page_id, '_wp_page_template', ANNAM_LIMO_CHARTER_TEMPLATE );
-		annam_limo_charter_landing_seed_rank_math_meta( (int) $page_id );
+		annam_limo_charter_landing_seed_rank_math_meta( (int) $page_id, true );
 		update_option( 'annam_limo_charter_landing_page_created', 1, false );
 		update_option( 'annam_limo_charter_landing_seo_seeded', 1, false );
+		update_option( 'annam_limo_charter_landing_seo_version', ANNAM_LIMO_CHARTER_SEO_VERSION, false );
 	}
 }
 add_action( 'init', 'annam_limo_charter_landing_maybe_create_page', 30 );
