@@ -17,9 +17,13 @@ $default_to   = isset( $defaults['to'] ) ? sanitize_key( (string) $defaults['to'
 $default_seat = isset( $defaults['seat'] ) ? sanitize_key( (string) $defaults['seat'] ) : 'seat_a';
 $default_time = isset( $defaults['time'] ) ? (string) $defaults['time'] : '07:00';
 $today        = wp_date( 'Y-m-d' );
-$route_map    = annam_limo_landing_get_route_destinations_map();
+$route        = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : '';
+if ( '' === $route ) {
+	$route = 'sapa';
+}
+$route_map    = annam_limo_landing_get_route_destinations_map( $route );
 $time_options = function_exists( 'annam_limo_landing_departure_times' )
-	? annam_limo_landing_departure_times( $default_from, $default_to )
+	? annam_limo_landing_departure_times( $default_from, $default_to, $route )
 	: array( '07:00', '14:30' );
 if ( empty( $time_options ) ) {
 	$time_options = array( '07:00', '14:30' );
@@ -27,10 +31,14 @@ if ( empty( $time_options ) ) {
 if ( ! in_array( $default_time, $time_options, true ) ) {
 	$default_time = $time_options[0];
 }
-$place_labels = array(
-	'hanoi' => 'Hà Nội',
-	'sapa'  => 'Sapa',
-);
+$profile      = function_exists( 'annam_limo_landing_get_route_profile' ) ? annam_limo_landing_get_route_profile( $route ) : array();
+$place_labels = isset( $profile['places'] ) && is_array( $profile['places'] ) ? $profile['places'] : array();
+$placeholders = isset( $profile['place_placeholders'] ) && is_array( $profile['place_placeholders'] ) ? $profile['place_placeholders'] : array();
+$max_guests   = isset( $profile['max_guests'] ) ? max( 1, (int) $profile['max_guests'] ) : 20;
+$pickup_ph    = isset( $placeholders[ $default_from ] ) ? (string) $placeholders[ $default_from ] : '';
+$dropoff_ph   = isset( $placeholders[ $default_to ] ) ? (string) $placeholders[ $default_to ] : '';
+$page_id      = get_queried_object_id();
+$phone_first  = ! empty( $form['phone_first'] );
 ?>
 <div class="annam-limo-form-wrap" id="annam-limo-booking">
 	<?php if ( ! empty( $form['title'] ) ) : ?>
@@ -44,6 +52,11 @@ $place_labels = array(
 		<input type="hidden" name="annam_limo_submit" value="1" />
 		<input type="hidden" name="annam_limo_ts" id="annam-limo-ts" value="<?php echo esc_attr( (string) time() ); ?>" />
 		<input type="hidden" name="annam_limo_nonce" id="annam-limo-nonce" value="<?php echo esc_attr( wp_create_nonce( 'annam_limo_booking' ) ); ?>" />
+		<input type="hidden" name="annam_limo_page_id" value="<?php echo esc_attr( (string) $page_id ); ?>" />
+		<input type="hidden" name="annam_limo_gclid" id="annam-limo-gclid" value="" />
+		<input type="hidden" name="annam_limo_utm_source" id="annam-limo-utm-source" value="" />
+		<input type="hidden" name="annam_limo_utm_campaign" id="annam-limo-utm-campaign" value="" />
+		<input type="hidden" name="annam_limo_utm_term" id="annam-limo-utm-term" value="" />
 		<p class="annam-limo-form__hp" aria-hidden="true">
 			<label for="annam-limo-website">Website</label>
 			<input type="text" name="annam_limo_website" id="annam-limo-website" tabindex="-1" autocomplete="off" />
@@ -51,6 +64,14 @@ $place_labels = array(
 
 		<p class="annam-limo-form__hint" id="annam-limo-time-hint" hidden></p>
 
+		<?php if ( $phone_first ) : ?>
+			<div class="annam-limo-form__trip-bar">
+				<p class="annam-limo-form__trip-line" id="annam-limo-trip-line"></p>
+				<button type="button" class="annam-limo-form__trip-edit" id="annam-limo-trip-edit" aria-expanded="false" aria-controls="annam-limo-trip"><?php esc_html_e( 'Sửa chuyến', 'generatepress_child' ); ?></button>
+			</div>
+		<?php endif; ?>
+
+		<div class="annam-limo-form__trip" id="annam-limo-trip" <?php echo $phone_first ? 'hidden' : ''; ?>>
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-from"><?php esc_html_e( 'Điểm đón', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
@@ -99,31 +120,52 @@ $place_labels = array(
 			</div>
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-guests"><?php esc_html_e( 'Số lượng khách', 'generatepress_child' ); ?></label>
-				<input type="number" name="annam_limo_guests" id="annam-limo-guests" min="1" max="20" value="1" />
+				<input type="number" name="annam_limo_guests" id="annam-limo-guests" min="1" max="<?php echo esc_attr( (string) $max_guests ); ?>" value="1" />
 			</div>
 		</div>
+		</div>
 
+		<?php if ( $phone_first ) : ?>
+			<div class="annam-limo-form__field annam-limo-form__field--phone">
+				<label for="annam-limo-phone"><?php esc_html_e( 'Số điện thoại', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
+				<input type="tel" name="annam_limo_phone" id="annam-limo-phone" required maxlength="25" inputmode="tel" autocomplete="tel" placeholder="<?php esc_attr_e( 'Nhập số để sale gọi tư vấn', 'generatepress_child' ); ?>" />
+			</div>
+		<?php else : ?>
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-name"><?php esc_html_e( 'Họ tên', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
 				<input type="text" name="annam_limo_name" id="annam-limo-name" required maxlength="100" autocomplete="name" placeholder="<?php esc_attr_e( 'Nhập họ và tên', 'generatepress_child' ); ?>" />
 			</div>
 			<div class="annam-limo-form__field">
-				<label for="annam-limo-phone"><?php esc_html_e( 'Số điện thoại / Zalo', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
-				<input type="tel" name="annam_limo_phone" id="annam-limo-phone" required maxlength="25" inputmode="tel" autocomplete="tel" placeholder="<?php esc_attr_e( 'Nhập SĐT hoặc Zalo', 'generatepress_child' ); ?>" />
+				<label for="annam-limo-phone"><?php esc_html_e( 'SĐT / Zalo / WhatsApp', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
+				<input type="tel" name="annam_limo_phone" id="annam-limo-phone" required maxlength="25" inputmode="tel" autocomplete="tel" placeholder="<?php esc_attr_e( 'Nhập SĐT, Zalo hoặc WhatsApp', 'generatepress_child' ); ?>" />
 			</div>
+		</div>
+
+		<div class="annam-limo-form__field">
+			<label for="annam-limo-channel"><?php esc_html_e( 'Ưu tiên liên hệ (tuỳ chọn)', 'generatepress_child' ); ?></label>
+			<select name="annam_limo_channel" id="annam-limo-channel">
+				<option value=""><?php esc_html_e( 'SĐT / Zalo / WhatsApp', 'generatepress_child' ); ?></option>
+				<option value="phone"><?php esc_html_e( 'SĐT', 'generatepress_child' ); ?></option>
+				<option value="zalo">Zalo</option>
+				<option value="whatsapp">WhatsApp</option>
+			</select>
 		</div>
 
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-pickup"><?php esc_html_e( 'Điểm đón mong muốn (tuỳ chọn)', 'generatepress_child' ); ?></label>
-				<input type="text" name="annam_limo_pickup" id="annam-limo-pickup" maxlength="200" placeholder="<?php esc_attr_e( 'VD: Royal City / Nội Bài / 23 Tú Mỡ…', 'generatepress_child' ); ?>" />
+				<input type="text" name="annam_limo_pickup" id="annam-limo-pickup" maxlength="200" placeholder="<?php echo esc_attr( $pickup_ph ); ?>" />
 			</div>
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-dropoff"><?php esc_html_e( 'Điểm trả mong muốn (tuỳ chọn)', 'generatepress_child' ); ?></label>
-				<input type="text" name="annam_limo_dropoff" id="annam-limo-dropoff" maxlength="200" placeholder="<?php esc_attr_e( 'VD: khách sạn Fansipan / gần chợ Sapa…', 'generatepress_child' ); ?>" />
+				<input type="text" name="annam_limo_dropoff" id="annam-limo-dropoff" maxlength="200" placeholder="<?php echo esc_attr( $dropoff_ph ); ?>" />
 			</div>
 		</div>
+		<?php endif; ?>
+		<?php if ( ! empty( $form['seat_note'] ) ) : ?>
+			<p class="annam-limo-form__note"><?php echo esc_html( $form['seat_note'] ); ?></p>
+		<?php endif; ?>
 
 		<div class="annam-limo-form__actions">
 			<button type="submit" class="annam-limo-btn annam-limo-btn--primary" id="annam-limo-submit" data-track="submit_limo_booking">

@@ -18,7 +18,10 @@ if ( ! defined( 'ANNAM_LIMO_LANDING_CAPTIONS_OPTION' ) ) {
 /**
  * @return array<string,array{label:string,section:string,placement:string,recommended:string,ratio:string,formats:string,wp_size:string,fallback:string,default_caption?:string}>
  */
-function annam_limo_landing_get_image_slots() {
+function annam_limo_landing_get_image_slots( $route = '' ) {
+	$route = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
 	$banner_fallback = trailingslashit( get_stylesheet_directory_uri() ) . 'assets/img/limo-landing-banner.png';
 
 	$slots = array(
@@ -88,7 +91,9 @@ function annam_limo_landing_get_image_slots() {
 			'default_caption' => 'Xe sẵn sàng xuất phát',
 		),
 		'gallery-road'     => array(
-			'label'           => __( 'Trên đường Hà Nội ⇄ Sapa', 'generatepress_child' ),
+			'label'           => 'halong' === $route
+				? __( 'Trên đường Hà Nội ⇄ Hạ Long', 'generatepress_child' )
+				: __( 'Trên đường Hà Nội ⇄ Sapa', 'generatepress_child' ),
 			'section'         => 'gallery',
 			'placement'       => __( 'Gallery — ảnh phụ (mobile)', 'generatepress_child' ),
 			'recommended'     => '800 × 600 px',
@@ -96,7 +101,7 @@ function annam_limo_landing_get_image_slots() {
 			'formats'         => 'JPG, WebP',
 			'wp_size'         => 'large',
 			'fallback'        => 'https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=800&q=80',
-			'default_caption' => 'Trên đường Hà Nội ⇄ Sapa',
+			'default_caption' => 'halong' === $route ? 'Trên đường Hà Nội ⇄ Hạ Long' : 'Trên đường Hà Nội ⇄ Sapa',
 		),
 	);
 
@@ -107,14 +112,20 @@ function annam_limo_landing_get_image_slots() {
  * @param string $key Slot key.
  * @return string
  */
-function annam_limo_landing_get_image_caption( $key ) {
+function annam_limo_landing_get_image_caption( $key, $route = '' ) {
 	$key   = sanitize_key( $key );
-	$slots = annam_limo_landing_get_image_slots();
+	$route = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
+	$slots = annam_limo_landing_get_image_slots( $route );
 	if ( ! isset( $slots[ $key ] ) ) {
 		return '';
 	}
 
-	$saved = get_option( ANNAM_LIMO_LANDING_CAPTIONS_OPTION, array() );
+	$option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_captions', $route )
+		: ANNAM_LIMO_LANDING_CAPTIONS_OPTION;
+	$saved = get_option( $option, array() );
 	if ( is_array( $saved ) && isset( $saved[ $key ] ) && is_string( $saved[ $key ] ) && '' !== trim( $saved[ $key ] ) ) {
 		return sanitize_text_field( $saved[ $key ] );
 	}
@@ -126,16 +137,22 @@ function annam_limo_landing_get_image_caption( $key ) {
  * @param string $key Slot key.
  * @return int
  */
-function annam_limo_landing_get_image_attachment_id( $key ) {
+function annam_limo_landing_get_image_attachment_id( $key, $route = '' ) {
 	$key = sanitize_key( $key );
 	if ( '' === $key ) {
 		return 0;
 	}
-	$slots = annam_limo_landing_get_image_slots();
+	$route = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
+	$slots = annam_limo_landing_get_image_slots( $route );
 	if ( ! isset( $slots[ $key ] ) ) {
 		return 0;
 	}
-	$saved = get_option( ANNAM_LIMO_LANDING_IMAGES_OPTION, array() );
+	$option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_images', $route )
+		: ANNAM_LIMO_LANDING_IMAGES_OPTION;
+	$saved = get_option( $option, array() );
 	if ( ! is_array( $saved ) || empty( $saved[ $key ] ) ) {
 		return 0;
 	}
@@ -147,13 +164,16 @@ function annam_limo_landing_get_image_attachment_id( $key ) {
  * @param string $key Slot key.
  * @return string
  */
-function annam_limo_landing_image_url( $key ) {
+function annam_limo_landing_image_url( $key, $route = '' ) {
 	$key   = sanitize_key( $key );
-	$slots = annam_limo_landing_get_image_slots();
+	$route = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
+	$slots = annam_limo_landing_get_image_slots( $route );
 	if ( ! isset( $slots[ $key ] ) ) {
 		return '';
 	}
-	$aid = annam_limo_landing_get_image_attachment_id( $key );
+	$aid = annam_limo_landing_get_image_attachment_id( $key, $route );
 	if ( $aid > 0 ) {
 		$url = wp_get_attachment_image_url( $aid, 'large' );
 		return is_string( $url ) ? $url : '';
@@ -164,8 +184,8 @@ function annam_limo_landing_image_url( $key ) {
 function annam_limo_landing_images_register_menu() {
 	add_submenu_page(
 		'annam-settings',
-		__( 'Landing Limousine HN–Sapa', 'generatepress_child' ),
-		__( 'Landing Limousine HN–Sapa', 'generatepress_child' ),
+		__( 'Landing Limousine (vé ghế)', 'generatepress_child' ),
+		__( 'Landing Limousine (vé ghế)', 'generatepress_child' ),
 		'manage_options',
 		'annam-limo-landing-images',
 		'annam_limo_landing_images_render_admin_page'
@@ -186,33 +206,41 @@ function annam_limo_landing_images_maybe_save() {
 
 	check_admin_referer( 'annam_save_limo_landing_images', 'annam_limo_landing_images_nonce' );
 
+	$route = function_exists( 'annam_limo_landing_admin_route' ) ? annam_limo_landing_admin_route() : 'sapa';
 	$input = isset( $_POST['annam_limo_landing_images'] ) && is_array( $_POST['annam_limo_landing_images'] )
 		? wp_unslash( $_POST['annam_limo_landing_images'] )
 		: array();
 
 	$clean = array();
-	foreach ( annam_limo_landing_get_image_slots() as $key => $slot ) {
+	foreach ( annam_limo_landing_get_image_slots( $route ) as $key => $slot ) {
 		$clean[ $key ] = isset( $input[ $key ] ) ? absint( $input[ $key ] ) : 0;
 	}
-	update_option( ANNAM_LIMO_LANDING_IMAGES_OPTION, $clean, false );
+	$images_option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_images', $route )
+		: ANNAM_LIMO_LANDING_IMAGES_OPTION;
+	update_option( $images_option, $clean, false );
 
 	$cap_input = isset( $_POST['annam_limo_landing_captions'] ) && is_array( $_POST['annam_limo_landing_captions'] )
 		? wp_unslash( $_POST['annam_limo_landing_captions'] )
 		: array();
 	$cap_clean = array();
-	foreach ( annam_limo_landing_get_image_slots() as $key => $slot ) {
+	foreach ( annam_limo_landing_get_image_slots( $route ) as $key => $slot ) {
 		if ( 'gallery' !== ( $slot['section'] ?? '' ) ) {
 			continue;
 		}
 		$raw = isset( $cap_input[ $key ] ) ? (string) $cap_input[ $key ] : '';
 		$cap_clean[ $key ] = sanitize_text_field( $raw );
 	}
-	update_option( ANNAM_LIMO_LANDING_CAPTIONS_OPTION, $cap_clean, false );
+	$captions_option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_captions', $route )
+		: ANNAM_LIMO_LANDING_CAPTIONS_OPTION;
+	update_option( $captions_option, $cap_clean, false );
 
 	wp_safe_redirect(
 		add_query_arg(
 			array(
 				'page'        => 'annam-limo-landing-images',
+				'route'       => $route,
 				'annam_saved' => '1',
 			),
 			admin_url( 'admin.php' )
@@ -313,33 +341,48 @@ function annam_limo_landing_images_render_admin_page() {
 		return;
 	}
 
-	$saved = get_option( ANNAM_LIMO_LANDING_IMAGES_OPTION, array() );
+	$route = function_exists( 'annam_limo_landing_admin_route' ) ? annam_limo_landing_admin_route() : 'sapa';
+	$images_option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_images', $route )
+		: ANNAM_LIMO_LANDING_IMAGES_OPTION;
+	$captions_option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_captions', $route )
+		: ANNAM_LIMO_LANDING_CAPTIONS_OPTION;
+	$saved = get_option( $images_option, array() );
 	if ( ! is_array( $saved ) ) {
 		$saved = array();
 	}
-	$captions = get_option( ANNAM_LIMO_LANDING_CAPTIONS_OPTION, array() );
+	$captions = get_option( $captions_option, array() );
 	if ( ! is_array( $captions ) ) {
 		$captions = array();
 	}
-	$slots    = annam_limo_landing_get_image_slots();
-	$settings = function_exists( 'annam_limo_landing_get_settings' ) ? annam_limo_landing_get_settings() : array();
+	$slots    = annam_limo_landing_get_image_slots( $route );
+	$settings = function_exists( 'annam_limo_landing_get_settings' ) ? annam_limo_landing_get_settings( $route ) : array();
 	$emails   = isset( $settings['lead_emails'] ) ? (string) $settings['lead_emails'] : '';
 	$youtube_url = isset( $settings['youtube_url'] ) ? (string) $settings['youtube_url'] : '';
-	if ( '' === $youtube_url && function_exists( 'annam_limo_landing_get_youtube_url' ) ) {
-		$youtube_url = annam_limo_landing_get_youtube_url();
+	if ( '' === $youtube_url && 'sapa' === $route && function_exists( 'annam_limo_landing_get_youtube_url' ) ) {
+		$youtube_url = annam_limo_landing_get_youtube_url( 'sapa' );
 	}
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e( 'Landing Limousine HN–Sapa', 'generatepress_child' ); ?></h1>
+		<h1><?php esc_html_e( 'Landing Limousine (vé ghế)', 'generatepress_child' ); ?></h1>
+		<h2 class="nav-tab-wrapper">
+			<?php foreach ( annam_limo_landing_get_route_profiles() as $route_key => $route_profile ) : ?>
+				<a class="nav-tab<?php echo $route === $route_key ? ' nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images&route=' . rawurlencode( (string) $route_key ) ) ); ?>">
+					<?php echo esc_html( 'halong' === $route_key ? __( 'Hà Nội ⇄ Hạ Long', 'generatepress_child' ) : __( 'Hà Nội ⇄ Sapa', 'generatepress_child' ) ); ?>
+				</a>
+			<?php endforeach; ?>
+		</h2>
 
 		<?php if ( ! empty( $_GET['annam_saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Đã lưu.', 'generatepress_child' ); ?></p></div>
 		<?php endif; ?>
 
 		<h2><?php esc_html_e( 'Email & video YouTube', 'generatepress_child' ); ?></h2>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images' ) ); ?>">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images&route=' . rawurlencode( $route ) ) ); ?>">
 			<?php wp_nonce_field( 'annam_save_limo_landing_settings', 'annam_limo_landing_settings_nonce' ); ?>
 			<input type="hidden" name="annam_limo_landing_settings_action" value="1" />
+			<input type="hidden" name="annam_limo_route" value="<?php echo esc_attr( $route ); ?>" />
 			<p>
 				<label for="annam_limo_lead_emails"><?php esc_html_e( 'Email nhận lead (cách nhau bằng dấu phẩy)', 'generatepress_child' ); ?></label>
 				<input type="text" class="large-text" id="annam_limo_lead_emails" name="annam_limo_lead_emails" value="<?php echo esc_attr( $emails ); ?>" placeholder="email1@example.com, email2@example.com" />
@@ -356,9 +399,10 @@ function annam_limo_landing_images_render_admin_page() {
 
 		<h2><?php esc_html_e( 'Ảnh banner & gallery xe', 'generatepress_child' ); ?></h2>
 		<p class="description"><?php esc_html_e( 'Đổi ảnh và mô tả (caption) cho từng ảnh gallery. Caption hiện dưới ảnh trên trang landing.', 'generatepress_child' ); ?></p>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images' ) ); ?>">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images&route=' . rawurlencode( $route ) ) ); ?>">
 			<?php wp_nonce_field( 'annam_save_limo_landing_images', 'annam_limo_landing_images_nonce' ); ?>
 			<input type="hidden" name="annam_limo_landing_images_action" value="1" />
+			<input type="hidden" name="annam_limo_route" value="<?php echo esc_attr( $route ); ?>" />
 			<?php
 			foreach ( $slots as $key => $slot ) {
 				$cap = isset( $captions[ $key ] ) ? (string) $captions[ $key ] : '';

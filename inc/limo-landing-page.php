@@ -7,7 +7,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+require_once get_stylesheet_directory() . '/inc/limo-landing-route-profiles.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-config.php';
+require_once get_stylesheet_directory() . '/inc/limo-landing-config-halong.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-routes.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-booking.php';
 
@@ -18,11 +20,7 @@ const ANNAM_LIMO_LANDING_RATE_MINUTES = 10;
  * @return bool
  */
 function annam_limo_landing_is_template() {
-	if ( ! is_singular( 'page' ) ) {
-		return false;
-	}
-	$page_id = get_queried_object_id();
-	return $page_id && 'page-template-limousine-sapa-landing.php' === get_page_template_slug( $page_id );
+	return '' !== annam_limo_landing_current_route();
 }
 
 /**
@@ -254,7 +252,15 @@ function annam_limo_landing_enqueue_assets() {
 		);
 
 		$config        = annam_limo_landing_get_config();
+		$route         = annam_limo_landing_current_route();
+		$profile       = annam_limo_landing_get_route_profile( $route );
 		$form_defaults = isset( $config['form_defaults'] ) ? $config['form_defaults'] : array();
+		$seat_prices   = array();
+		if ( ! empty( $profile['seats'] ) && is_array( $profile['seats'] ) ) {
+			foreach ( $profile['seats'] as $seat_key => $seat_row ) {
+				$seat_prices[ $seat_key ] = isset( $seat_row['price'] ) ? (int) $seat_row['price'] : 0;
+			}
+		}
 		$today         = wp_date( 'Y-m-d' );
 		$gallery_js    = array();
 		if ( ! empty( $config['gallery'] ) ) {
@@ -286,8 +292,8 @@ function annam_limo_landing_enqueue_assets() {
 			array(
 				'formId'            => 'annam-limo-booking',
 				'gallery'           => $gallery_js,
-				'scheduleTimes'     => annam_limo_landing_get_schedule_times_map(),
-				'routeDestinations' => annam_limo_landing_get_route_destinations_map(),
+				'scheduleTimes'     => annam_limo_landing_get_schedule_times_map( $route ),
+				'routeDestinations' => annam_limo_landing_get_route_destinations_map( $route ),
 				'formDefaults'      => array(
 					'from' => isset( $form_defaults['from'] ) ? $form_defaults['from'] : 'hanoi',
 					'to'   => isset( $form_defaults['to'] ) ? $form_defaults['to'] : 'sapa',
@@ -296,20 +302,23 @@ function annam_limo_landing_enqueue_assets() {
 					'date' => $today,
 				),
 				'booking'           => array(
-					'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
-					'action'       => 'annam_limo_booking',
-					'nonceAction'  => 'annam_limo_booking_nonce',
-					'nonce'        => wp_create_nonce( 'annam_limo_booking' ),
-					'pageUrl'      => get_permalink() ? get_permalink() : home_url( '/' ),
-					'dateToday'    => $today,
-					'dateTomorrow' => wp_date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) ),
-					'minLeadHours' => (int) apply_filters( 'annam_limo_landing_min_lead_hours', 2 ),
-					'timezone'     => wp_timezone_string(),
+					'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
+					'action'          => 'annam_limo_booking',
+					'nonceAction'     => 'annam_limo_booking_nonce',
+					'nonce'           => wp_create_nonce( 'annam_limo_booking' ),
+					'pageUrl'         => get_permalink() ? get_permalink() : home_url( '/' ),
+					'dateToday'       => $today,
+					'dateTomorrow'    => wp_date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) ),
+					'minLeadMinutes'  => isset( $profile['min_lead_minutes'] ) ? (int) $profile['min_lead_minutes'] : 120,
+					'timezone'        => wp_timezone_string(),
 				),
-				'routeLabels'       => array(
-					'hanoi' => 'Hà Nội',
-					'sapa'  => 'Sapa',
-				),
+				'routeLabels'       => isset( $profile['places'] ) ? $profile['places'] : array(),
+				'placeNotePlaceholders' => isset( $profile['place_placeholders'] ) ? $profile['place_placeholders'] : array(),
+				'landingKey'        => isset( $profile['landing_key'] ) ? (string) $profile['landing_key'] : '',
+				'seatPrices'        => $seat_prices,
+				'pageId'            => get_queried_object_id(),
+				'directionQuery'    => isset( $profile['direction_query'] ) ? $profile['direction_query'] : array(),
+				'maxGuests'         => isset( $profile['max_guests'] ) ? (int) $profile['max_guests'] : 20,
 				'i18n'              => array(
 					'sameRoute'        => __( 'Tuyến đi không hợp lệ.', 'generatepress_child' ),
 					'pickTime'         => __( '— Chọn giờ —', 'generatepress_child' ),
@@ -331,7 +340,7 @@ add_action( 'wp_enqueue_scripts', 'annam_limo_landing_enqueue_assets', 24 );
 function annam_limo_landing_add_meta_box() {
 	add_meta_box(
 		'annam_limo_landing_opts',
-		__( 'Landing Limousine HN–Sapa', 'generatepress_child' ),
+		__( 'Landing Limousine (vé ghế)', 'generatepress_child' ),
 		'annam_limo_landing_meta_box_render',
 		'page',
 		'side',
@@ -344,8 +353,8 @@ add_action( 'add_meta_boxes', 'annam_limo_landing_add_meta_box' );
  * @param WP_Post $post Post.
  */
 function annam_limo_landing_meta_box_render( $post ) {
-	if ( 'page-template-limousine-sapa-landing.php' !== get_page_template_slug( $post ) ) {
-		echo '<p>' . esc_html__( 'Chỉ áp dụng khi chọn template Landing Vé Limousine HN–Sapa.', 'generatepress_child' ) . '</p>';
+	if ( '' === annam_limo_landing_route_from_page( $post->ID ) ) {
+		echo '<p>' . esc_html__( 'Chỉ áp dụng khi chọn template Landing Vé Limousine.', 'generatepress_child' ) . '</p>';
 		return;
 	}
 	wp_nonce_field( 'annam_limo_landing_meta', 'annam_limo_landing_meta_nonce' );
@@ -388,3 +397,34 @@ function annam_limo_landing_save_meta_box( $post_id ) {
 	}
 }
 add_action( 'save_post_page', 'annam_limo_landing_save_meta_box' );
+
+/**
+ * Tạo trang Hạ Long một lần nếu chưa có.
+ */
+function annam_limo_landing_maybe_create_halong_page() {
+	if ( get_option( 'annam_limo_halong_page_created' ) ) {
+		return;
+	}
+	$slug     = 'xe-limousine-ha-noi-ha-long';
+	$existing = get_page_by_path( $slug );
+	if ( $existing instanceof WP_Post ) {
+		update_post_meta( (int) $existing->ID, '_wp_page_template', 'page-template-limousine-halong-landing.php' );
+		update_option( 'annam_limo_halong_page_created', 1, false );
+		return;
+	}
+	$page_id = wp_insert_post(
+		array(
+			'post_title'   => 'Vé Limousine Hà Nội – Hạ Long',
+			'post_name'    => $slug,
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+			'post_content' => '',
+		),
+		true
+	);
+	if ( ! is_wp_error( $page_id ) && $page_id ) {
+		update_post_meta( (int) $page_id, '_wp_page_template', 'page-template-limousine-halong-landing.php' );
+		update_option( 'annam_limo_halong_page_created', 1, false );
+	}
+}
+add_action( 'init', 'annam_limo_landing_maybe_create_halong_page', 30 );

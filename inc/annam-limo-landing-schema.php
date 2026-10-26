@@ -16,6 +16,8 @@ function annam_limo_landing_get_schema_graph() {
 	}
 
 	$config    = annam_limo_landing_get_config();
+	$route     = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : 'sapa';
+	$profile   = function_exists( 'annam_limo_landing_get_route_profile' ) ? annam_limo_landing_get_route_profile( $route ? $route : 'sapa' ) : array();
 	$page_url  = get_permalink();
 	$brand_url = function_exists( 'annam_schema_brand_url' ) ? annam_schema_brand_url() : trailingslashit( home_url( '/' ) );
 	$org_id    = $brand_url . '#travel-agency';
@@ -38,19 +40,42 @@ function annam_limo_landing_get_schema_graph() {
 			);
 		}
 	}
+	if ( ! empty( $config['pricing']['charter']['label'] ) && ! empty( $config['pricing']['charter']['price'] ) ) {
+		$offers[] = array(
+			'@type'           => 'Offer',
+			'name'            => (string) $config['pricing']['charter']['label'],
+			'price'           => preg_replace( '/[^\d]/', '', (string) $config['pricing']['charter']['price'] ),
+			'priceCurrency'   => 'VND',
+			'url'             => $page_url,
+			'availability'    => 'https://schema.org/InStock',
+			'itemCondition'   => 'https://schema.org/NewCondition',
+			'priceValidUntil' => gmdate( 'Y-12-31' ),
+		);
+	}
 
 	$service = array(
 		'@type'       => 'Service',
-		'@id'         => trailingslashit( (string) $page_url ) . '#limo-sapa-service',
+		'@id'         => trailingslashit( (string) $page_url ) . '#limo-' . sanitize_key( $route ? $route : 'sapa' ) . '-service',
 		'name'        => isset( $config['product_name'] ) ? (string) $config['product_name'] : 'Vé Limousine 11 chỗ Hà Nội ⇄ Sapa',
 		'description' => isset( $config['hero']['subtitle'] ) ? wp_strip_all_tags( (string) $config['hero']['subtitle'] ) : '',
 		'url'         => $page_url,
 		'provider'    => array( '@id' => $org_id ),
-		'areaServed'  => array(
-			array( '@type' => 'City', 'name' => 'Hà Nội' ),
-			array( '@type' => 'City', 'name' => 'Sa Pa' ),
-		),
+		'areaServed'  => array(),
 	);
+	$places = isset( $profile['places'] ) && is_array( $profile['places'] ) ? $profile['places'] : array( 'Hà Nội', 'Sa Pa' );
+	foreach ( $places as $place_name ) {
+		$service['areaServed'][] = array(
+			'@type' => 'City',
+			'name'  => (string) $place_name,
+		);
+	}
+	if ( ! empty( $profile['extra_places'] ) && is_array( $profile['extra_places'] ) ) {
+		foreach ( $profile['extra_places'] as $extra_place ) {
+			if ( is_array( $extra_place ) && ! empty( $extra_place['name'] ) ) {
+				$service['areaServed'][] = $extra_place;
+			}
+		}
+	}
 	if ( ! empty( $offers ) ) {
 		$service['offers'] = $offers;
 	}

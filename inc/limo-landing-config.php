@@ -12,7 +12,13 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return array<string,string[]>
  */
-function annam_limo_landing_get_schedule_times_map() {
+function annam_limo_landing_get_schedule_times_map( $route = 'sapa' ) {
+	$profile = function_exists( 'annam_limo_landing_get_route_profile' )
+		? annam_limo_landing_get_route_profile( $route )
+		: array();
+	if ( ! empty( $profile['schedule'] ) && is_array( $profile['schedule'] ) ) {
+		return $profile['schedule'];
+	}
 	return array(
 		'hanoi_sapa' => array( '07:00', '14:30' ),
 		'sapa_hanoi' => array( '07:30', '14:30' ),
@@ -26,8 +32,8 @@ function annam_limo_landing_get_schedule_times_map() {
  * @param string $to   hanoi|sapa|''.
  * @return string[]
  */
-function annam_limo_landing_departure_times( $from = '', $to = '' ) {
-	$map  = annam_limo_landing_get_schedule_times_map();
+function annam_limo_landing_departure_times( $from = '', $to = '', $route = 'sapa' ) {
+	$map  = annam_limo_landing_get_schedule_times_map( $route );
 	$from = sanitize_key( (string) $from );
 	$to   = sanitize_key( (string) $to );
 
@@ -115,8 +121,8 @@ function annam_limo_landing_get_cabin_upsell_cards() {
  * @param int $page_id Page ID.
  * @return array<string,mixed>
  */
-function annam_limo_landing_get_default_config( $page_id = 0 ) {
-	$schedule_map  = annam_limo_landing_get_schedule_times_map();
+function annam_limo_landing_get_sapa_config( $page_id = 0 ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	$schedule_map  = annam_limo_landing_get_schedule_times_map( 'sapa' );
 	$times_hn_sapa = isset( $schedule_map['hanoi_sapa'] ) ? $schedule_map['hanoi_sapa'] : array( '07:00', '14:30' );
 	$times_sapa_hn = isset( $schedule_map['sapa_hanoi'] ) ? $schedule_map['sapa_hanoi'] : array( '07:30', '14:30' );
 
@@ -126,6 +132,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			'title'      => 'Vé Limousine 11 Chỗ Hà Nội ⇄ Sapa',
 			'subtitle'   => '2 chuyến mỗi chiều mỗi ngày (HN→Sapa 07:00 & 14:30 · Sapa→HN 07:30 & 14:30), khoảng 6 giờ, đón trả theo phạm vi tiêu chuẩn.',
 			'price_from' => '450.000đ',
+			'image_alt'  => 'Vé Limousine 11 Chỗ Hà Nội ⇄ Sapa',
 			'badges'     => array(
 				'Limousine 11 chỗ (gồm ghế tài xế)',
 				'HN→Sapa 07:00 & 14:30 · Sapa→HN 07:30 & 14:30',
@@ -161,6 +168,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			),
 		),
 		'pricing'       => array(
+			'lead'       => 'Áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội. Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 ghế khách.',
 			'rows'       => array(
 				array(
 					'type'  => 'seat_a',
@@ -186,6 +194,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			),
 			'price_note' => 'Xe Limousine 11 chỗ đã bao gồm ghế tài xế; hành khách ngồi tối đa 10 ghế (06 ghế giữa + 01 ghế đầu + 03 ghế cuối). Giá niêm yết áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội trong phạm vi đón/trả tiêu chuẩn. Điểm ngoài phạm vi có thể phát sinh phụ thu (thông báo trước khi xác nhận).',
 		),
+		'schedule_lead' => '02 chuyến mỗi chiều mỗi ngày · khoảng 06 giờ/chiều.',
 		'schedules'     => array(
 			array(
 				'id'    => 'hanoi-sapa',
@@ -292,6 +301,7 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 				'caption' => 'Trên đường Hà Nội ⇄ Sapa',
 			),
 		),
+		'gallery_lead'  => 'Xe thật — Limousine 11 chỗ (gồm ghế tài xế) trên tuyến Hà Nội ⇄ Sapa.',
 		'video'         => array(
 			'title' => 'Xem Xe & Hành Trình Thật',
 			'lead'  => 'Video giúp quý khách hình dung rõ hơn về xe Limousine và trải nghiệm trên tuyến Hà Nội ⇄ Sapa.',
@@ -399,10 +409,41 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 		),
 	);
 
+	return $config;
+}
+
+/**
+ * Config landing theo tuyến của trang.
+ *
+ * @param int $page_id Page ID.
+ * @return array<string,mixed>
+ */
+function annam_limo_landing_get_default_config( $page_id = 0 ) {
+	if ( $page_id <= 0 ) {
+		$page_id = (int) get_queried_object_id();
+	}
+
+	$route = function_exists( 'annam_limo_landing_route_from_page' )
+		? annam_limo_landing_route_from_page( $page_id )
+		: '';
+	if ( '' === $route ) {
+		$route = 'sapa';
+	}
+
+	$profile  = function_exists( 'annam_limo_landing_get_route_profile' )
+		? annam_limo_landing_get_route_profile( $route )
+		: array();
+	$callback = isset( $profile['config_callback'] ) ? (string) $profile['config_callback'] : 'annam_limo_landing_get_sapa_config';
+	$config   = is_callable( $callback ) ? call_user_func( $callback, $page_id ) : array();
+	if ( ! is_array( $config ) ) {
+		$config = array();
+	}
+
 	if ( $page_id > 0 ) {
 		$custom_title = get_post_meta( $page_id, '_annam_limo_hero_title', true );
 		if ( is_string( $custom_title ) && '' !== trim( $custom_title ) ) {
-			$config['hero']['title'] = sanitize_text_field( $custom_title );
+			$config['hero']['title']     = sanitize_text_field( $custom_title );
+			$config['hero']['image_alt'] = sanitize_text_field( $custom_title );
 		}
 		if ( '1' === (string) get_post_meta( $page_id, '_annam_limo_seo_disabled', true ) ) {
 			$config['sections']['seo'] = false;
@@ -415,12 +456,12 @@ function annam_limo_landing_get_default_config( $page_id = 0 ) {
 			if ( '' === $slot ) {
 				continue;
 			}
-			$cap = annam_limo_landing_get_image_caption( $slot );
+			$cap = annam_limo_landing_get_image_caption( $slot, $route );
 			if ( '' !== $cap ) {
 				$config['gallery'][ $gi ]['caption'] = $cap;
 			}
 		}
 	}
 
-	return apply_filters( 'annam_limo_landing_config', $config, $page_id );
+	return apply_filters( 'annam_limo_landing_config', $config, $page_id, $route );
 }

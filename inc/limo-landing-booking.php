@@ -12,7 +12,19 @@ defined( 'ABSPATH' ) || exit;
  * @return array{success:bool,message:string,code?:string,data?:array<string,string>}
  */
 function annam_limo_landing_process_booking( array $input ) {
-	$config = annam_limo_landing_get_config();
+	$page_id = isset( $input['annam_limo_page_id'] ) ? absint( $input['annam_limo_page_id'] ) : 0;
+	$route   = function_exists( 'annam_limo_landing_route_from_page' )
+		? annam_limo_landing_route_from_page( $page_id )
+		: '';
+	if ( '' === $route ) {
+		return array(
+			'success' => false,
+			'message' => __( 'Trang đặt vé không hợp lệ. Vui lòng tải lại trang.', 'generatepress_child' ),
+			'code'    => 'route',
+		);
+	}
+	$config  = annam_limo_landing_get_config( $page_id );
+	$profile = annam_limo_landing_get_route_profile( $route );
 
 	$fail = static function ( $message, $code = 'error' ) {
 		return array(
@@ -44,24 +56,46 @@ function annam_limo_landing_process_booking( array $input ) {
 	$travel_date = isset( $input['annam_limo_date'] ) ? sanitize_text_field( (string) $input['annam_limo_date'] ) : '';
 	$dep_time    = isset( $input['annam_limo_time'] ) ? sanitize_text_field( (string) $input['annam_limo_time'] ) : '';
 	$seat_type   = isset( $input['annam_limo_seat'] ) ? sanitize_key( (string) $input['annam_limo_seat'] ) : '';
-	$guests      = isset( $input['annam_limo_guests'] ) ? max( 1, min( 20, (int) $input['annam_limo_guests'] ) ) : 1;
+	$max_guests  = isset( $profile['max_guests'] ) ? max( 1, (int) $profile['max_guests'] ) : 20;
+	$guests      = isset( $input['annam_limo_guests'] ) ? (int) $input['annam_limo_guests'] : 1;
+	if ( $guests < 1 || $guests > $max_guests ) {
+		return array(
+			'success' => false,
+			'message' => sprintf(
+				/* translators: %d: max passengers */
+				__( 'Số khách không hợp lệ. Tối đa %d khách mỗi yêu cầu.', 'generatepress_child' ),
+				$max_guests
+			),
+			'code'    => 'guests',
+		);
+	}
 	$name        = isset( $input['annam_limo_name'] ) ? sanitize_text_field( (string) $input['annam_limo_name'] ) : '';
 	$phone       = isset( $input['annam_limo_phone'] ) ? sanitize_text_field( (string) $input['annam_limo_phone'] ) : '';
+	$channel     = isset( $input['annam_limo_channel'] ) ? sanitize_key( (string) $input['annam_limo_channel'] ) : '';
 	$pickup_note  = isset( $input['annam_limo_pickup'] ) ? sanitize_text_field( (string) $input['annam_limo_pickup'] ) : '';
 	$dropoff_note = isset( $input['annam_limo_dropoff'] ) ? sanitize_text_field( (string) $input['annam_limo_dropoff'] ) : '';
 
-	$valid_seats = array( 'seat_a', 'seat_b', 'charter' );
+	$seat_map    = isset( $profile['seats'] ) && is_array( $profile['seats'] ) ? $profile['seats'] : array();
+	$valid_seats = array_keys( $seat_map );
 	$today       = wp_date( 'Y-m-d' );
+	$place_names = isset( $profile['places'] ) && is_array( $profile['places'] ) ? implode( ' ⇄ ', array_values( $profile['places'] ) ) : '';
 
-	if ( ! annam_limo_landing_is_valid_route( $from_place, $to_place ) ) {
-		return $fail( __( 'Tuyến đi không hợp lệ. Chỉ hỗ trợ Hà Nội ⇄ Sapa.', 'generatepress_child' ), 'route' );
+	if ( ! annam_limo_landing_is_valid_route( $from_place, $to_place, $route ) ) {
+		return $fail(
+			sprintf(
+				/* translators: %s: route labels */
+				__( 'Tuyến đi không hợp lệ. Chỉ hỗ trợ %s.', 'generatepress_child' ),
+				$place_names
+			),
+			'route'
+		);
 	}
 
 	if ( ! in_array( $seat_type, $valid_seats, true ) ) {
 		return $fail( __( 'Vui lòng chọn hạng ghế hoặc bao xe.', 'generatepress_child' ), 'seat' );
 	}
 
-	if ( '' === trim( $name ) ) {
+	if ( '' === trim( $name ) && 'halong' !== $route ) {
 		return $fail( __( 'Vui lòng nhập họ và tên.', 'generatepress_child' ), 'name' );
 	}
 
@@ -81,31 +115,28 @@ function annam_limo_landing_process_booking( array $input ) {
 		return $fail( __( 'Không thể chọn ngày trong quá khứ.', 'generatepress_child' ), 'date' );
 	}
 
-	$allowed_times = annam_limo_landing_filter_times_for_date( $from_place, $to_place, $travel_date );
+	$allowed_times = annam_limo_landing_filter_times_for_date( $from_place, $to_place, $travel_date, $route );
 	if ( '' === $dep_time || ! in_array( $dep_time, $allowed_times, true ) ) {
 		return $fail( __( 'Giờ đi không hợp lệ hoặc đã qua. Vui lòng chọn giờ khác.', 'generatepress_child' ), 'time' );
 	}
 
-	$labels = array(
-		'hanoi' => 'Hà Nội',
-		'sapa'  => 'Sapa',
-	);
-	$seat_labels = array(
-		'seat_a'  => 'Ghế giữa',
-		'seat_b'  => 'Ghế đầu / cuối',
-		'charter' => 'Bao nguyên xe (11 chỗ gồm tài xế)',
-	);
+	$labels      = isset( $profile['places'] ) && is_array( $profile['places'] ) ? $profile['places'] : array();
+	$seat_labels = array();
+	foreach ( $seat_map as $seat_key => $seat_row ) {
+		$seat_labels[ $seat_key ] = isset( $seat_row['label'] ) ? (string) $seat_row['label'] : (string) $seat_key;
+	}
 
 	$from_label = isset( $labels[ $from_place ] ) ? $labels[ $from_place ] : $from_place;
 	$to_label   = isset( $labels[ $to_place ] ) ? $labels[ $to_place ] : $to_place;
 	$seat_label = isset( $seat_labels[ $seat_type ] ) ? $seat_labels[ $seat_type ] : $seat_type;
+	$prefix     = isset( $profile['mail_prefix'] ) ? (string) $profile['mail_prefix'] : '[LIMO]';
 
 	$subject = sprintf(
-		'[LIMO HN-SAPA] Giữ chỗ — %s → %s — %s — %s',
+		'%s Giữ chỗ — %s → %s — %s',
+		$prefix,
 		$from_label,
 		$to_label,
-		$name,
-		$phone
+		'' !== trim( $name ) ? $name . ' — ' . $phone : $phone
 	);
 
 	$body_lines = array(
@@ -115,9 +146,30 @@ function annam_limo_landing_process_booking( array $input ) {
 		__( 'Giờ đi:', 'generatepress_child' ) . ' ' . $dep_time,
 		__( 'Hạng ghế / dịch vụ:', 'generatepress_child' ) . ' ' . $seat_label,
 		__( 'Số lượng khách:', 'generatepress_child' ) . ' ' . (string) $guests,
-		__( 'Họ tên:', 'generatepress_child' ) . ' ' . $name,
-		__( 'Số điện thoại / Zalo:', 'generatepress_child' ) . ' ' . $phone,
+		__( 'Số điện thoại:', 'generatepress_child' ) . ' ' . $phone,
 	);
+	if ( '' !== trim( $name ) ) {
+		$body_lines[] = __( 'Họ tên:', 'generatepress_child' ) . ' ' . $name;
+	}
+
+	$unit_price = isset( $seat_map[ $seat_type ]['price'] ) ? (int) $seat_map[ $seat_type ]['price'] : 0;
+	$value      = 0;
+	if ( 'charter' === $seat_type && $unit_price > 0 ) {
+		$value        = $unit_price;
+		$body_lines[] = __( 'Tạm tính:', 'generatepress_child' ) . ' ' . number_format_i18n( $value ) . 'đ (' . __( 'thuê nguyên xe, không nhân theo số khách', 'generatepress_child' ) . ')';
+	} elseif ( $unit_price > 0 ) {
+		$value        = $unit_price * $guests;
+		$body_lines[] = __( 'Tạm tính:', 'generatepress_child' ) . ' ' . number_format_i18n( $value ) . 'đ';
+	}
+
+	$channel_labels = array(
+		'phone'    => 'SĐT',
+		'zalo'     => 'Zalo',
+		'whatsapp' => 'WhatsApp',
+	);
+	if ( isset( $channel_labels[ $channel ] ) ) {
+		$body_lines[] = __( 'Liên hệ qua:', 'generatepress_child' ) . ' ' . $channel_labels[ $channel ];
+	}
 	if ( '' !== trim( $pickup_note ) ) {
 		$body_lines[] = __( 'Điểm đón mong muốn:', 'generatepress_child' ) . ' ' . $pickup_note;
 	}
@@ -125,7 +177,25 @@ function annam_limo_landing_process_booking( array $input ) {
 		$body_lines[] = __( 'Điểm trả mong muốn:', 'generatepress_child' ) . ' ' . $dropoff_note;
 	}
 
-	$sent = annam_lead_send_notification( annam_limo_landing_get_lead_recipient_emails(), $subject, $body_lines );
+	$source_keys = array(
+		'gclid'        => 'annam_limo_gclid',
+		'utm_source'   => 'annam_limo_utm_source',
+		'utm_campaign' => 'annam_limo_utm_campaign',
+		'utm_term'     => 'annam_limo_utm_term',
+	);
+	foreach ( $source_keys as $label => $field ) {
+		$raw = isset( $input[ $field ] ) ? sanitize_text_field( (string) $input[ $field ] ) : '';
+		$raw = function_exists( 'mb_substr' ) ? mb_substr( $raw, 0, 200 ) : substr( $raw, 0, 200 );
+		if ( '' !== $raw ) {
+			$body_lines[] = $label . ': ' . $raw;
+		}
+	}
+	$page_url = isset( $input['annam_limo_page_url'] ) ? esc_url_raw( (string) $input['annam_limo_page_url'] ) : '';
+	if ( '' !== $page_url ) {
+		$body_lines[] = __( 'URL trang:', 'generatepress_child' ) . ' ' . $page_url;
+	}
+
+	$sent = annam_lead_send_notification( annam_limo_landing_get_lead_recipient_emails( $route ), $subject, $body_lines );
 
 	if ( function_exists( 'annam_rate_limit_increment' ) ) {
 		annam_rate_limit_increment( 'annam_limo_booking', ANNAM_LIMO_LANDING_RATE_MINUTES );
@@ -141,11 +211,14 @@ function annam_limo_landing_process_booking( array $input ) {
 		'success' => true,
 		'message' => $success_msg,
 		'data'    => array(
-			'from' => $from_label,
-			'to'   => $to_label,
-			'date' => $travel_date,
-			'time' => $dep_time,
-			'seat' => $seat_label,
+			'from'     => $from_label,
+			'to'       => $to_label,
+			'date'     => $travel_date,
+			'time'     => $dep_time,
+			'seat'     => $seat_label,
+			'value'    => $value,
+			'currency' => 'VND',
+			'landing'  => isset( $profile['landing_key'] ) ? (string) $profile['landing_key'] : '',
 		),
 	);
 }
@@ -171,9 +244,17 @@ function annam_limo_landing_ajax_booking() {
 	$result = annam_limo_landing_process_booking( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	if ( ! empty( $result['success'] ) ) {
+		$data = isset( $result['data'] ) && is_array( $result['data'] ) ? $result['data'] : array();
 		wp_send_json_success(
 			array(
-				'message' => $result['message'],
+				'message'  => $result['message'],
+				'value'    => isset( $data['value'] ) ? (int) $data['value'] : 0,
+				'currency' => isset( $data['currency'] ) ? (string) $data['currency'] : 'VND',
+				'landing'  => isset( $data['landing'] ) ? (string) $data['landing'] : '',
+				'from'     => isset( $data['from'] ) ? (string) $data['from'] : '',
+				'to'       => isset( $data['to'] ) ? (string) $data['to'] : '',
+				'seat'     => isset( $data['seat'] ) ? (string) $data['seat'] : '',
+				'time'     => isset( $data['time'] ) ? (string) $data['time'] : '',
 			)
 		);
 	}

@@ -25,6 +25,71 @@
 		if (el) {
 			el.value = value;
 		}
+		updateTripSummary();
+	}
+
+	function optionLabel(el) {
+		if (!el) {
+			return '';
+		}
+		if (el.options && el.selectedIndex >= 0 && el.options[el.selectedIndex]) {
+			return el.options[el.selectedIndex].textContent.replace(/\s+/g, ' ').trim();
+		}
+		return String(el.value || '').trim();
+	}
+
+	function formatTripDate(ymd) {
+		var parts = String(ymd || '').split('-');
+		if (parts.length !== 3) {
+			return ymd || '';
+		}
+		return parts[2] + '/' + parts[1] + '/' + parts[0];
+	}
+
+	function updateTripSummary() {
+		var line = $('#annam-limo-trip-line');
+		if (!line) {
+			return;
+		}
+		var guestsEl = $('#annam-limo-guests');
+		var guests = guestsEl && guestsEl.value ? guestsEl.value : '1';
+		var routeBit = optionLabel($('#annam-limo-from')) + ' → ' + optionLabel($('#annam-limo-to'));
+		var bits = [
+			routeBit,
+			formatTripDate($('#annam-limo-date') && $('#annam-limo-date').value),
+			optionLabel($('#annam-limo-time')),
+			optionLabel($('#annam-limo-seat')),
+			guests + ' khách',
+		].filter(function (bit) {
+			return bit && bit !== ' → ';
+		});
+		line.textContent = bits.join(' · ');
+	}
+
+	function initTripEditor() {
+		var editBtn = $('#annam-limo-trip-edit');
+		var trip = $('#annam-limo-trip');
+		if (editBtn && trip) {
+			editBtn.addEventListener('click', function () {
+				var open = trip.hasAttribute('hidden');
+				if (open) {
+					trip.removeAttribute('hidden');
+				} else {
+					trip.setAttribute('hidden', '');
+				}
+				editBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+				editBtn.textContent = open ? 'Xong' : 'Sửa chuyến';
+			});
+		}
+		['annam-limo-from', 'annam-limo-to', 'annam-limo-date', 'annam-limo-time', 'annam-limo-seat', 'annam-limo-guests'].forEach(function (id) {
+			var el = document.getElementById(id);
+			if (!el) {
+				return;
+			}
+			el.addEventListener('change', updateTripSummary);
+			el.addEventListener('input', updateTripSummary);
+		});
+		updateTripSummary();
 	}
 
 	function showFormNotice(type, message) {
@@ -65,10 +130,7 @@
 		updateNotePlaceholders();
 	}
 
-	var placeNotePlaceholders = {
-		hanoi: 'VD: Royal City / Nội Bài / 23 Tú Mỡ…',
-		sapa: 'VD: khách sạn Fansipan / gần chợ Sapa…'
-	};
+	var placeNotePlaceholders = cfg.placeNotePlaceholders || {};
 
 	function updateNotePlaceholders() {
 		var fromEl = $('#annam-limo-from');
@@ -103,13 +165,15 @@
 		if (dateYmd < booking.dateToday) {
 			return [];
 		}
-		var lead = booking.minLeadHours || 2;
+		var leadMins = parseInt(booking.minLeadMinutes, 10);
+		if (!leadMins && leadMins !== 0) {
+			leadMins = (booking.minLeadHours || 2) * 60;
+		}
 		var now = new Date();
-		var thresholdHour = now.getHours() + lead;
-		if (thresholdHour > 23) {
+		var thresholdMins = now.getHours() * 60 + now.getMinutes() + leadMins;
+		if (thresholdMins >= 24 * 60) {
 			return [];
 		}
-		var thresholdMins = thresholdHour * 60;
 		return times.filter(function (t) {
 			var parts = String(t).split(':');
 			var mins = parseInt(parts[0], 10) * 60 + parseInt(parts[1] || '0', 10);
@@ -212,7 +276,7 @@
 			event: 'limo_booking_success',
 			eventCategory: 'limo_landing',
 			form_id: 'annam-limo-form',
-			landing: 'limo_hn_sapa',
+			landing: cfg.landingKey || 'limo_hn_sapa',
 		};
 		if (detail && typeof detail === 'object') {
 			if (detail.from) {
@@ -227,6 +291,15 @@
 			if (detail.time) {
 				payload.time = detail.time;
 			}
+			if (detail.value) {
+				payload.value = detail.value;
+			}
+			if (detail.currency) {
+				payload.currency = detail.currency;
+			}
+			if (detail.landing) {
+				payload.landing = detail.landing;
+			}
 		}
 		document.body.dispatchEvent(
 			new CustomEvent('annam_limo_track', {
@@ -238,6 +311,8 @@
 			window.gtag('event', 'limo_booking_success', {
 				event_category: 'limo_landing',
 				form_id: 'annam-limo-form',
+				value: payload.value || undefined,
+				currency: payload.currency || undefined,
 			});
 		}
 		window.dataLayer = window.dataLayer || [];
@@ -301,6 +376,7 @@
 					}
 					fd.set('annam_limo_ts', fresh.ts || String(Math.floor(Date.now() / 1000) - 5));
 					fd.set('annam_limo_page_url', booking.pageUrl || window.location.href);
+					fillAttributionFields();
 
 					return fetch(booking.ajaxUrl, {
 						method: 'POST',
@@ -318,13 +394,18 @@
 							(result.json.data && result.json.data.message) ||
 							'Cảm ơn quý khách.';
 						showFormNotice('success', msg);
+						var payloadData = (result.json && result.json.data) || {};
 						pushBookingSuccess({
-							from: fromEl ? fromEl.value : '',
-							to: toEl ? toEl.value : '',
-							seat: $('#annam-limo-seat', form) ? $('#annam-limo-seat', form).value : '',
-							time: timeEl ? timeEl.value : '',
+							from: payloadData.from || (fromEl ? fromEl.value : ''),
+							to: payloadData.to || (toEl ? toEl.value : ''),
+							seat: payloadData.seat || ($('#annam-limo-seat', form) ? $('#annam-limo-seat', form).value : ''),
+							time: payloadData.time || (timeEl ? timeEl.value : ''),
+							value: payloadData.value || 0,
+							currency: payloadData.currency || 'VND',
+							landing: payloadData.landing || cfg.landingKey || '',
 						});
 						form.reset();
+						fillAttributionFields();
 						autoTomorrowDone = false;
 						var defs = cfg.formDefaults || {};
 						if (defs.from) {
@@ -566,15 +647,128 @@
 		});
 	}
 
-	document.addEventListener('DOMContentLoaded', function () {
+	function clipSource(value) {
+		return String(value || '').slice(0, 200);
+	}
+
+	function persistAttribution() {
+		try {
+			var params = new URLSearchParams(window.location.search);
+			['gclid', 'utm_source', 'utm_campaign', 'utm_term'].forEach(function (key) {
+				var value = params.get(key);
+				if (value) {
+					sessionStorage.setItem('annam_limo_' + key, clipSource(value));
+				}
+			});
+		} catch (err) {
+			return;
+		}
+	}
+
+	function fillAttributionFields() {
+		var fields = {
+			gclid: '#annam-limo-gclid',
+			utm_source: '#annam-limo-utm-source',
+			utm_campaign: '#annam-limo-utm-campaign',
+			utm_term: '#annam-limo-utm-term',
+		};
+		Object.keys(fields).forEach(function (key) {
+			var el = $(fields[key]);
+			if (!el) {
+				return;
+			}
+			var value = '';
+			try {
+				value = sessionStorage.getItem('annam_limo_' + key) || '';
+			} catch (err) {
+				value = '';
+			}
+			if (!value) {
+				try {
+					value = new URLSearchParams(window.location.search).get(key) || '';
+				} catch (err2) {
+					value = '';
+				}
+			}
+			if (value) {
+				el.value = clipSource(value);
+			}
+		});
+	}
+
+	function applyDirectionQuery() {
+		var map = cfg.directionQuery || {};
+		var chieu = '';
+		try {
+			chieu = new URLSearchParams(window.location.search).get('chieu') || '';
+		} catch (err) {
+			chieu = '';
+		}
+		var dir = map[chieu];
+		if (!dir || !dir.from) {
+			return;
+		}
+		setField('from', dir.from);
 		rebuildDestinationOptions();
+		if (dir.to) {
+			setField('to', dir.to);
+		}
+		updateNotePlaceholders();
+	}
+
+	function pushClick(eventName) {
+		var payload = {
+			event: eventName,
+			eventCategory: 'limo_landing',
+			landing: cfg.landingKey || '',
+		};
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push(payload);
+		if (typeof window.gtag === 'function') {
+			window.gtag('event', eventName, {
+				event_category: 'limo_landing',
+			});
+		}
+	}
+
+	function initClickTracking() {
+		document.addEventListener('click', function (e) {
+			var link = e.target && e.target.closest ? e.target.closest('a') : null;
+			if (!link) {
+				return;
+			}
+			var href = link.getAttribute('href') || '';
+			var track = link.getAttribute('data-track') || '';
+			var eventName = '';
+			if (track === 'limo_call_click' || track === 'limo_zalo_click' || track === 'limo_whatsapp_click' || track === 'limo_map_click') {
+				eventName = track;
+			} else if (href.indexOf('tel:') === 0) {
+				eventName = 'limo_call_click';
+			} else if (/zalo/i.test(href)) {
+				eventName = 'limo_zalo_click';
+			} else if (/wa\.me|whatsapp/i.test(href)) {
+				eventName = 'limo_whatsapp_click';
+			}
+			if (eventName) {
+				pushClick(eventName);
+			}
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', function () {
+		persistAttribution();
+		fillAttributionFields();
+		rebuildDestinationOptions();
+		applyDirectionQuery();
 		rebuildTimeSelect((cfg.formDefaults && cfg.formDefaults.time) || '07:00');
 		initRouteListeners();
+		initTripEditor();
 		initTabs();
 		initPickers();
 		initAjaxForm();
 		initGallery();
 		initFaq();
 		initSeoToggle();
+		initClickTracking();
 	});
 })();

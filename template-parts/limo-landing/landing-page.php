@@ -36,9 +36,10 @@ if ( has_post_thumbnail() ) {
 			echo annam_limo_landing_print_image(
 				'hero-banner',
 				array(
-					'alt'     => isset( $hero['title'] ) ? (string) $hero['title'] : __( 'Limousine Hà Nội Sapa', 'generatepress_child' ),
-					'loading' => 'eager',
-					'class'   => 'annam-limo-banner__img',
+					'alt'           => ! empty( $hero['image_alt'] ) ? (string) $hero['image_alt'] : ( isset( $hero['title'] ) ? (string) $hero['title'] : __( 'Limousine Hà Nội Sapa', 'generatepress_child' ) ),
+					'loading'       => 'eager',
+					'fetchpriority' => 'high',
+					'class'         => 'annam-limo-banner__img',
 				)
 			);
 		}
@@ -81,11 +82,41 @@ if ( has_post_thumbnail() ) {
 	</section>
 	<?php endif; ?>
 
+	<?php if ( ! empty( $secs['anchor_nav'] ) && ! empty( $config['anchors'] ) ) : ?>
+	<?php
+	$anchor_icons = array(
+		'gia-ve'      => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/></svg>',
+		'lich-xe'     => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>',
+		'diem-don'    => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2"/></svg>',
+		'chinh-sach'  => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.8 6.8-7 9-4.2-2.2-7-4.8-7-9V6l7-3z"/></svg>',
+		'anh-xe'      => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.4"/><path d="m4 16 4.2-3.2L12 15l3.2-2.6L20 16"/></svg>',
+		'faq'         => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.6a2.5 2.5 0 1 1 3.3 2.4c-.8.4-1.3.9-1.3 1.7"/><path d="M12 16.6h.01"/></svg>',
+	);
+	?>
+	<nav class="annam-limo-anchors" aria-label="<?php esc_attr_e( 'Mục trên trang', 'generatepress_child' ); ?>">
+		<div class="annam-limo-container">
+			<ul class="annam-limo-anchors__list">
+				<?php foreach ( $config['anchors'] as $anchor ) : ?>
+					<?php $anchor_id = isset( $anchor['id'] ) ? (string) $anchor['id'] : ''; ?>
+					<li>
+						<a href="#<?php echo esc_attr( $anchor_id ); ?>">
+							<?php if ( isset( $anchor_icons[ $anchor_id ] ) ) : ?>
+								<span class="annam-limo-anchors__icon" aria-hidden="true"><?php echo $anchor_icons[ $anchor_id ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+							<?php endif; ?>
+							<span><?php echo esc_html( $anchor['label'] ); ?></span>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</nav>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $secs['pricing'] ) ) : ?>
 	<section class="annam-limo-section" id="gia-ve">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Bảng Giá Vé Limousine', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội. Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 ghế khách.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['pricing']['lead'] ) ? $config['pricing']['lead'] : __( 'Áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội. Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 ghế khách.', 'generatepress_child' ) ); ?></p>
 			<div class="annam-limo-price-grid">
 				<?php foreach ( $config['pricing']['rows'] as $row ) : ?>
 					<article class="annam-limo-price-card<?php echo ! empty( $row['badge'] ) ? ' annam-limo-price-card--highlight' : ''; ?>">
@@ -101,6 +132,36 @@ if ( has_post_thumbnail() ) {
 					</article>
 				<?php endforeach; ?>
 			</div>
+			<?php if ( ! empty( $config['pricing']['charter']['type'] ) ) : ?>
+				<?php $charter = $config['pricing']['charter']; ?>
+				<aside class="annam-limo-charter">
+					<div class="annam-limo-charter__body">
+						<?php if ( ! empty( $charter['kicker'] ) ) : ?>
+							<span class="annam-limo-charter__kicker"><?php echo esc_html( $charter['kicker'] ); ?></span>
+						<?php endif; ?>
+						<h3><?php echo esc_html( $charter['label'] ); ?></h3>
+						<?php if ( ! empty( $charter['points'] ) && is_array( $charter['points'] ) ) : ?>
+							<ul class="annam-limo-charter__points">
+								<?php foreach ( $charter['points'] as $point ) : ?>
+									<li><?php echo esc_html( $point ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						<?php elseif ( ! empty( $charter['text'] ) ) : ?>
+							<p><?php echo esc_html( $charter['text'] ); ?></p>
+						<?php endif; ?>
+						<?php if ( ! empty( $charter['note'] ) ) : ?>
+							<p class="annam-limo-charter__note"><?php echo esc_html( $charter['note'] ); ?></p>
+						<?php endif; ?>
+					</div>
+					<div class="annam-limo-charter__price">
+						<p class="annam-limo-charter__amount"><?php echo esc_html( $charter['price'] ); ?></p>
+						<?php if ( ! empty( $charter['unit'] ) ) : ?>
+							<p class="annam-limo-charter__unit"><?php echo esc_html( $charter['unit'] ); ?></p>
+						<?php endif; ?>
+						<button type="button" class="annam-limo-btn annam-limo-btn--primary" data-annam-pick-seat="<?php echo esc_attr( $charter['type'] ); ?>" data-track="select_seat_type"><?php echo esc_html( ! empty( $charter['cta'] ) ? $charter['cta'] : __( 'Thuê xe này', 'generatepress_child' ) ); ?></button>
+					</div>
+				</aside>
+			<?php endif; ?>
 			<?php if ( ! empty( $config['pricing']['price_note'] ) ) : ?>
 				<p class="annam-limo-section__note"><?php echo esc_html( $config['pricing']['price_note'] ); ?></p>
 			<?php endif; ?>
@@ -112,7 +173,7 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-section annam-limo-section--alt" id="lich-xe">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Lịch Xe Limousine', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( '02 chuyến mỗi chiều mỗi ngày · khoảng 06 giờ/chiều.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['schedule_lead'] ) ? $config['schedule_lead'] : __( '02 chuyến mỗi chiều mỗi ngày · khoảng 06 giờ/chiều.', 'generatepress_child' ) ); ?></p>
 			<div class="annam-limo-schedule" data-annam-tabs="schedule">
 				<div class="annam-limo-schedule__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Chiều tuyến', 'generatepress_child' ); ?>">
 					<?php foreach ( $config['schedules'] as $i => $sch ) : ?>
@@ -121,15 +182,18 @@ if ( has_post_thumbnail() ) {
 				</div>
 				<?php foreach ( $config['schedules'] as $i => $sch ) : ?>
 					<?php
-					$timeline = isset( $config['timelines'][ $sch['id'] ] ) ? $config['timelines'][ $sch['id'] ] : null;
+					$timeline = ( isset( $config['timelines'][ $sch['id'] ] ) && ! empty( $config['timelines'][ $sch['id'] ]['steps'] ) ) ? $config['timelines'][ $sch['id'] ] : null;
 					$time_meta = array(
 						'07:00' => __( 'Chuyến sáng', 'generatepress_child' ),
 						'07:30' => __( 'Chuyến sáng', 'generatepress_child' ),
+						'08:00' => __( 'Chuyến sáng', 'generatepress_child' ),
+						'12:00' => __( 'Chuyến trưa', 'generatepress_child' ),
+						'13:00' => __( 'Chuyến trưa', 'generatepress_child' ),
 						'14:30' => __( 'Chuyến chiều', 'generatepress_child' ),
 					);
 					?>
 					<div class="annam-limo-tabs__panel annam-limo-schedule__panel<?php echo 0 === $i ? ' is-active' : ''; ?>" role="tabpanel" data-panel="<?php echo esc_attr( $sch['id'] ); ?>">
-						<div class="annam-limo-schedule__card">
+						<div class="annam-limo-schedule__card<?php echo $timeline ? '' : ' annam-limo-schedule__card--solo'; ?>">
 							<div class="annam-limo-schedule__times-block">
 								<p class="annam-limo-schedule__label"><?php esc_html_e( 'Giờ xuất phát', 'generatepress_child' ); ?></p>
 								<div class="annam-limo-time-grid" role="group" aria-label="<?php echo esc_attr( $sch['label'] ); ?>">
@@ -175,7 +239,7 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-section annam-limo-section--pickup" id="diem-don">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Điểm Đón & Điểm Trả', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Chọn khu vực bên dưới — giờ đón là dự kiến và được xác nhận trước chuyến.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['pickup_lead'] ) ? $config['pickup_lead'] : __( 'Chọn khu vực bên dưới — giờ đón là dự kiến và được xác nhận trước chuyến.', 'generatepress_child' ) ); ?></p>
 			<div class="annam-limo-tabs" data-annam-tabs="pickup">
 				<div class="annam-limo-tabs__nav" role="tablist">
 					<?php foreach ( $config['pickup_tabs'] as $i => $tab ) : ?>
@@ -200,6 +264,9 @@ if ( has_post_thumbnail() ) {
 											<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
 											<?php echo esc_html( $item['time'] ); ?>
 										</span>
+										<?php if ( ! empty( $item['map_url'] ) ) : ?>
+											<a class="annam-limo-pickup__map" href="<?php echo esc_url( $item['map_url'] ); ?>" target="_blank" rel="noopener" data-track="limo_map_click"><?php esc_html_e( 'Xem Google Maps', 'generatepress_child' ); ?></a>
+										<?php endif; ?>
 									</div>
 								</li>
 							<?php endforeach; ?>
@@ -218,7 +285,7 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-section annam-limo-section--alt" id="anh-xe">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Hình Ảnh Xe Limousine', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Xe thật — Limousine 11 chỗ (gồm ghế tài xế) trên tuyến Hà Nội ⇄ Sapa.', 'generatepress_child' ); ?></p>
+			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['gallery_lead'] ) ? $config['gallery_lead'] : __( 'Xe thật — Limousine 11 chỗ (gồm ghế tài xế) trên tuyến Hà Nội ⇄ Sapa.', 'generatepress_child' ) ); ?></p>
 			<div class="annam-limo-gallery" data-annam-limo-gallery>
 				<?php foreach ( $gallery as $i => $item ) : ?>
 					<?php
@@ -252,7 +319,8 @@ if ( has_post_thumbnail() ) {
 
 	<?php
 	$video_cfg  = isset( $config['video'] ) ? $config['video'] : array();
-	$video_src  = function_exists( 'annam_limo_landing_youtube_embed_src' ) ? annam_limo_landing_youtube_embed_src() : '';
+	$video_url  = function_exists( 'annam_limo_landing_youtube_url_or_empty' ) ? annam_limo_landing_youtube_url_or_empty() : '';
+	$video_src  = ( '' !== $video_url && function_exists( 'annam_limo_landing_youtube_embed_src' ) ) ? annam_limo_landing_youtube_embed_src( $video_url ) : '';
 	$show_video = ! empty( $secs['video'] ) && '' !== $video_src;
 	?>
 	<?php if ( $show_video ) : ?>
@@ -273,6 +341,102 @@ if ( has_post_thumbnail() ) {
 					referrerpolicy="strict-origin-when-cross-origin"
 				></iframe>
 			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $secs['amenities'] ) && ! empty( $config['amenities'] ) ) : ?>
+	<?php
+	$amenity_icons = array(
+		'ac'       => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M12 3v3M12 18v3M4.2 6.2l2.1 2.1M17.7 15.7l2.1 2.1M3 12h3M18 12h3M4.2 17.8l2.1-2.1M17.7 8.3l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>',
+		'water'    => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.4 6 10a6 6 0 0 1-12 0c0-3.6 6-10 6-10z"/></svg>',
+		'towel'    => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v16H7z"/><path d="M7 8h10M10 12h4"/></svg>',
+		'wifi'     => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M5 12a9 9 0 0 1 14 0"/><path d="M8 15a5 5 0 0 1 8 0"/><path d="M12 18h.01"/></svg>',
+		'usb'      => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v6M15 3v6"/><path d="M8 9h8v4a4 4 0 0 1-8 0V9z"/></svg>',
+		'seat'     => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 19v-6"/><path d="M6 13h9a3 3 0 0 1 3 3v3"/><path d="M6 13V8a2 2 0 0 1 2-2h3"/></svg>',
+		'massage'  => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M3 9c2.2-3 4.2-3 6.2 0s4 3 6.2 0 4-3 5.6 0"/><path d="M3 15c2.2-3 4.2-3 6.2 0s4 3 6.2 0 4-3 5.6 0"/></svg>',
+	);
+	?>
+	<section class="annam-limo-section annam-limo-amenities" id="tien-ich">
+		<div class="annam-limo-container">
+			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Tiện ích trên xe', 'generatepress_child' ); ?></h2>
+			<ul class="annam-limo-amenities__grid">
+				<?php foreach ( $config['amenities'] as $amenity ) : ?>
+					<?php $amenity_icon = isset( $amenity['icon'] ) ? (string) $amenity['icon'] : 'ac'; ?>
+					<li class="annam-limo-amenities__item">
+						<span class="annam-limo-amenities__icon" aria-hidden="true"><?php echo isset( $amenity_icons[ $amenity_icon ] ) ? $amenity_icons[ $amenity_icon ] : $amenity_icons['ac']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+						<strong><?php echo esc_html( $amenity['title'] ); ?></strong>
+						<?php if ( ! empty( $amenity['text'] ) ) : ?>
+							<span class="annam-limo-amenities__text"><?php echo esc_html( $amenity['text'] ); ?></span>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $secs['policies'] ) && ! empty( $config['policies'] ) ) : ?>
+	<?php
+	$policy_icons = array(
+		'bag'   => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8V7a4 4 0 0 1 8 0v1"/><path d="M6 8h12l-1 12H7L6 8z"/></svg>',
+		'swap'  => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h11l-3-3"/><path d="M17 17H6l3 3"/></svg>',
+		'clock' => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+		'pin'   => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+		'ban'   => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg>',
+	);
+	$policy_featured = null;
+	$policy_cards    = array();
+	foreach ( $config['policies'] as $policy_item ) {
+		if ( null === $policy_featured && ! empty( $policy_item['tiers'] ) && is_array( $policy_item['tiers'] ) ) {
+			$policy_featured = $policy_item;
+			continue;
+		}
+		$policy_cards[] = $policy_item;
+	}
+	?>
+	<section class="annam-limo-section annam-limo-section--alt annam-limo-policies" id="chinh-sach">
+		<div class="annam-limo-container">
+			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Chính sách vé', 'generatepress_child' ); ?></h2>
+			<?php if ( ! empty( $config['policies_lead'] ) ) : ?>
+				<p class="annam-limo-section__lead"><?php echo esc_html( $config['policies_lead'] ); ?></p>
+			<?php endif; ?>
+			<?php if ( $policy_featured ) : ?>
+				<div class="annam-limo-policies__refund">
+					<h3 class="annam-limo-policies__refund-title"><?php echo esc_html( $policy_featured['label'] ); ?></h3>
+					<ol class="annam-limo-policies__tiers">
+						<?php foreach ( $policy_featured['tiers'] as $tier ) : ?>
+							<?php $tier_tone = isset( $tier['tone'] ) ? sanitize_html_class( (string) $tier['tone'] ) : 'full'; ?>
+							<li class="annam-limo-policies__tier annam-limo-policies__tier--<?php echo esc_attr( $tier_tone ); ?>">
+								<strong><?php echo esc_html( $tier['result'] ); ?></strong>
+								<span><?php echo esc_html( $tier['when'] ); ?></span>
+							</li>
+						<?php endforeach; ?>
+					</ol>
+				</div>
+			<?php endif; ?>
+			<?php if ( $policy_cards ) : ?>
+				<ul class="annam-limo-policies__grid">
+					<?php foreach ( $policy_cards as $policy ) : ?>
+						<?php
+						$policy_icon = isset( $policy['icon'] ) ? (string) $policy['icon'] : 'clock';
+						$policy_tone = isset( $policy['tone'] ) ? sanitize_html_class( (string) $policy['tone'] ) : '';
+						?>
+						<li class="annam-limo-policies__card<?php echo $policy_tone ? ' annam-limo-policies__card--' . esc_attr( $policy_tone ) : ''; ?>">
+							<span class="annam-limo-policies__icon" aria-hidden="true"><?php echo isset( $policy_icons[ $policy_icon ] ) ? $policy_icons[ $policy_icon ] : $policy_icons['clock']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+							<div class="annam-limo-policies__body">
+								<h3 class="annam-limo-policies__label">
+									<?php echo esc_html( $policy['label'] ); ?>
+									<?php if ( ! empty( $policy['badge'] ) ) : ?>
+										<span class="annam-limo-policies__badge"><?php echo esc_html( $policy['badge'] ); ?></span>
+									<?php endif; ?>
+								</h3>
+								<p><?php echo esc_html( $policy['text'] ); ?></p>
+							</div>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>
@@ -462,6 +626,11 @@ if ( has_post_thumbnail() ) {
 		</button>
 	</div>
 
+	<?php
+	$sticky_route    = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : 'sapa';
+	$sticky_profile  = function_exists( 'annam_limo_landing_get_route_profile' ) ? annam_limo_landing_get_route_profile( $sticky_route ? $sticky_route : 'sapa' ) : array();
+	$whatsapp_url    = isset( $sticky_profile['whatsapp_url'] ) ? (string) $sticky_profile['whatsapp_url'] : 'https://wa.me/84942471111';
+	?>
 	<div class="annam-limo-sticky" role="navigation" aria-label="<?php esc_attr_e( 'Thao tác nhanh', 'generatepress_child' ); ?>">
 		<div class="annam-limo-sticky__inner">
 			<a class="annam-limo-sticky__btn annam-limo-sticky__btn--call" href="<?php echo esc_url( $cta['hotline_tel'] ); ?>">
@@ -470,11 +639,17 @@ if ( has_post_thumbnail() ) {
 				</span>
 				<span class="annam-limo-sticky__label"><?php esc_html_e( 'Gọi', 'generatepress_child' ); ?></span>
 			</a>
-			<a class="annam-limo-sticky__btn annam-limo-sticky__btn--zalo" href="<?php echo esc_url( $cta['zalo_url'] ); ?>" target="_blank" rel="noopener">
+			<a class="annam-limo-sticky__btn annam-limo-sticky__btn--zalo" href="<?php echo esc_url( $cta['zalo_url'] ); ?>" target="_blank" rel="noopener" data-track="limo_zalo_click">
 				<span class="annam-limo-sticky__icon" aria-hidden="true">
 					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
 				</span>
 				<span class="annam-limo-sticky__label">Zalo</span>
+			</a>
+			<a class="annam-limo-sticky__btn annam-limo-sticky__btn--whatsapp" href="<?php echo esc_url( $whatsapp_url ); ?>" target="_blank" rel="noopener" data-track="limo_whatsapp_click">
+				<span class="annam-limo-sticky__icon" aria-hidden="true">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+				</span>
+				<span class="annam-limo-sticky__label">WhatsApp</span>
 			</a>
 			<button type="button" class="annam-limo-sticky__btn annam-limo-sticky__btn--form" data-annam-scroll-form>
 				<span class="annam-limo-sticky__icon" aria-hidden="true">
