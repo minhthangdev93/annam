@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 require_once get_stylesheet_directory() . '/inc/limo-landing-route-profiles.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-config.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-config-halong.php';
+require_once get_stylesheet_directory() . '/inc/limo-landing-config-ninhbinh.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-routes.php';
 require_once get_stylesheet_directory() . '/inc/limo-landing-booking.php';
 
@@ -133,17 +134,22 @@ function annam_limo_landing_print_image( $slot_key, array $attrs = array() ) {
 		}
 	}
 
+	$defaults = array(
+		'loading'  => 'lazy',
+		'decoding' => 'async',
+	);
+	/* Banner full-bleed: luôn full + sizes 100vw để retina không lấy bản nhỏ. */
+	if ( 'hero-banner' === $slot_key ) {
+		$size               = 'full';
+		$defaults['sizes']  = '100vw';
+		$defaults['loading'] = 'eager';
+	}
+
 	return wp_get_attachment_image(
 		$attachment_id,
 		$size,
 		false,
-		array_merge(
-			array(
-				'loading'  => 'lazy',
-				'decoding' => 'async',
-			),
-			$attrs
-		)
+		array_merge( $defaults, $attrs )
 	);
 }
 
@@ -203,8 +209,17 @@ add_filter( 'generate_show_entry_header', 'annam_limo_landing_hide_entry_header'
  * @return string[]
  */
 function annam_limo_landing_body_class( $classes ) {
-	if ( annam_limo_landing_is_template() ) {
-		$classes[] = 'annam-limo-landing-page';
+	if ( ! annam_limo_landing_is_template() ) {
+		return $classes;
+	}
+	$classes[] = 'annam-limo-landing-page';
+	$route     = annam_limo_landing_current_route();
+	if ( '' !== $route ) {
+		$classes[] = 'annam-limo-landing--' . sanitize_html_class( $route );
+	}
+	// Brand chrome CSS targets --halong; Ninh Bình reuses the same skin.
+	if ( 'ninhbinh' === $route ) {
+		$classes[] = 'annam-limo-landing--halong';
 	}
 	return $classes;
 }
@@ -241,6 +256,19 @@ function annam_limo_landing_enqueue_assets() {
 		);
 	}
 
+	$route = annam_limo_landing_current_route();
+	if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) ) {
+		$brand_css = $dir . '/assets/css/limo-landing-halong.css';
+		if ( file_exists( $brand_css ) ) {
+			wp_enqueue_style(
+				'annam-limo-landing-halong',
+				$uri . '/assets/css/limo-landing-halong.css',
+				array( 'annam-limo-landing' ),
+				(string) filemtime( $brand_css )
+			);
+		}
+	}
+
 	$js = $dir . '/assets/js/limo-landing.js';
 	if ( file_exists( $js ) ) {
 		wp_enqueue_script(
@@ -252,7 +280,6 @@ function annam_limo_landing_enqueue_assets() {
 		);
 
 		$config        = annam_limo_landing_get_config();
-		$route         = annam_limo_landing_current_route();
 		$profile       = annam_limo_landing_get_route_profile( $route );
 		$form_defaults = isset( $config['form_defaults'] ) ? $config['form_defaults'] : array();
 		$seat_prices   = array();
@@ -428,3 +455,104 @@ function annam_limo_landing_maybe_create_halong_page() {
 	}
 }
 add_action( 'init', 'annam_limo_landing_maybe_create_halong_page', 30 );
+
+/**
+ * Tạo trang Ninh Bình một lần nếu chưa có.
+ */
+function annam_limo_landing_maybe_create_ninhbinh_page() {
+	if ( get_option( 'annam_limo_ninhbinh_page_created' ) ) {
+		return;
+	}
+	$slug     = 'xe-limousine-ha-noi-ninh-binh';
+	$existing = get_page_by_path( $slug );
+	if ( $existing instanceof WP_Post ) {
+		update_post_meta( (int) $existing->ID, '_wp_page_template', 'page-template-limousine-ninhbinh-landing.php' );
+		update_option( 'annam_limo_ninhbinh_page_created', 1, false );
+		return;
+	}
+	$page_id = wp_insert_post(
+		array(
+			'post_title'   => 'Vé Limousine Hà Nội – Ninh Bình',
+			'post_name'    => $slug,
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+			'post_content' => '',
+		),
+		true
+	);
+	if ( ! is_wp_error( $page_id ) && $page_id ) {
+		update_post_meta( (int) $page_id, '_wp_page_template', 'page-template-limousine-ninhbinh-landing.php' );
+		update_option( 'annam_limo_ninhbinh_page_created', 1, false );
+	}
+}
+add_action( 'init', 'annam_limo_landing_maybe_create_ninhbinh_page', 31 );
+
+/**
+ * URL ảnh banner landing — dùng khi share MXH (FB / Zalo / Twitter).
+ *
+ * @return string Absolute URL or empty.
+ */
+function annam_limo_landing_get_share_image_url() {
+	if ( ! function_exists( 'annam_limo_landing_image_url' ) ) {
+		return '';
+	}
+	$url = annam_limo_landing_image_url( 'hero-banner' );
+	if ( ! is_string( $url ) || '' === $url ) {
+		return '';
+	}
+	if ( 0 === strpos( $url, '//' ) ) {
+		$url = ( is_ssl() ? 'https:' : 'http:' ) . $url;
+	} elseif ( 0 !== strpos( $url, 'http://' ) && 0 !== strpos( $url, 'https://' ) ) {
+		$url = home_url( $url );
+	}
+	return $url;
+}
+
+/**
+ * Rank Math: ép og:image / twitter:image = banner limo theo từng route.
+ *
+ * @param string $attachment_url URL hiện tại.
+ * @return string
+ */
+function annam_limo_landing_filter_rank_math_og_image( $attachment_url ) {
+	if ( ! annam_limo_landing_is_template() ) {
+		return $attachment_url;
+	}
+	$banner = annam_limo_landing_get_share_image_url();
+	return '' !== $banner ? $banner : $attachment_url;
+}
+add_filter( 'rank_math/opengraph/facebook/image', 'annam_limo_landing_filter_rank_math_og_image', 20 );
+add_filter( 'rank_math/opengraph/twitter/image', 'annam_limo_landing_filter_rank_math_og_image', 20 );
+
+/**
+ * Fallback meta OG khi không có Rank Math.
+ */
+function annam_limo_landing_output_social_banner_meta() {
+	if ( ! annam_limo_landing_is_template() ) {
+		return;
+	}
+
+	$banner = annam_limo_landing_get_share_image_url();
+	if ( '' === $banner ) {
+		return;
+	}
+
+	/* Khi có Rank Math vẫn bổ sung width/height nếu thiếu; ảnh chính do filter ở trên. */
+	if ( ! defined( 'RANK_MATH_VERSION' ) ) {
+		echo '<meta property="og:image" content="' . esc_url( $banner ) . '" />' . "\n";
+		echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+		echo '<meta name="twitter:image" content="' . esc_url( $banner ) . '" />' . "\n";
+	}
+
+	$aid = function_exists( 'annam_limo_landing_get_image_attachment_id' )
+		? annam_limo_landing_get_image_attachment_id( 'hero-banner' )
+		: 0;
+	if ( $aid > 0 ) {
+		$meta = wp_get_attachment_metadata( $aid );
+		if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+			echo '<meta property="og:image:width" content="' . esc_attr( (string) (int) $meta['width'] ) . '" />' . "\n";
+			echo '<meta property="og:image:height" content="' . esc_attr( (string) (int) $meta['height'] ) . '" />' . "\n";
+		}
+	}
+}
+add_action( 'wp_head', 'annam_limo_landing_output_social_banner_meta', 5 );

@@ -75,6 +75,32 @@ function annam_limo_landing_get_cta() {
 }
 
 /**
+ * Thông tin tài khoản công ty nhận chuyển khoản (theo giấy xác nhận VietinBank).
+ *
+ * @return array<string,string>
+ */
+function annam_limo_landing_get_company_payment() {
+	$qr = content_url( 'uploads/2026/06/QR.jpg' );
+
+	return apply_filters(
+		'annam_limo_landing_company_payment',
+		array(
+			'title'          => 'Thông tin thanh toán công ty',
+			'lead'           => 'Chỉ nhận chuyển khoản vào tài khoản công ty. Sale xác nhận vé rồi hướng dẫn nội dung CK. Không thanh toán online trên trang.',
+			'account_name'   => 'CTCP AN NAM DISCOVERY',
+			'account_number' => '119633611111',
+			'bank_name'      => 'VietinBank — Chi nhánh Đông Hà Nội',
+			'bank_branch'    => '',
+			'bank_code'      => '01201010',
+			'swift'          => 'ICBVVNVX',
+			'currency'       => 'VNĐ',
+			'qr_image'       => $qr,
+			'alert'          => 'Không chuyển khoản tài khoản cá nhân. Kiểm tra đúng tên CTCP AN NAM DISCOVERY · STK 119633611111. Nghi ngờ thì gọi 1900 8164.',
+		)
+	);
+}
+
+/**
  * URL trang cabin VIP (cross-sell từ limo).
  *
  * @return string

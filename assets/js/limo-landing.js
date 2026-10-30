@@ -166,8 +166,12 @@
 			return [];
 		}
 		var leadMins = parseInt(booking.minLeadMinutes, 10);
-		if (!leadMins && leadMins !== 0) {
+		if (isNaN(leadMins)) {
 			leadMins = (booking.minLeadHours || 2) * 60;
+		}
+		// 0 = do not hide past departure times (sale confirms; copy-only lead note).
+		if (leadMins <= 0) {
+			return times;
 		}
 		var now = new Date();
 		var thresholdMins = now.getHours() * 60 + now.getMinutes() + leadMins;
@@ -755,6 +759,35 @@
 		});
 	}
 
+	function initPaymentCopy() {
+		document.addEventListener('click', function (e) {
+			var btn = e.target && e.target.closest ? e.target.closest('[data-annam-limo-copy]') : null;
+			if (!btn) {
+				return;
+			}
+			var text = btn.getAttribute('data-annam-limo-copy') || '';
+			if (!text) {
+				return;
+			}
+			var label = btn.textContent;
+			function done() {
+				btn.classList.add('is-copied');
+				btn.textContent = 'Đã copy';
+				window.setTimeout(function () {
+					btn.classList.remove('is-copied');
+					btn.textContent = label;
+				}, 1600);
+			}
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				navigator.clipboard.writeText(text).then(done).catch(function () {
+					done();
+				});
+				return;
+			}
+			done();
+		});
+	}
+
 	document.addEventListener('DOMContentLoaded', function () {
 		persistAttribution();
 		fillAttributionFields();
@@ -770,5 +803,6 @@
 		initFaq();
 		initSeoToggle();
 		initClickTracking();
+		initPaymentCopy();
 	});
 })();

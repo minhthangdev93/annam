@@ -39,6 +39,9 @@ $pickup_ph    = isset( $placeholders[ $default_from ] ) ? (string) $placeholders
 $dropoff_ph   = isset( $placeholders[ $default_to ] ) ? (string) $placeholders[ $default_to ] : '';
 $page_id      = get_queried_object_id();
 $phone_first  = ! empty( $form['phone_first'] );
+$seat_label   = ! empty( $form['seat_label'] )
+	? (string) $form['seat_label']
+	: __( 'Hạng ghế / dịch vụ', 'generatepress_child' );
 ?>
 <div class="annam-limo-form-wrap" id="annam-limo-booking">
 	<?php if ( ! empty( $form['title'] ) ) : ?>
@@ -111,7 +114,7 @@ $phone_first  = ! empty( $form['phone_first'] );
 
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
-				<label for="annam-limo-seat"><?php esc_html_e( 'Hạng ghế / dịch vụ', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
+				<label for="annam-limo-seat"><?php echo esc_html( $seat_label ); ?> <span class="annam-limo-req">*</span></label>
 				<select name="annam_limo_seat" id="annam-limo-seat" required data-annam-field="seat">
 					<?php foreach ( $config['seat_types'] as $st ) : ?>
 						<option value="<?php echo esc_attr( $st['value'] ); ?>" <?php selected( $default_seat, $st['value'] ); ?>><?php echo esc_html( $st['label'] ); ?></option>

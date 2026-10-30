@@ -70,7 +70,7 @@ function annam_limo_landing_get_route_profiles() {
 				'hanoi_halong' => array( '07:00', '08:00' ),
 				'halong_hanoi' => array( '12:00', '13:00' ),
 			),
-			'min_lead_minutes'    => 30,
+			'min_lead_minutes'    => 0,
 			'max_guests'          => 10,
 			'seats'               => array(
 				'seat_front' => array(
@@ -87,7 +87,7 @@ function annam_limo_landing_get_route_profiles() {
 				),
 				'charter'    => array(
 					'label' => 'Thuê nguyên xe',
-					'price' => 3000000,
+					'price' => 3200000,
 				),
 			),
 			'place_placeholders'  => array(
@@ -111,6 +111,70 @@ function annam_limo_landing_get_route_profiles() {
 				array(
 					'@type' => 'Place',
 					'name'  => 'Cảng Tuần Châu',
+				),
+			),
+		),
+		'ninhbinh' => array(
+			'template'            => 'page-template-limousine-ninhbinh-landing.php',
+			'landing_key'         => 'limo_hn_ninhbinh',
+			'mail_prefix'         => '[LIMO HN-NINHBINH]',
+			'places'              => array(
+				'hanoi'    => 'Hà Nội',
+				'ninhbinh' => 'Ninh Bình',
+			),
+			'destinations'        => array(
+				'hanoi'    => array( 'ninhbinh' ),
+				'ninhbinh' => array( 'hanoi' ),
+			),
+			'schedule'            => array(
+				'hanoi_ninhbinh' => array( '07:00', '08:00' ),
+				'ninhbinh_hanoi' => array( '12:00', '13:00' ),
+			),
+			'min_lead_minutes'    => 0,
+			'max_guests'          => 10,
+			'seats'               => array(
+				'zone_hoalu'    => array(
+					'label' => 'Hoa Lư tận nơi',
+					'price' => 220000,
+				),
+				'zone_trangan'  => array(
+					'label' => 'Tràng An, Hang Múa, Tam Cốc',
+					'price' => 220000,
+				),
+				'zone_baidinh'  => array(
+					'label' => 'Bái Đính, Thung Nham',
+					'price' => 250000,
+				),
+				'charter'       => array(
+					'label' => 'Thuê nguyên xe',
+					'price' => 2200000,
+				),
+			),
+			'place_placeholders'  => array(
+				'hanoi'    => 'VD: tên khách sạn ở Phố Cổ / 214 Trần Quang Khải',
+				'ninhbinh' => 'VD: homestay / khách sạn Hoa Lư, Tam Cốc, Bái Đính…',
+			),
+			'option_suffix'       => '_ninhbinh',
+			'config_callback'     => 'annam_limo_landing_get_ninhbinh_config',
+			'whatsapp_url'        => 'https://wa.me/84942471111',
+			'direction_query'     => array(
+				'hn-nb' => array(
+					'from' => 'hanoi',
+					'to'   => 'ninhbinh',
+				),
+				'nb-hn' => array(
+					'from' => 'ninhbinh',
+					'to'   => 'hanoi',
+				),
+			),
+			'extra_places'        => array(
+				array(
+					'@type' => 'Place',
+					'name'  => 'Hoa Lư',
+				),
+				array(
+					'@type' => 'Place',
+					'name'  => 'Tràng An',
 				),
 			),
 		),

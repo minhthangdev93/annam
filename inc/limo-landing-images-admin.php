@@ -93,7 +93,9 @@ function annam_limo_landing_get_image_slots( $route = '' ) {
 		'gallery-road'     => array(
 			'label'           => 'halong' === $route
 				? __( 'Trên đường Hà Nội ⇄ Hạ Long', 'generatepress_child' )
-				: __( 'Trên đường Hà Nội ⇄ Sapa', 'generatepress_child' ),
+				: ( 'ninhbinh' === $route
+					? __( 'Trên đường Hà Nội ⇄ Ninh Bình', 'generatepress_child' )
+					: __( 'Trên đường Hà Nội ⇄ Sapa', 'generatepress_child' ) ),
 			'section'         => 'gallery',
 			'placement'       => __( 'Gallery — ảnh phụ (mobile)', 'generatepress_child' ),
 			'recommended'     => '800 × 600 px',
@@ -101,7 +103,9 @@ function annam_limo_landing_get_image_slots( $route = '' ) {
 			'formats'         => 'JPG, WebP',
 			'wp_size'         => 'large',
 			'fallback'        => 'https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=800&q=80',
-			'default_caption' => 'halong' === $route ? 'Trên đường Hà Nội ⇄ Hạ Long' : 'Trên đường Hà Nội ⇄ Sapa',
+			'default_caption' => 'halong' === $route
+				? 'Trên đường Hà Nội ⇄ Hạ Long'
+				: ( 'ninhbinh' === $route ? 'Trên đường Hà Nội ⇄ Ninh Bình' : 'Trên đường Hà Nội ⇄ Sapa' ),
 		),
 	);
 
@@ -175,7 +179,8 @@ function annam_limo_landing_image_url( $key, $route = '' ) {
 	}
 	$aid = annam_limo_landing_get_image_attachment_id( $key, $route );
 	if ( $aid > 0 ) {
-		$url = wp_get_attachment_image_url( $aid, 'large' );
+		$size = ( 'hero-banner' === $key ) ? 'full' : 'large';
+		$url  = wp_get_attachment_image_url( $aid, $size );
 		return is_string( $url ) ? $url : '';
 	}
 	return isset( $slots[ $key ]['fallback'] ) ? (string) $slots[ $key ]['fallback'] : '';
@@ -367,9 +372,17 @@ function annam_limo_landing_images_render_admin_page() {
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Landing Limousine (vé ghế)', 'generatepress_child' ); ?></h1>
 		<h2 class="nav-tab-wrapper">
-			<?php foreach ( annam_limo_landing_get_route_profiles() as $route_key => $route_profile ) : ?>
+			<?php
+			$route_tab_labels = array(
+				'sapa'     => __( 'Hà Nội ⇄ Sapa', 'generatepress_child' ),
+				'halong'   => __( 'Hà Nội ⇄ Hạ Long', 'generatepress_child' ),
+				'ninhbinh' => __( 'Hà Nội ⇄ Ninh Bình', 'generatepress_child' ),
+			);
+			foreach ( annam_limo_landing_get_route_profiles() as $route_key => $route_profile ) :
+				$tab_label = isset( $route_tab_labels[ $route_key ] ) ? $route_tab_labels[ $route_key ] : (string) $route_key;
+				?>
 				<a class="nav-tab<?php echo $route === $route_key ? ' nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images&route=' . rawurlencode( (string) $route_key ) ) ); ?>">
-					<?php echo esc_html( 'halong' === $route_key ? __( 'Hà Nội ⇄ Hạ Long', 'generatepress_child' ) : __( 'Hà Nội ⇄ Sapa', 'generatepress_child' ) ); ?>
+					<?php echo esc_html( $tab_label ); ?>
 				</a>
 			<?php endforeach; ?>
 		</h2>

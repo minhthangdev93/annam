@@ -98,10 +98,15 @@ function annam_limo_landing_filter_times_for_date( $from, $to, $date_ymd, $route
 	$lead    = isset( $profile['min_lead_minutes'] ) ? (int) $profile['min_lead_minutes'] : 120;
 	$lead    = (int) apply_filters( 'annam_limo_landing_min_lead_minutes', $lead, $route );
 
+	// 0 = không lọc giờ trong ngày (sale xác nhận; chỉ nhắc 30 phút bằng copy).
+	if ( $lead <= 0 ) {
+		return $all;
+	}
+
 	$tz      = wp_timezone();
 	$now     = new DateTimeImmutable( 'now', $tz );
 	$now_min = ( (int) $now->format( 'G' ) * 60 ) + (int) $now->format( 'i' );
-	$threshold_minutes = $now_min + max( 0, $lead );
+	$threshold_minutes = $now_min + $lead;
 
 	if ( $threshold_minutes >= 24 * 60 ) {
 		return array();
@@ -187,7 +192,7 @@ function annam_limo_landing_youtube_url_or_empty( $route = '' ) {
 			return $url;
 		}
 	}
-	if ( 'halong' === $route ) {
+	if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) ) {
 		return '';
 	}
 	return annam_limo_landing_get_youtube_url( $route );
@@ -230,7 +235,7 @@ function annam_limo_landing_get_lead_recipient_emails( $route = '' ) {
 	if ( ! empty( $emails ) ) {
 		return array_values( array_unique( $emails ) );
 	}
-	if ( 'halong' === $route && is_email( 'annamdiscoveryvn@gmail.com' ) ) {
+	if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) && is_email( 'annamdiscoveryvn@gmail.com' ) ) {
 		return array( 'annamdiscoveryvn@gmail.com' );
 	}
 	$admin = get_option( 'admin_email' );

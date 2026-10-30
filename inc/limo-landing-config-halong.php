@@ -22,6 +22,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			'title'      => 'Limousine Hà Nội – Hạ Long từ 300.000đ · Đón tận khách sạn',
 			'subtitle'   => 'Cao tốc 5B, khoảng 2 giờ đến 2 giờ 30 phút. Hà Nội đi Hạ Long lúc 07:00 và 08:00. Hạ Long về Hà Nội lúc 12:00 và 13:00. Đón và trả tận khách sạn Phố Cổ và thành phố Hạ Long.',
 			'price_from' => '300.000đ',
+			'price_unit' => '/khách/chiều',
 			'image_alt'  => 'Limousine Hà Nội Hạ Long',
 			'badges'     => array(
 				'Đón/trả tận nơi, không trung chuyển',
@@ -60,7 +61,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			),
 			array(
 				'value' => 'charter',
-				'label' => 'Thuê nguyên xe — 3.000.000đ/xe/chiều',
+				'label' => 'Thuê nguyên xe — 3.200.000đ/xe/chiều',
 			),
 		),
 		'pricing'       => array(
@@ -93,18 +94,18 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 				'type'   => 'charter',
 				'kicker' => 'Đi nhóm',
 				'label'  => 'Thuê nguyên xe',
-				'price'  => '3.000.000đ',
+				'price'  => '3.200.000đ',
 				'unit'   => '/ xe / chiều',
 				'points' => array(
-					'Xe riêng 11 chỗ, không ghép khách',
+					'Xe riêng 10 chỗ, không ghép khách',
 					'Cả hai chiều Hà Nội và Hạ Long',
 					'Có tài xế, đón và trả tận nơi',
 				),
-				'note'   => 'Giờ đi theo lịch xe. Cần giờ khác thì sale xác nhận khi gọi.',
+				'note'   => 'Thuê nguyên xe: giờ nào cũng có xe. Sale xác nhận giờ đi khi gọi.',
 				'cta'    => 'Thuê xe này',
 			),
 		),
-		'schedule_lead' => 'Hà Nội đi Hạ Long lúc 07:00 và 08:00. Hạ Long về Hà Nội lúc 12:00 và 13:00. Mỗi khung giờ có thể có nhiều xe. Giờ đón tại khách sạn do tổng đài xác nhận.',
+		'schedule_lead' => '',
 		'schedules'     => array(
 			array(
 				'id'    => 'hanoi-halong',
@@ -122,63 +123,64 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			),
 		),
 		'timelines'     => array(),
-		'pickup_lead'   => 'Xe limousine đón và trả tận nơi, không xe trung chuyển. Giờ đón do tổng đài xác nhận trước chuyến.',
+		'pickup_lead'   => '',
+		'pickup_layout' => 'split',
 		'pickup_tabs'   => array(
 			array(
 				'id'      => 'hanoi',
 				'label'   => 'Hà Nội',
-				'heading' => 'Đón/trả tận khách sạn khu Phố Cổ và văn phòng Hà Nội',
+				'heading' => 'Hà Nội',
 				'items'   => array(
 					array(
 						'name'    => 'Khách sạn khu Phố Cổ',
-						'time'    => 'Đón/trả tận nơi — giờ do tổng đài xác nhận',
+						'time'    => '',
 						'map_url' => '',
 					),
 					array(
-						'name'    => 'Văn phòng 80 Hồng Tiến, phường Bồ Đề, Hà Nội',
-						'time'    => 'Điểm cố định — có mặt trước 10 phút',
+						'name'    => 'Văn phòng 80 Hồng Tiến',
+						'time'    => '',
 						'map_url' => 'https://maps.app.goo.gl/guZVA1j6oPKPyANj9',
 					),
 					array(
-						'name'    => 'Văn phòng 214 Trần Quang Khải, Hoàn Kiếm, Hà Nội',
-						'time'    => 'Điểm cố định — có mặt trước 10 phút',
+						'name'    => 'Văn phòng 214 Trần Quang Khải',
+						'time'    => '',
 						'map_url' => 'https://maps.app.goo.gl/3DmmAdysHTtu7pPu9',
 					),
 				),
-				'note'    => 'Đón tận khách sạn trong khu Phố Cổ. Ngoài Phố Cổ (Tây Hồ, Mỹ Đình, Nội Bài…) vui lòng liên hệ tổng đài 1900 8164.',
+				'note'    => 'Đón/trả tận nơi khách sạn Phố Cổ trước/sau 15–30 phút. Điểm văn phòng: có mặt trước 10 phút. Ngoài Phố Cổ (Tây Hồ, Mỹ Đình, Nội Bài…) liên hệ 1900 8164.',
 			),
 			array(
 				'id'      => 'halong',
 				'label'   => 'Hạ Long',
-				'heading' => 'Đón/trả khách sạn TP. Hạ Long, văn phòng và cảng',
+				'heading' => 'Hạ Long',
 				'items'   => array(
 					array(
 						'name'    => 'Khách sạn thành phố Hạ Long',
-						'time'    => 'Đón/trả tận nơi — giờ do tổng đài xác nhận',
+						'time'    => '',
 						'map_url' => '',
 					),
 					array(
-						'name'    => 'Văn phòng Hạ Long – 505 Nguyễn Văn Cừ, phường Hạ Long, Quảng Ninh',
-						'time'    => 'Điểm cố định — có mặt trước 10 phút',
+						'name'    => 'Văn phòng 505 Nguyễn Văn Cừ',
+						'time'    => '',
 						'map_url' => 'https://maps.app.goo.gl/kHDhzqudzA5j9Kv39',
 					),
 					array(
 						'name'    => 'Vincom Plaza Hạ Long',
-						'time'    => 'Điểm cố định — có mặt trước 10 phút',
+						'time'    => '',
 						'map_url' => 'https://maps.app.goo.gl/prBoLUXQozsxsGd4A',
 					),
 					array(
 						'name'    => 'Cảng tàu khách Quốc tế Hạ Long',
-						'time'    => 'Đón/trả theo giờ tổng đài xác nhận',
+						'time'    => '',
 						'map_url' => 'https://maps.app.goo.gl/FRNB3sEzS5YpxDrg6',
 					),
 					array(
 						'name'    => 'Cảng Tuần Châu',
-						'time'    => 'Đón/trả theo giờ tổng đài xác nhận',
+						'time'    => '',
 						'map_url' => 'https://maps.app.goo.gl/8UoQBfcXa63W3dR48',
 					),
 				),
-				'note'    => 'Đón/trả tận khách sạn trong thành phố Hạ Long. Có mặt tại điểm cố định trước 10 phút.',
+				'note'    => 'Đón/trả tận nơi khách sạn và cảng khu vực TP Hạ Long trước/sau 30–45 phút. Điểm văn phòng / Vincom: có mặt trước 10 phút.',
 			),
 		),
 		'amenities'     => array(
@@ -227,7 +229,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			array(
 				'label' => 'Có mặt',
 				'icon'  => 'pin',
-				'text'  => 'Điểm cố định: có mặt trước 10 phút. Đón tại khách sạn: sẵn sàng đúng giờ đã xác nhận.',
+				'text'  => 'Điểm cố định: có mặt trước 10 phút. Phố Cổ Hà Nội: đón/trả trước/sau 15–30 phút. Khách sạn và cảng TP Hạ Long: trước/sau 30–45 phút.',
 			),
 			array(
 				'label' => 'Hành lý',
@@ -311,15 +313,15 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 		'faq'           => array(
 			array(
 				'question' => 'Vé Limousine Hà Nội Hạ Long giá bao nhiêu?',
-				'answer'   => 'Giá niêm yết/khách/chiều, đã gồm VAT, áp dụng cả hai chiều: ghế cuối 300.000đ (03 ghế), ghế đầu 320.000đ (01 ghế), ghế giữa 340.000đ (06 ghế). Thuê nguyên xe 3.000.000đ/xe/một chiều, không ghép khách.',
+				'answer'   => 'Giá niêm yết/khách/chiều, đã gồm VAT, áp dụng cả hai chiều: ghế cuối 300.000đ (03 ghế), ghế đầu 320.000đ (01 ghế), ghế giữa 340.000đ (06 ghế). Thuê nguyên xe 3.200.000đ/xe/một chiều, không ghép khách.',
 			),
 			array(
 				'question' => 'Có thuê nguyên xe không?',
-				'answer'   => 'Có. Thuê nguyên xe limousine 11 chỗ (10 khách và 1 tài xế) giá 3.000.000đ/xe/một chiều, cả hai chiều. Không ghép khách, có tài xế, đón và trả tận nơi. Sale gọi tư vấn giờ đi và hướng dẫn thanh toán.',
+				'answer'   => 'Có. Thuê nguyên xe limousine 11 chỗ (10 khách và 1 tài xế) giá 3.200.000đ/xe/một chiều, cả hai chiều. Không ghép khách, có tài xế, đón và trả tận nơi. Sale gọi tư vấn giờ đi và hướng dẫn thanh toán.',
 			),
 			array(
 				'question' => 'Xe chạy những giờ nào?',
-				'answer'   => 'Hà Nội → Hạ Long: 07:00 và 08:00. Hạ Long → Hà Nội: 12:00 và 13:00. Mỗi khung giờ có thể có nhiều xe. Giờ đón tại khách sạn do tổng đài xác nhận.',
+				'answer'   => 'Hà Nội → Hạ Long: 07:00 và 08:00. Hạ Long → Hà Nội: 12:00 và 13:00. Mỗi khung giờ có thể có nhiều xe. Đón khách sạn phố cổ Hà Nội trước/sau 15–30 phút; đón khách sạn và cảng khu vực TP Hạ Long trước/sau 30–45 phút.',
 			),
 			array(
 				'question' => 'Cần đặt trước bao lâu?',
@@ -331,11 +333,11 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			),
 			array(
 				'question' => 'Có đón tận khách sạn không?',
-				'answer'   => 'Có. Xe limousine đón và trả tận nơi, không trung chuyển, tại khách sạn khu Phố Cổ Hà Nội và trong thành phố Hạ Long. Ngoài Phố Cổ (Tây Hồ, Mỹ Đình, Nội Bài…) vui lòng liên hệ tổng đài.',
+				'answer'   => 'Có. Xe limousine đón và trả tận nơi, không trung chuyển. Khách sạn phố cổ Hà Nội: trước/sau 15–30 phút. Khách sạn và cảng khu vực TP Hạ Long: trước/sau 30–45 phút. Ngoài Phố Cổ (Tây Hồ, Mỹ Đình, Nội Bài…) vui lòng liên hệ tổng đài.',
 			),
 			array(
 				'question' => 'Có ra Cảng Tuần Châu hoặc cảng du thuyền không?',
-				'answer'   => 'Có đón/trả tại Cảng Tuần Châu và Cảng tàu khách Quốc tế Hạ Long. Ghi rõ điểm khi giữ chỗ.',
+				'answer'   => 'Có đón/trả tại Cảng Tuần Châu và Cảng tàu khách Quốc tế Hạ Long trong khung trước/sau 30–45 phút. Ghi rõ điểm khi giữ chỗ.',
 			),
 			array(
 				'question' => 'Hành lý được mang bao nhiêu?',
@@ -355,9 +357,10 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			),
 			array(
 				'question' => 'Thanh toán thế nào?',
-				'answer'   => 'Sale gọi tư vấn và hướng dẫn thanh toán. Trang này không nhận thanh toán online.',
+				'answer'   => 'Chuyển khoản vào tài khoản công ty CTCP AN NAM DISCOVERY — VietinBank số 119633611111 (Chi nhánh Đông Hà Nội). Sale gọi tư vấn và hướng dẫn nội dung chuyển khoản. Trang này không nhận thanh toán online.',
 			),
 		),
+		'payment'       => function_exists( 'annam_limo_landing_get_company_payment' ) ? annam_limo_landing_get_company_payment() : array(),
 		'final_cta'     => array(
 			'title'    => 'Đặt Limousine Hà Nội ⇄ Hạ Long — xác nhận nhanh qua tổng đài 1900 8164',
 			'subtitle' => 'Gửi số điện thoại, Zalo hoặc WhatsApp. Sale gọi tư vấn và hướng dẫn thanh toán.',
@@ -368,6 +371,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			array( 'id' => 'lich-xe', 'label' => 'Lịch xe' ),
 			array( 'id' => 'diem-don', 'label' => 'Đón trả' ),
 			array( 'id' => 'chinh-sach', 'label' => 'Chính sách' ),
+			array( 'id' => 'thanh-toan', 'label' => 'Thanh toán' ),
 			array( 'id' => 'anh-xe', 'label' => 'Ảnh xe' ),
 			array( 'id' => 'faq', 'label' => 'FAQ' ),
 		),
@@ -379,6 +383,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			'pickup'       => true,
 			'amenities'    => true,
 			'policies'     => true,
+			'payment'      => true,
 			'gallery'      => true,
 			'video'        => true,
 			'why'          => true,

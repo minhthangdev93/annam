@@ -3,6 +3,7 @@
  */
 
 body.annam-limo-landing--halong {
+	/* An Nam brand: Primary #01AA90 · Dark #0F4C4C · CTA/Price #F58220 */
 	--annam-limo-teal: #01aa90;
 	--annam-limo-teal-dark: #0f4c4c;
 	--annam-limo-orange: #f58220;
@@ -12,15 +13,12 @@ body.annam-limo-landing--halong {
 	--annam-limo-muted: #5c6b68;
 	--annam-limo-line: #d7e4e1;
 	--annam-limo-paper: #f6f8f7;
-}
-
-body.annam-limo-landing--halong .annam-site-header__row--nav,
-body.annam-limo-landing--halong .annam-site-header__search,
-body.annam-limo-landing--halong .annam-site-header__search-panel,
-body.annam-limo-landing--halong [data-annam-header-menu],
-body.annam-limo-landing--halong [data-annam-header-search],
-body.annam-limo-landing--halong .annam-ecosystem {
-	display: none !important;
+	/* Remap shared tokens so Sapa-era greens pick brand teal. */
+	--annam-limo-green: #01aa90;
+	--annam-limo-green-dark: #0f4c4c;
+	--annam-limo-text: #14221f;
+	--annam-limo-border: #d7e4e1;
+	--annam-limo-bg: #f3faf8;
 }
 
 body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing button.annam-limo-btn--primary,
@@ -43,22 +41,34 @@ body.annam-limo-landing--halong .annam-limo-hero {
 	color: #fff;
 }
 
+body.annam-limo-landing--halong .annam-limo-hero__eyebrow {
+	color: #b7ece3;
+}
+
 body.annam-limo-landing--halong .annam-limo-hero__title,
-body.annam-limo-landing--halong .annam-limo-hero__price,
 body.annam-limo-landing--halong .annam-limo-hero__subtitle {
 	color: #fff;
 }
 
-body.annam-limo-landing--halong .annam-limo-hero__badge {
-	background: rgba(255, 255, 255, 0.12);
+body.annam-limo-landing--halong .annam-limo-hero__price {
 	color: #fff;
-	border-color: rgba(255, 255, 255, 0.28);
 }
 
-body.annam-limo-landing--halong .annam-limo-hero__ctas--mobile,
-body.annam-limo-landing--halong .annam-limo-hero .annam-limo-btn--zalo {
-	display: none;
+body.annam-limo-landing--halong .annam-limo-hero__price-label,
+body.annam-limo-landing--halong .annam-limo-hero__price-unit {
+	color: #ffe0b8;
 }
+
+body.annam-limo-landing--halong .annam-limo-hero__price strong {
+	color: #ffb45c;
+}
+
+body.annam-limo-landing--halong .annam-limo-hero__badge {
+	background: rgba(255, 255, 255, 0.14);
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.4);
+}
+
 
 body.annam-limo-landing--halong .annam-limo-form-wrap {
 	background: #fff;
@@ -330,13 +340,94 @@ body.annam-limo-landing--halong .annam-limo-sticky.is-hidden {
 }
 
 body.annam-limo-landing--halong .annam-limo-sticky__inner:has(.annam-limo-sticky__btn--whatsapp) {
-	grid-template-columns: minmax(0, 0.7fr) minmax(0, 0.7fr) minmax(0, 0.7fr) minmax(0, 1.6fr);
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	background: rgba(255, 255, 255, 0.96);
+	border-color: rgba(1, 170, 144, 0.28);
+	box-shadow:
+		0 1px 2px rgba(15, 76, 76, 0.06),
+		0 12px 28px rgba(15, 76, 76, 0.14);
 }
 
 body.annam-limo-landing--halong .annam-limo-sticky__btn {
 	min-width: 0;
 	padding-left: 6px;
 	padding-right: 6px;
+	font-weight: 800;
+}
+
+/* Sticky: Gọi = cam brand · Zalo = teal · WhatsApp = teal đậm */
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:hover,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:focus,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:visited {
+	background: linear-gradient(180deg, #ff9a3c 0%, #f58220 100%) !important;
+	border: 1px solid transparent !important;
+	color: #1a1206 !important;
+	box-shadow: 0 4px 12px rgba(245, 130, 32, 0.38) !important;
+}
+
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:hover,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--call:focus {
+	background: linear-gradient(180deg, #ffab5c 0%, #e0771c 100%) !important;
+	color: #1a1206 !important;
+}
+
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:hover,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:focus,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:visited {
+	background: linear-gradient(180deg, #12c4a8 0%, #01aa90 100%) !important;
+	border: 1px solid transparent !important;
+	color: #fff !important;
+	box-shadow: 0 4px 12px rgba(1, 170, 144, 0.35) !important;
+}
+
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:hover,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--zalo:focus {
+	background: linear-gradient(180deg, #01aa90 0%, #0f4c4c 100%) !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--whatsapp,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--whatsapp:hover,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--whatsapp:focus,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--whatsapp:visited {
+	background: linear-gradient(180deg, #1a6a6a 0%, #0f4c4c 100%) !important;
+	border: 1px solid transparent !important;
+	color: #fff !important;
+	box-shadow: 0 4px 12px rgba(15, 76, 76, 0.35) !important;
+}
+
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--whatsapp:hover,
+body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.annam-limo-sticky__btn--whatsapp:focus {
+	background: linear-gradient(180deg, #0f4c4c 0%, #0a3636 100%) !important;
+	color: #fff !important;
+}
+
+/* Final section CTAs — cam + teal brand */
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--zalo {
+	background: #01aa90 !important;
+	border-color: transparent !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--zalo:hover,
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--zalo:focus {
+	background: #0f4c4c !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--outline {
+	background: rgba(255, 255, 255, 0.12) !important;
+	border: 1px solid rgba(255, 217, 168, 0.55) !important;
+	color: #fff !important;
+}
+
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--outline:hover,
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--outline:focus {
+	background: rgba(245, 130, 32, 0.28) !important;
+	border-color: #f58220 !important;
+	color: #fff !important;
 }
 
 @media (min-width: 720px) {
@@ -368,13 +459,170 @@ body.annam-limo-landing--halong .annam-limo-sticky__btn {
 }
 
 @media (max-width: 899px) {
-	body.annam-limo-landing--halong .annam-limo-hero__subtitle,
-	body.annam-limo-landing--halong .annam-limo-hero__ctas {
+	body.annam-limo-landing--halong .annam-limo-hero__subtitle {
 		display: none;
 	}
 
-	body.annam-limo-landing--halong .annam-limo-hero__badges {
-		flex-wrap: nowrap;
-		overflow-x: auto;
+	body.annam-limo-landing--halong .annam-limo-hero__ctas--mobile {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-bottom: 12px;
 	}
+
+	body.annam-limo-landing--halong .annam-limo-hero__ctas--mobile .annam-limo-btn {
+		flex: 1 1 calc(50% - 5px);
+		justify-content: center;
+	}
+
+	body.annam-limo-landing--halong .annam-limo-hero__badges {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 8px;
+		overflow: visible;
+	}
+
+	body.annam-limo-landing--halong .annam-limo-hero__badge {
+		text-align: center;
+		line-height: 1.35;
+		font-size: 0.8125rem;
+	}
+}
+
+/* —— Brand color punch (teal + orange) —— */
+body.annam-limo-landing--halong .annam-limo-hero {
+	background:
+		radial-gradient(ellipse 70% 80% at 100% 0%, rgba(245, 130, 32, 0.28), transparent 55%),
+		radial-gradient(ellipse 55% 60% at 0% 100%, rgba(1, 170, 144, 0.35), transparent 50%),
+		linear-gradient(155deg, #0b3d3d 0%, #0f4c4c 48%, #0a3636 100%);
+}
+
+body.annam-limo-landing--halong .annam-limo-hero__eyebrow {
+	color: #7fe0d0;
+	letter-spacing: 0.08em;
+	font-weight: 700;
+}
+
+body.annam-limo-landing--halong .annam-limo-hero__price strong {
+	color: #f58220;
+	text-shadow: 0 0 24px rgba(245, 130, 32, 0.35);
+}
+
+body.annam-limo-landing--halong .annam-limo-hero__price-label,
+body.annam-limo-landing--halong .annam-limo-hero__price-unit {
+	color: #ffd9a8;
+}
+
+body.annam-limo-landing--halong .annam-limo-hero__badge {
+	background: rgba(1, 170, 144, 0.22);
+	border-color: rgba(127, 224, 208, 0.45);
+}
+
+body.annam-limo-landing--halong .annam-limo-section__title {
+	color: var(--annam-limo-teal-dark);
+}
+
+body.annam-limo-landing--halong .annam-limo-section__title::after {
+	content: "";
+	display: block;
+	width: 48px;
+	height: 3px;
+	margin: 10px auto 0;
+	border-radius: 999px;
+	background: linear-gradient(90deg, var(--annam-limo-teal), var(--annam-limo-orange));
+}
+
+body.annam-limo-landing--halong .annam-limo-section--band-orange .annam-limo-section__title {
+	color: #9a4a0a;
+}
+
+body.annam-limo-landing--halong .annam-limo-section--band-orange .annam-limo-section__title::after {
+	background: linear-gradient(90deg, var(--annam-limo-orange), #ffb45c);
+}
+
+body.annam-limo-landing--halong .annam-limo-section--band-teal .annam-limo-section__title::after {
+	background: linear-gradient(90deg, var(--annam-limo-teal-dark), var(--annam-limo-teal));
+}
+
+body.annam-limo-landing--halong .annam-limo-price-card {
+	border-color: rgba(1, 170, 144, 0.18);
+	box-shadow: 0 8px 22px rgba(15, 76, 76, 0.06);
+}
+
+body.annam-limo-landing--halong .annam-limo-price-card--highlight {
+	border-color: var(--annam-limo-orange);
+	box-shadow: 0 10px 28px rgba(245, 130, 32, 0.18);
+}
+
+body.annam-limo-landing--halong .annam-limo-price-card__badge {
+	background: var(--annam-limo-orange);
+	color: #fff;
+}
+
+body.annam-limo-landing--halong .annam-limo-price-card__price {
+	color: var(--annam-limo-orange);
+}
+
+body.annam-limo-landing--halong .annam-limo-anchors {
+	background: linear-gradient(180deg, #eef8f6 0%, #ffffff 100%);
+	border-bottom-color: rgba(1, 170, 144, 0.18);
+}
+
+body.annam-limo-landing--halong .annam-limo-anchors__list a:hover,
+body.annam-limo-landing--halong .annam-limo-anchors__list a:focus-visible {
+	border-color: rgba(1, 170, 144, 0.45);
+	background: #e6f8f4;
+	color: var(--annam-limo-teal-dark);
+}
+
+body.annam-limo-landing--halong .annam-limo-anchors__list li:nth-child(3n) .annam-limo-anchors__icon {
+	background: #e6f8f4;
+	color: var(--annam-limo-teal-dark);
+}
+
+body.annam-limo-landing--halong .annam-limo-amenities__item:nth-child(3n + 2) .annam-limo-amenities__icon {
+	background: #e6f8f4;
+	color: var(--annam-limo-teal);
+}
+
+body.annam-limo-landing--halong .annam-limo-why-card:nth-child(3) .annam-limo-why-card__icon {
+	background: linear-gradient(145deg, #e6f8f4 0%, #ccf4ec 100%);
+	color: var(--annam-limo-teal-dark);
+}
+
+body.annam-limo-landing--halong .annam-limo-why-card::before {
+	background: linear-gradient(90deg, var(--annam-limo-teal), var(--annam-limo-orange));
+}
+
+body.annam-limo-landing--halong .annam-limo-payment__card {
+	border-color: rgba(1, 170, 144, 0.28);
+	box-shadow: 0 0 0 3px rgba(1, 170, 144, 0.08);
+}
+
+body.annam-limo-landing--halong .annam-limo-payment__stk {
+	color: var(--annam-limo-teal-dark);
+}
+
+body.annam-limo-landing--halong .annam-limo-faq__item {
+	border-color: rgba(1, 170, 144, 0.16);
+}
+
+body.annam-limo-landing--halong .annam-limo-faq__item[open] {
+	border-color: rgba(245, 130, 32, 0.45);
+	box-shadow: 0 6px 18px rgba(245, 130, 32, 0.08);
+}
+
+body.annam-limo-landing--halong .annam-limo-final {
+	background:
+		radial-gradient(ellipse 60% 70% at 100% 0%, rgba(245, 130, 32, 0.35), transparent 55%),
+		linear-gradient(135deg, rgba(15, 76, 76, 0.94), rgba(1, 170, 144, 0.88)),
+		var(--annam-limo-final-bg, none) center / cover no-repeat;
+}
+
+body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--primary {
+	box-shadow: 0 8px 22px rgba(245, 130, 32, 0.4);
+}
+
+body.annam-limo-landing--halong .annam-limo-trust__list strong {
+	color: var(--annam-limo-teal-dark);
 }

@@ -50,13 +50,13 @@ if ( has_post_thumbnail() ) {
 	<section class="annam-limo-hero">
 		<div class="annam-limo-container annam-limo-hero__grid">
 			<div class="annam-limo-hero__content">
-				<p class="annam-limo-hero__eyebrow"><?php esc_html_e( 'Limousine 11 chỗ', 'generatepress_child' ); ?></p>
+				<p class="annam-limo-hero__eyebrow"><?php echo esc_html( ! empty( $hero['eyebrow'] ) ? $hero['eyebrow'] : __( 'Limousine 11 chỗ', 'generatepress_child' ) ); ?></p>
 				<h1 class="annam-limo-hero__title"><?php echo esc_html( $hero['title'] ); ?></h1>
 				<p class="annam-limo-hero__subtitle"><?php echo esc_html( $hero['subtitle'] ); ?></p>
 				<p class="annam-limo-hero__price">
 					<span class="annam-limo-hero__price-label"><?php esc_html_e( 'Giá từ', 'generatepress_child' ); ?></span>
 					<strong><?php echo esc_html( $hero['price_from'] ); ?></strong>
-					<span class="annam-limo-hero__price-unit">/ghế/chiều</span>
+					<span class="annam-limo-hero__price-unit"><?php echo esc_html( ! empty( $hero['price_unit'] ) ? $hero['price_unit'] : '/ghế/chiều' ); ?></span>
 				</p>
 				<?php if ( ! empty( $hero['badges'] ) ) : ?>
 					<ul class="annam-limo-hero__badges">
@@ -89,6 +89,7 @@ if ( has_post_thumbnail() ) {
 		'lich-xe'     => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>',
 		'diem-don'    => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2"/></svg>',
 		'chinh-sach'  => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.2-2.8 6.8-7 9-4.2-2.2-7-4.8-7-9V6l7-3z"/></svg>',
+		'thanh-toan'  => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.4"/><path d="M7 12h.01M17 12h.01"/></svg>',
 		'anh-xe'      => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.4"/><path d="m4 16 4.2-3.2L12 15l3.2-2.6L20 16"/></svg>',
 		'faq'         => '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.6a2.5 2.5 0 1 1 3.3 2.4c-.8.4-1.3.9-1.3 1.7"/><path d="M12 16.6h.01"/></svg>',
 	);
@@ -113,7 +114,7 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['pricing'] ) ) : ?>
-	<section class="annam-limo-section" id="gia-ve">
+	<section class="annam-limo-section annam-limo-section--band-orange" id="gia-ve">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Bảng Giá Vé Limousine', 'generatepress_child' ); ?></h2>
 			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['pricing']['lead'] ) ? $config['pricing']['lead'] : __( 'Áp dụng cả hai chiều Hà Nội → Sapa và Sapa → Hà Nội. Xe 11 chỗ đã gồm ghế tài xế — tối đa 10 ghế khách.', 'generatepress_child' ) ); ?></p>
@@ -170,10 +171,12 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['schedule'] ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--alt" id="lich-xe">
+	<section class="annam-limo-section annam-limo-section--band-teal" id="lich-xe">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Lịch Xe Limousine', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['schedule_lead'] ) ? $config['schedule_lead'] : __( '02 chuyến mỗi chiều mỗi ngày · khoảng 06 giờ/chiều.', 'generatepress_child' ) ); ?></p>
+			<?php if ( ! empty( $config['schedule_lead'] ) ) : ?>
+				<p class="annam-limo-section__lead"><?php echo esc_html( (string) $config['schedule_lead'] ); ?></p>
+			<?php endif; ?>
 			<div class="annam-limo-schedule" data-annam-tabs="schedule">
 				<div class="annam-limo-schedule__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Chiều tuyến', 'generatepress_child' ); ?>">
 					<?php foreach ( $config['schedules'] as $i => $sch ) : ?>
@@ -236,53 +239,74 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['pickup'] ) && ! empty( $config['pickup_tabs'] ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--pickup" id="diem-don">
+	<?php
+	$pickup_tabs   = $config['pickup_tabs'];
+	$pickup_split  = ( ! empty( $config['pickup_layout'] ) && 'split' === $config['pickup_layout'] && count( $pickup_tabs ) >= 2 );
+	$render_pickup_col = static function ( $tab ) {
+		?>
+		<div class="annam-limo-pickup-split__col">
+			<p class="annam-limo-pickup__heading">
+				<svg class="annam-limo-pickup__heading-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+				<span><?php echo esc_html( ! empty( $tab['heading'] ) ? $tab['heading'] : $tab['label'] ); ?></span>
+			</p>
+			<ul class="annam-limo-pickup__list annam-limo-pickup__list--stack">
+				<?php foreach ( $tab['items'] as $j => $item ) : ?>
+					<li class="annam-limo-pickup__item">
+						<span class="annam-limo-pickup__marker" aria-hidden="true"><?php echo esc_html( (string) ( $j + 1 ) ); ?></span>
+						<div class="annam-limo-pickup__body">
+							<strong class="annam-limo-pickup__name"><?php echo esc_html( $item['name'] ); ?></strong>
+							<?php if ( ! empty( $item['time'] ) ) : ?>
+								<span class="annam-limo-pickup__time">
+									<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+									<?php echo esc_html( (string) $item['time'] ); ?>
+								</span>
+							<?php endif; ?>
+							<?php if ( ! empty( $item['map_url'] ) ) : ?>
+								<a class="annam-limo-pickup__map" href="<?php echo esc_url( $item['map_url'] ); ?>" target="_blank" rel="noopener" data-track="limo_map_click"><?php esc_html_e( 'Xem Google Maps', 'generatepress_child' ); ?></a>
+							<?php endif; ?>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+			<?php if ( ! empty( $tab['note'] ) ) : ?>
+				<p class="annam-limo-pickup__note"><?php echo esc_html( $tab['note'] ); ?></p>
+			<?php endif; ?>
+		</div>
+		<?php
+	};
+	?>
+	<section class="annam-limo-section annam-limo-section--pickup annam-limo-section--band-orange" id="diem-don">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Điểm Đón & Điểm Trả', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['pickup_lead'] ) ? $config['pickup_lead'] : __( 'Chọn khu vực bên dưới — giờ đón là dự kiến và được xác nhận trước chuyến.', 'generatepress_child' ) ); ?></p>
+			<?php if ( ! empty( $config['pickup_lead'] ) ) : ?>
+				<p class="annam-limo-section__lead"><?php echo esc_html( (string) $config['pickup_lead'] ); ?></p>
+			<?php endif; ?>
+			<?php if ( $pickup_split ) : ?>
+				<div class="annam-limo-pickup-split">
+					<?php $render_pickup_col( $pickup_tabs[0] ); ?>
+					<div class="annam-limo-pickup-split__sep" aria-hidden="true"><span>⇄</span></div>
+					<?php $render_pickup_col( $pickup_tabs[1] ); ?>
+				</div>
+			<?php else : ?>
 			<div class="annam-limo-tabs" data-annam-tabs="pickup">
 				<div class="annam-limo-tabs__nav" role="tablist">
-					<?php foreach ( $config['pickup_tabs'] as $i => $tab ) : ?>
+					<?php foreach ( $pickup_tabs as $i => $tab ) : ?>
 						<button type="button" class="annam-limo-tabs__btn<?php echo 0 === $i ? ' is-active' : ''; ?>" role="tab" data-tab="<?php echo esc_attr( $tab['id'] ); ?>"><?php echo esc_html( $tab['label'] ); ?></button>
 					<?php endforeach; ?>
 				</div>
-				<?php foreach ( $config['pickup_tabs'] as $i => $tab ) : ?>
+				<?php foreach ( $pickup_tabs as $i => $tab ) : ?>
 					<div class="annam-limo-tabs__panel<?php echo 0 === $i ? ' is-active' : ''; ?>" role="tabpanel" data-panel="<?php echo esc_attr( $tab['id'] ); ?>">
-						<?php if ( ! empty( $tab['heading'] ) ) : ?>
-							<p class="annam-limo-pickup__heading">
-								<svg class="annam-limo-pickup__heading-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-								<span><?php echo esc_html( $tab['heading'] ); ?></span>
-							</p>
-						<?php endif; ?>
-						<ul class="annam-limo-pickup__list">
-							<?php foreach ( $tab['items'] as $j => $item ) : ?>
-								<li class="annam-limo-pickup__item">
-									<span class="annam-limo-pickup__marker" aria-hidden="true"><?php echo esc_html( (string) ( $j + 1 ) ); ?></span>
-									<div class="annam-limo-pickup__body">
-										<strong class="annam-limo-pickup__name"><?php echo esc_html( $item['name'] ); ?></strong>
-										<span class="annam-limo-pickup__time">
-											<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-											<?php echo esc_html( $item['time'] ); ?>
-										</span>
-										<?php if ( ! empty( $item['map_url'] ) ) : ?>
-											<a class="annam-limo-pickup__map" href="<?php echo esc_url( $item['map_url'] ); ?>" target="_blank" rel="noopener" data-track="limo_map_click"><?php esc_html_e( 'Xem Google Maps', 'generatepress_child' ); ?></a>
-										<?php endif; ?>
-									</div>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-						<?php if ( ! empty( $tab['note'] ) ) : ?>
-							<p class="annam-limo-pickup__note"><?php echo esc_html( $tab['note'] ); ?></p>
-						<?php endif; ?>
+						<?php $render_pickup_col( $tab ); ?>
 					</div>
 				<?php endforeach; ?>
 			</div>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['gallery'] ) && ! empty( $gallery ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--alt" id="anh-xe">
+	<section class="annam-limo-section annam-limo-section--band-teal" id="anh-xe">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Hình Ảnh Xe Limousine', 'generatepress_child' ); ?></h2>
 			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['gallery_lead'] ) ? $config['gallery_lead'] : __( 'Xe thật — Limousine 11 chỗ (gồm ghế tài xế) trên tuyến Hà Nội ⇄ Sapa.', 'generatepress_child' ) ); ?></p>
@@ -324,7 +348,7 @@ if ( has_post_thumbnail() ) {
 	$show_video = ! empty( $secs['video'] ) && '' !== $video_src;
 	?>
 	<?php if ( $show_video ) : ?>
-	<section class="annam-limo-section annam-limo-section--video" id="video-xe">
+	<section class="annam-limo-section annam-limo-section--video annam-limo-section--band-orange" id="video-xe">
 		<div class="annam-limo-container annam-limo-container--narrow">
 			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $video_cfg['title'] ) ? $video_cfg['title'] : __( 'Xem Xe & Hành Trình Thật', 'generatepress_child' ) ); ?></h2>
 			<?php if ( ! empty( $video_cfg['lead'] ) ) : ?>
@@ -357,7 +381,7 @@ if ( has_post_thumbnail() ) {
 		'massage'  => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M3 9c2.2-3 4.2-3 6.2 0s4 3 6.2 0 4-3 5.6 0"/><path d="M3 15c2.2-3 4.2-3 6.2 0s4 3 6.2 0 4-3 5.6 0"/></svg>',
 	);
 	?>
-	<section class="annam-limo-section annam-limo-amenities" id="tien-ich">
+	<section class="annam-limo-section annam-limo-amenities annam-limo-section--band-teal" id="tien-ich">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Tiện ích trên xe', 'generatepress_child' ); ?></h2>
 			<ul class="annam-limo-amenities__grid">
@@ -395,7 +419,7 @@ if ( has_post_thumbnail() ) {
 		$policy_cards[] = $policy_item;
 	}
 	?>
-	<section class="annam-limo-section annam-limo-section--alt annam-limo-policies" id="chinh-sach">
+	<section class="annam-limo-section annam-limo-policies annam-limo-section--band-orange" id="chinh-sach">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Chính sách vé', 'generatepress_child' ); ?></h2>
 			<?php if ( ! empty( $config['policies_lead'] ) ) : ?>
@@ -441,11 +465,72 @@ if ( has_post_thumbnail() ) {
 	</section>
 	<?php endif; ?>
 
-	<?php if ( ! empty( $secs['why'] ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--why" id="uu-diem">
+	<?php
+	$payment = ( ! empty( $secs['payment'] ) && ! empty( $config['payment'] ) && is_array( $config['payment'] ) )
+		? $config['payment']
+		: array();
+	?>
+	<?php if ( ! empty( $payment['account_number'] ) ) : ?>
+	<section class="annam-limo-section annam-limo-section--compact annam-limo-payment annam-limo-section--band-teal" id="thanh-toan">
 		<div class="annam-limo-container">
-			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Vì Sao Chọn Limousine 11 Chỗ?', 'generatepress_child' ); ?></h2>
-			<p class="annam-limo-section__lead"><?php esc_html_e( 'Limousine 11 chỗ, lịch cố định, đón trả gần — giữ chỗ nhanh qua form hoặc Zalo.', 'generatepress_child' ); ?></p>
+			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $payment['title'] ) ? $payment['title'] : __( 'Thông tin thanh toán công ty', 'generatepress_child' ) ); ?></h2>
+			<?php if ( ! empty( $payment['lead'] ) ) : ?>
+				<p class="annam-limo-section__lead annam-limo-payment__lead"><?php echo esc_html( $payment['lead'] ); ?></p>
+			<?php endif; ?>
+			<div class="annam-limo-payment__card">
+				<div class="annam-limo-payment__main">
+					<div class="annam-limo-payment__row">
+						<span class="annam-limo-payment__k"><?php esc_html_e( 'Tên TK', 'generatepress_child' ); ?></span>
+						<span class="annam-limo-payment__v"><?php echo esc_html( (string) $payment['account_name'] ); ?></span>
+						<button type="button" class="annam-limo-payment__copy" data-annam-limo-copy="<?php echo esc_attr( (string) $payment['account_name'] ); ?>"><?php esc_html_e( 'Copy', 'generatepress_child' ); ?></button>
+					</div>
+					<div class="annam-limo-payment__row">
+						<span class="annam-limo-payment__k"><?php esc_html_e( 'STK', 'generatepress_child' ); ?></span>
+						<span class="annam-limo-payment__v annam-limo-payment__stk"><?php echo esc_html( (string) $payment['account_number'] ); ?></span>
+						<button type="button" class="annam-limo-payment__copy" data-annam-limo-copy="<?php echo esc_attr( (string) $payment['account_number'] ); ?>"><?php esc_html_e( 'Copy', 'generatepress_child' ); ?></button>
+					</div>
+					<div class="annam-limo-payment__row">
+						<span class="annam-limo-payment__k"><?php esc_html_e( 'Ngân hàng', 'generatepress_child' ); ?></span>
+						<span class="annam-limo-payment__v"><?php echo esc_html( (string) $payment['bank_name'] ); ?></span>
+					</div>
+					<p class="annam-limo-payment__meta">
+						<?php
+						$meta_bits = array();
+						if ( ! empty( $payment['bank_code'] ) ) {
+							$meta_bits[] = sprintf(
+								/* translators: %s: interbank code */
+								__( 'Mã NH %s', 'generatepress_child' ),
+								(string) $payment['bank_code']
+							);
+						}
+						if ( ! empty( $payment['swift'] ) ) {
+							$meta_bits[] = 'SWIFT ' . (string) $payment['swift'];
+						}
+						if ( ! empty( $payment['currency'] ) ) {
+							$meta_bits[] = (string) $payment['currency'];
+						}
+						echo esc_html( implode( ' · ', $meta_bits ) );
+						?>
+					</p>
+					<?php if ( ! empty( $payment['alert'] ) ) : ?>
+						<p class="annam-limo-payment__alert" role="note"><?php echo esc_html( (string) $payment['alert'] ); ?></p>
+					<?php endif; ?>
+				</div>
+				<?php if ( ! empty( $payment['qr_image'] ) ) : ?>
+					<figure class="annam-limo-payment__qr">
+						<img src="<?php echo esc_url( (string) $payment['qr_image'] ); ?>" alt="<?php esc_attr_e( 'Mã QR chuyển khoản CTCP AN NAM DISCOVERY', 'generatepress_child' ); ?>" width="120" height="120" loading="lazy" decoding="async" />
+					</figure>
+				<?php endif; ?>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( ! empty( $secs['why'] ) ) : ?>
+	<section class="annam-limo-section annam-limo-section--why annam-limo-section--band-orange" id="uu-diem">
+		<div class="annam-limo-container">
+			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $config['why_title'] ) ? $config['why_title'] : __( 'Vì Sao Chọn Limousine 11 Chỗ?', 'generatepress_child' ) ); ?></h2>
+			<p class="annam-limo-section__lead"><?php echo esc_html( ! empty( $config['why_lead'] ) ? $config['why_lead'] : __( 'Limousine 11 chỗ, lịch cố định, đón trả gần — giữ chỗ nhanh qua form hoặc Zalo.', 'generatepress_child' ) ); ?></p>
 			<div class="annam-limo-why-grid">
 				<?php foreach ( $config['why_cards'] as $i => $card ) :
 					$icon = isset( $card['icon'] ) ? (string) $card['icon'] : 'van';
@@ -482,7 +567,7 @@ if ( has_post_thumbnail() ) {
 		: '';
 	?>
 	<?php if ( ! empty( $secs['cabin_upsell'] ) && ! empty( $cabin_cards ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--cabin-upsell" id="cabin-giuong-nam">
+	<section class="annam-limo-section annam-limo-section--cabin-upsell annam-limo-section--band-teal" id="cabin-giuong-nam">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $cabin_upsell['title'] ) ? $cabin_upsell['title'] : __( 'Muốn nghỉ giường nằm? Chọn cabin VIP', 'generatepress_child' ) ); ?></h2>
 			<?php if ( ! empty( $cabin_upsell['lead'] ) ) : ?>
@@ -543,7 +628,7 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['steps'] ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--alt" id="dat-ve">
+	<section class="annam-limo-section annam-limo-section--band-teal" id="dat-ve">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Đặt Vé 3 Bước', 'generatepress_child' ); ?></h2>
 			<ol class="annam-limo-steps">
@@ -565,7 +650,7 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['faq'] ) ) : ?>
-	<section class="annam-limo-section" id="faq">
+	<section class="annam-limo-section annam-limo-section--band-orange" id="faq">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Câu Hỏi Thường Gặp', 'generatepress_child' ); ?></h2>
 			<div class="annam-limo-faq">
@@ -627,9 +712,10 @@ if ( has_post_thumbnail() ) {
 	</div>
 
 	<?php
-	$sticky_route    = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : 'sapa';
-	$sticky_profile  = function_exists( 'annam_limo_landing_get_route_profile' ) ? annam_limo_landing_get_route_profile( $sticky_route ? $sticky_route : 'sapa' ) : array();
-	$whatsapp_url    = isset( $sticky_profile['whatsapp_url'] ) ? (string) $sticky_profile['whatsapp_url'] : 'https://wa.me/84942471111';
+	$sticky_route   = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : 'sapa';
+	$sticky_profile = function_exists( 'annam_limo_landing_get_route_profile' ) ? annam_limo_landing_get_route_profile( $sticky_route ? $sticky_route : 'sapa' ) : array();
+	$whatsapp_url   = isset( $sticky_profile['whatsapp_url'] ) ? (string) $sticky_profile['whatsapp_url'] : 'https://wa.me/84942471111';
+	$phone_first    = ! empty( $config['form']['phone_first'] );
 	?>
 	<div class="annam-limo-sticky" role="navigation" aria-label="<?php esc_attr_e( 'Thao tác nhanh', 'generatepress_child' ); ?>">
 		<div class="annam-limo-sticky__inner">
@@ -651,12 +737,14 @@ if ( has_post_thumbnail() ) {
 				</span>
 				<span class="annam-limo-sticky__label">WhatsApp</span>
 			</a>
+			<?php if ( ! $phone_first ) : ?>
 			<button type="button" class="annam-limo-sticky__btn annam-limo-sticky__btn--form" data-annam-scroll-form>
 				<span class="annam-limo-sticky__icon" aria-hidden="true">
 					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
 				</span>
 				<span class="annam-limo-sticky__label"><?php esc_html_e( 'Giữ chỗ', 'generatepress_child' ); ?></span>
 			</button>
+			<?php endif; ?>
 		</div>
 	</div>
 </article>

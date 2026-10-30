@@ -95,7 +95,7 @@ function annam_limo_landing_process_booking( array $input ) {
 		return $fail( __( 'Vui lòng chọn hạng ghế hoặc bao xe.', 'generatepress_child' ), 'seat' );
 	}
 
-	if ( '' === trim( $name ) && 'halong' !== $route ) {
+	if ( '' === trim( $name ) && ! in_array( $route, array( 'halong', 'ninhbinh' ), true ) ) {
 		return $fail( __( 'Vui lòng nhập họ và tên.', 'generatepress_child' ), 'name' );
 	}
 
