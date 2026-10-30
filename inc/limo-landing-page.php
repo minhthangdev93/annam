@@ -138,11 +138,38 @@ function annam_limo_landing_print_image( $slot_key, array $attrs = array() ) {
 		'loading'  => 'lazy',
 		'decoding' => 'async',
 	);
-	/* Banner full-bleed: luôn full + sizes 100vw để retina không lấy bản nhỏ. */
+
+	/*
+	 * Banner full-bleed: luôn bản gốc 1 URL (không srcset) để desktop
+	 * không vô tình chọn large/1024 từ srcset → nhìn mờ.
+	 */
 	if ( 'hero-banner' === $slot_key ) {
-		$size               = 'full';
-		$defaults['sizes']  = '100vw';
-		$defaults['loading'] = 'eager';
+		$url = '';
+		if ( function_exists( 'wp_get_original_image_url' ) ) {
+			$orig = wp_get_original_image_url( $attachment_id );
+			if ( is_string( $orig ) && '' !== $orig ) {
+				$url = $orig;
+			}
+		}
+		if ( '' === $url ) {
+			$full = wp_get_attachment_image_src( $attachment_id, 'full' );
+			$url  = ( is_array( $full ) && ! empty( $full[0] ) ) ? (string) $full[0] : '';
+		}
+		if ( '' === $url ) {
+			return '';
+		}
+		$alt     = isset( $attrs['alt'] ) ? (string) $attrs['alt'] : (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+		$class   = isset( $attrs['class'] ) ? (string) $attrs['class'] : '';
+		$loading = isset( $attrs['loading'] ) ? (string) $attrs['loading'] : 'eager';
+		$fetch   = isset( $attrs['fetchpriority'] ) ? (string) $attrs['fetchpriority'] : 'high';
+		return sprintf(
+			'<img src="%s" alt="%s" class="%s" loading="%s" decoding="async" fetchpriority="%s" width="2048" height="751" />',
+			esc_url( $url ),
+			esc_attr( $alt ),
+			esc_attr( $class ),
+			esc_attr( $loading ),
+			esc_attr( $fetch )
+		);
 	}
 
 	return wp_get_attachment_image(

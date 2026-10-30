@@ -99,11 +99,6 @@ body.annam-limo-landing-page {
 	aspect-ratio: 2048 / 751;
 	object-fit: cover;
 	object-position: center center;
-	/* Giảm soft/blur khi scale trên retina */
-	image-rendering: auto;
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-	transform: translateZ(0);
 }
 
 .annam-limo-hero {
