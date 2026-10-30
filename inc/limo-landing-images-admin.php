@@ -35,6 +35,16 @@ function annam_limo_landing_get_image_slots( $route = '' ) {
 			'wp_size'     => 'full',
 			'fallback'    => $banner_fallback,
 		),
+		'share-og'         => array(
+			'label'       => __( 'Ảnh chia sẻ Zalo / Facebook', 'generatepress_child' ),
+			'section'     => 'share',
+			'placement'   => __( 'og:image khi dán link — để trống = tự tạo 1200×630 từ banner (không cắt chữ)', 'generatepress_child' ),
+			'recommended' => '1200 × 630 px',
+			'ratio'       => '1.91 : 1',
+			'formats'     => 'JPG, WebP',
+			'wp_size'     => 'full',
+			'fallback'    => '',
+		),
 		'gallery-exterior' => array(
 			'label'           => __( 'Ngoại thất xe', 'generatepress_child' ),
 			'section'         => 'gallery',

@@ -571,18 +571,18 @@ function annam_limo_landing_maybe_create_ninhbinh_page() {
 add_action( 'init', 'annam_limo_landing_maybe_create_ninhbinh_page', 31 );
 
 /**
- * URL ảnh banner landing — dùng khi share MXH (FB / Zalo / Twitter).
+ * Chuẩn hóa URL tuyệt đối cho og:image (không gắn ?ver= — scraper MXH hay lỗi query).
  *
- * @return string Absolute URL or empty.
+ * @param string $url URL.
+ * @return string
  */
-function annam_limo_landing_get_share_image_url() {
-	if ( ! function_exists( 'annam_limo_landing_image_url' ) ) {
-		return '';
-	}
-	$url = annam_limo_landing_image_url( 'hero-banner' );
+function annam_limo_landing_absolute_og_url( $url ) {
 	if ( ! is_string( $url ) || '' === $url ) {
 		return '';
 	}
+	$url = preg_replace( '/[?&]ver=[^&]*/', '', $url );
+	$url = preg_replace( '/\?&/', '?', $url );
+	$url = preg_replace( '/\?$/', '', $url );
 	if ( 0 === strpos( $url, '//' ) ) {
 		$url = ( is_ssl() ? 'https:' : 'http:' ) . $url;
 	} elseif ( 0 !== strpos( $url, 'http://' ) && 0 !== strpos( $url, 'https://' ) ) {
@@ -592,7 +592,136 @@ function annam_limo_landing_get_share_image_url() {
 }
 
 /**
- * Rank Math: ép og:image / twitter:image = banner limo theo từng route.
+ * Tạo ảnh OG 1200×630: fit toàn banner + nền brand (không center-crop cắt chữ).
+ *
+ * @param int    $attachment_id Banner attachment.
+ * @param string $route         Route key.
+ * @return string Absolute URL or ''.
+ */
+function annam_limo_landing_make_og_from_banner( $attachment_id, $route = '' ) {
+	$attachment_id = absint( $attachment_id );
+	if ( $attachment_id <= 0 || ! function_exists( 'imagecreatetruecolor' ) ) {
+		return '';
+	}
+	$src_path = get_attached_file( $attachment_id );
+	if ( ! is_string( $src_path ) || ! $src_path || ! file_exists( $src_path ) ) {
+		return '';
+	}
+
+	$route    = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
+	$ver      = function_exists( 'annam_limo_landing_images_cache_version' )
+		? annam_limo_landing_images_cache_version( $route )
+		: 0;
+	$mtime    = (int) filemtime( $src_path );
+	$upload   = wp_upload_dir();
+	if ( ! empty( $upload['error'] ) ) {
+		return '';
+	}
+	$dir = trailingslashit( $upload['basedir'] ) . 'annam-limo-og';
+	$uri = trailingslashit( $upload['baseurl'] ) . 'annam-limo-og';
+	if ( ! wp_mkdir_p( $dir ) ) {
+		return '';
+	}
+
+	$filename = sprintf( 'og-%s-%d-%d-%d.jpg', sanitize_key( $route ), $attachment_id, $mtime, $ver );
+	$dest     = trailingslashit( $dir ) . $filename;
+	$dest_url = trailingslashit( $uri ) . $filename;
+	if ( file_exists( $dest ) && filesize( $dest ) > 0 ) {
+		return annam_limo_landing_absolute_og_url( $dest_url );
+	}
+
+	$info = @getimagesize( $src_path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	if ( ! is_array( $info ) || empty( $info[0] ) || empty( $info[1] ) ) {
+		return '';
+	}
+	$mime = isset( $info['mime'] ) ? (string) $info['mime'] : '';
+	$src  = null;
+	if ( 'image/jpeg' === $mime || 'image/jpg' === $mime ) {
+		$src = imagecreatefromjpeg( $src_path );
+	} elseif ( 'image/png' === $mime ) {
+		$src = imagecreatefrompng( $src_path );
+	} elseif ( 'image/webp' === $mime && function_exists( 'imagecreatefromwebp' ) ) {
+		$src = imagecreatefromwebp( $src_path );
+	}
+	if ( ! $src ) {
+		return '';
+	}
+
+	$sw = imagesx( $src );
+	$sh = imagesy( $src );
+	$tw = 1200;
+	$th = 630;
+	$dst = imagecreatetruecolor( $tw, $th );
+	if ( ! $dst ) {
+		imagedestroy( $src );
+		return '';
+	}
+
+	/* Nền brand #0F4C4C — khớp landing. */
+	$bg = imagecolorallocate( $dst, 15, 76, 76 );
+	imagefilledrectangle( $dst, 0, 0, $tw, $th, $bg );
+
+	$scale = min( $tw / $sw, $th / $sh );
+	$dw    = (int) round( $sw * $scale );
+	$dh    = (int) round( $sh * $scale );
+	$dx    = (int) round( ( $tw - $dw ) / 2 );
+	$dy    = (int) round( ( $th - $dh ) / 2 );
+	imagecopyresampled( $dst, $src, $dx, $dy, 0, 0, $dw, $dh, $sw, $sh );
+	imagedestroy( $src );
+
+	$ok = imagejpeg( $dst, $dest, 88 );
+	imagedestroy( $dst );
+	if ( ! $ok || ! file_exists( $dest ) ) {
+		return '';
+	}
+
+	return annam_limo_landing_absolute_og_url( $dest_url );
+}
+
+/**
+ * URL ảnh chia sẻ MXH (Zalo / FB): slot share-og → tự tạo 1200×630 từ banner.
+ *
+ * @param string $route Route.
+ * @return string Absolute URL or empty.
+ */
+function annam_limo_landing_get_share_image_url( $route = '' ) {
+	$route = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
+
+	if ( function_exists( 'annam_limo_landing_get_image_attachment_id' ) ) {
+		$share_id = annam_limo_landing_get_image_attachment_id( 'share-og', $route );
+		if ( $share_id > 0 ) {
+			$url = wp_get_attachment_image_url( $share_id, 'full' );
+			if ( is_string( $url ) && '' !== $url ) {
+				return annam_limo_landing_absolute_og_url( $url );
+			}
+		}
+
+		$banner_id = annam_limo_landing_get_image_attachment_id( 'hero-banner', $route );
+		if ( $banner_id > 0 ) {
+			$made = annam_limo_landing_make_og_from_banner( $banner_id, $route );
+			if ( '' !== $made ) {
+				return $made;
+			}
+			$url = wp_get_attachment_image_url( $banner_id, 'full' );
+			if ( is_string( $url ) && '' !== $url ) {
+				return annam_limo_landing_absolute_og_url( $url );
+			}
+		}
+	}
+
+	if ( function_exists( 'annam_limo_landing_image_url' ) ) {
+		$fallback = annam_limo_landing_image_url( 'hero-banner', $route );
+		return annam_limo_landing_absolute_og_url( $fallback );
+	}
+	return '';
+}
+
+/**
+ * Rank Math: ép og:image / twitter:image = ảnh share limo (không cắt chữ).
  *
  * @param string $attachment_url URL hiện tại.
  * @return string
@@ -608,7 +737,7 @@ add_filter( 'rank_math/opengraph/facebook/image', 'annam_limo_landing_filter_ran
 add_filter( 'rank_math/opengraph/twitter/image', 'annam_limo_landing_filter_rank_math_og_image', 20 );
 
 /**
- * Fallback meta OG khi không có Rank Math.
+ * Fallback meta OG khi không có Rank Math + width/height 1200×630.
  */
 function annam_limo_landing_output_social_banner_meta() {
 	if ( ! annam_limo_landing_is_template() ) {
@@ -620,22 +749,25 @@ function annam_limo_landing_output_social_banner_meta() {
 		return;
 	}
 
-	/* Khi có Rank Math vẫn bổ sung width/height nếu thiếu; ảnh chính do filter ở trên. */
 	if ( ! defined( 'RANK_MATH_VERSION' ) ) {
 		echo '<meta property="og:image" content="' . esc_url( $banner ) . '" />' . "\n";
 		echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
 		echo '<meta name="twitter:image" content="' . esc_url( $banner ) . '" />' . "\n";
 	}
 
+	$w = 1200;
+	$h = 630;
 	$aid = function_exists( 'annam_limo_landing_get_image_attachment_id' )
-		? annam_limo_landing_get_image_attachment_id( 'hero-banner' )
+		? annam_limo_landing_get_image_attachment_id( 'share-og' )
 		: 0;
 	if ( $aid > 0 ) {
 		$meta = wp_get_attachment_metadata( $aid );
 		if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
-			echo '<meta property="og:image:width" content="' . esc_attr( (string) (int) $meta['width'] ) . '" />' . "\n";
-			echo '<meta property="og:image:height" content="' . esc_attr( (string) (int) $meta['height'] ) . '" />' . "\n";
+			$w = (int) $meta['width'];
+			$h = (int) $meta['height'];
 		}
 	}
+	echo '<meta property="og:image:width" content="' . esc_attr( (string) $w ) . '" />' . "\n";
+	echo '<meta property="og:image:height" content="' . esc_attr( (string) $h ) . '" />' . "\n";
 }
 add_action( 'wp_head', 'annam_limo_landing_output_social_banner_meta', 5 );
