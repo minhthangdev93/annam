@@ -131,7 +131,7 @@ function annam_limo_landing_get_image_slots( $route = '' ) {
 				'recommended' => '800 × 800 px',
 				'ratio'       => '1 : 1',
 				'formats'     => 'JPG, WebP',
-				'wp_size'     => 'large',
+				'wp_size'     => 'full',
 				'fallback'    => $team_fallbacks[ $i - 1 ],
 			);
 		}
@@ -246,8 +246,34 @@ function annam_limo_landing_images_maybe_save() {
 
 	$clean = array();
 	foreach ( annam_limo_landing_get_image_slots( $route ) as $key => $slot ) {
+		if ( 'team' === ( $slot['section'] ?? '' ) ) {
+			$clean[ $key ] = 0;
+			continue;
+		}
 		$clean[ $key ] = isset( $input[ $key ] ) ? absint( $input[ $key ] ) : 0;
 	}
+
+	/* Đội ngũ (HL/NB): chọn nhiều ảnh → map vào team-1…team-6 theo thứ tự. */
+	if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) ) {
+		$team_input = isset( $_POST['annam_limo_landing_team'] ) && is_array( $_POST['annam_limo_landing_team'] )
+			? wp_unslash( $_POST['annam_limo_landing_team'] )
+			: array();
+		$team_ids = array();
+		foreach ( $team_input as $raw_id ) {
+			$id = absint( $raw_id );
+			if ( $id > 0 && wp_attachment_is_image( $id ) && ! in_array( $id, $team_ids, true ) ) {
+				$team_ids[] = $id;
+			}
+			if ( count( $team_ids ) >= 6 ) {
+				break;
+			}
+		}
+		for ( $i = 1; $i <= 6; $i++ ) {
+			$slot_key           = 'team-' . $i;
+			$clean[ $slot_key ] = isset( $team_ids[ $i - 1 ] ) ? (int) $team_ids[ $i - 1 ] : 0;
+		}
+	}
+
 	$images_option = function_exists( 'annam_limo_landing_option_name' )
 		? annam_limo_landing_option_name( 'annam_limo_landing_images', $route )
 		: ANNAM_LIMO_LANDING_IMAGES_OPTION;
@@ -299,9 +325,11 @@ function annam_limo_landing_images_admin_assets( $hook_suffix ) {
 	$uri = get_stylesheet_directory_uri();
 
 	wp_enqueue_media();
+	wp_enqueue_script( 'jquery-ui-sortable' );
 
 	$css_path = $dir . '/assets/css/annam-admin.css';
 	$js_path  = $dir . '/assets/js/annam-admin.js';
+	$team_js  = $dir . '/assets/js/limo-landing-team-admin.js';
 
 	if ( file_exists( $css_path ) ) {
 		wp_enqueue_style( 'annam-admin', $uri . '/assets/css/annam-admin.css', array(), (string) filemtime( $css_path ) );
@@ -325,8 +353,102 @@ function annam_limo_landing_images_admin_assets( $hook_suffix ) {
 			)
 		);
 	}
+	if ( file_exists( $team_js ) ) {
+		wp_enqueue_script(
+			'annam-limo-team-admin',
+			$uri . '/assets/js/limo-landing-team-admin.js',
+			array( 'jquery', 'jquery-ui-sortable', 'media-upload', 'media-views' ),
+			(string) filemtime( $team_js ),
+			true
+		);
+		wp_localize_script(
+			'annam-limo-team-admin',
+			'annamLimoTeamAdminL10n',
+			array(
+				'max'         => 6,
+				'pickTitle'   => __( 'Chọn ảnh đội ngũ (tối đa 6)', 'generatepress_child' ),
+				'pickButton'  => __( 'Dùng ảnh đã chọn', 'generatepress_child' ),
+				'remove'      => __( 'Xóa', 'generatepress_child' ),
+				'drag'        => __( 'Kéo để đổi thứ tự', 'generatepress_child' ),
+				'countTpl'    => __( 'Đang có %1$d/%2$d ảnh.', 'generatepress_child' ),
+				'limitAlert'  => __( 'Chỉ chọn tối đa 6 ảnh đội ngũ.', 'generatepress_child' ),
+			)
+		);
+	}
 }
 add_action( 'admin_enqueue_scripts', 'annam_limo_landing_images_admin_assets' );
+
+/**
+ * Danh sách ID ảnh đội ngũ theo thứ tự (tối đa 6).
+ *
+ * @param string $route Route.
+ * @return int[]
+ */
+function annam_limo_landing_get_team_attachment_ids( $route = '' ) {
+	$ids = array();
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$aid = function_exists( 'annam_limo_landing_get_image_attachment_id' )
+			? annam_limo_landing_get_image_attachment_id( 'team-' . $i, $route )
+			: 0;
+		if ( $aid > 0 ) {
+			$ids[] = $aid;
+		}
+	}
+	return $ids;
+}
+
+/**
+ * Render UI chọn nhiều ảnh đội ngũ + kéo sắp xếp.
+ *
+ * @param string $route Route.
+ * @param array  $saved Saved image options.
+ */
+function annam_limo_landing_images_render_team_gallery( $route, array $saved ) {
+	if ( ! in_array( $route, array( 'halong', 'ninhbinh' ), true ) ) {
+		return;
+	}
+	$ids = array();
+	for ( $i = 1; $i <= 6; $i++ ) {
+		$key = 'team-' . $i;
+		$id  = isset( $saved[ $key ] ) ? absint( $saved[ $key ] ) : 0;
+		if ( $id > 0 && wp_attachment_is_image( $id ) ) {
+			$ids[] = $id;
+		}
+	}
+	?>
+	<div class="annam-limo-team-admin" data-annam-limo-team-admin data-max="6">
+		<h2><?php esc_html_e( 'Đội ngũ An Nam Discovery', 'generatepress_child' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Chọn tối đa 6 ảnh một lần. Kéo thả để đổi thứ tự hiển thị trên landing. Không cần caption.', 'generatepress_child' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Khuyến nghị: 800 × 800 px (JPG/WebP).', 'generatepress_child' ); ?></p>
+		<ul id="annam-limo-team-list" class="annam-gallery-sortable annam-limo-team-admin__list">
+			<?php foreach ( $ids as $id ) : ?>
+				<?php
+				$thumb = wp_get_attachment_image_url( $id, 'thumbnail' );
+				if ( ! $thumb ) {
+					$thumb = wp_get_attachment_image_url( $id, 'medium' );
+				}
+				?>
+				<li class="annam-gallery-item annam-limo-team-admin__item" data-id="<?php echo esc_attr( (string) $id ); ?>">
+					<span class="annam-gallery-handle" title="<?php esc_attr_e( 'Kéo để đổi thứ tự', 'generatepress_child' ); ?>">⠿</span>
+					<span class="annam-gallery-thumb-wrap">
+						<?php if ( $thumb ) : ?>
+							<img src="<?php echo esc_url( $thumb ); ?>" alt="" width="80" height="80" loading="lazy" decoding="async" />
+						<?php endif; ?>
+					</span>
+					<input type="hidden" name="annam_limo_landing_team[]" value="<?php echo esc_attr( (string) $id ); ?>" />
+					<button type="button" class="button-link annam-gallery-remove annam-limo-team-admin__remove"><?php esc_html_e( 'Xóa', 'generatepress_child' ); ?></button>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+		<p>
+			<button type="button" class="button button-primary" id="annam-limo-team-add"><?php esc_html_e( 'Chọn / thêm ảnh đội ngũ', 'generatepress_child' ); ?></button>
+			<button type="button" class="button" id="annam-limo-team-clear" <?php disabled( empty( $ids ) ); ?>><?php esc_html_e( 'Xóa hết', 'generatepress_child' ); ?></button>
+			<span class="description annam-limo-team-admin__count"></span>
+		</p>
+	</div>
+	<hr />
+	<?php
+}
 
 /**
  * @param string               $key      Slot.
@@ -445,7 +567,11 @@ function annam_limo_landing_images_render_admin_page() {
 			<input type="hidden" name="annam_limo_landing_images_action" value="1" />
 			<input type="hidden" name="annam_limo_route" value="<?php echo esc_attr( $route ); ?>" />
 			<?php
+			annam_limo_landing_images_render_team_gallery( $route, $saved );
 			foreach ( $slots as $key => $slot ) {
+				if ( 'team' === ( $slot['section'] ?? '' ) ) {
+					continue;
+				}
 				$cap = isset( $captions[ $key ] ) ? (string) $captions[ $key ] : '';
 				annam_limo_landing_images_render_field( $key, $slot, isset( $saved[ $key ] ) ? (int) $saved[ $key ] : 0, $cap );
 			}

@@ -140,35 +140,59 @@ function annam_limo_landing_print_image( $slot_key, array $attrs = array() ) {
 	);
 
 	/*
-	 * Banner full-bleed: luôn bản gốc 1 URL (không srcset) để desktop
-	 * không vô tình chọn large/1024 từ srcset → nhìn mờ.
+	 * Banner / đội ngũ: 1 URL cố định (không srcset) — tránh browser chọn bản 300/768 → mờ trên lưới/retina.
 	 */
-	if ( 'hero-banner' === $slot_key ) {
+	$force_single_url = ( 'hero-banner' === $slot_key ) || ( 0 === strpos( $slot_key, 'team-' ) );
+	if ( $force_single_url ) {
 		$url = '';
-		if ( function_exists( 'wp_get_original_image_url' ) ) {
+		if ( 'hero-banner' === $slot_key && function_exists( 'wp_get_original_image_url' ) ) {
 			$orig = wp_get_original_image_url( $attachment_id );
 			if ( is_string( $orig ) && '' !== $orig ) {
 				$url = $orig;
 			}
 		}
 		if ( '' === $url ) {
-			$full = wp_get_attachment_image_src( $attachment_id, 'full' );
-			$url  = ( is_array( $full ) && ! empty( $full[0] ) ) ? (string) $full[0] : '';
+			/* Team: ưu tiên bản lớn (≥1536) nếu có; banner: full. */
+			$prefer = ( 'hero-banner' === $slot_key ) ? 'full' : 'large';
+			$src    = wp_get_attachment_image_src( $attachment_id, $prefer );
+			if ( ( ! is_array( $src ) || empty( $src[0] ) ) && 'large' === $prefer ) {
+				$src = wp_get_attachment_image_src( $attachment_id, 'full' );
+			}
+			/* Nếu large < 1200px ngang thì lấy full cho đội ngũ (nét trên retina). */
+			if ( 0 === strpos( $slot_key, 'team-' ) && is_array( $src ) && ! empty( $src[1] ) && (int) $src[1] < 1200 ) {
+				$full = wp_get_attachment_image_src( $attachment_id, 'full' );
+				if ( is_array( $full ) && ! empty( $full[0] ) ) {
+					$src = $full;
+				}
+			}
+			$url = ( is_array( $src ) && ! empty( $src[0] ) ) ? (string) $src[0] : '';
 		}
 		if ( '' === $url ) {
 			return '';
 		}
 		$alt     = isset( $attrs['alt'] ) ? (string) $attrs['alt'] : (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
 		$class   = isset( $attrs['class'] ) ? (string) $attrs['class'] : '';
-		$loading = isset( $attrs['loading'] ) ? (string) $attrs['loading'] : 'eager';
-		$fetch   = isset( $attrs['fetchpriority'] ) ? (string) $attrs['fetchpriority'] : 'high';
+		$loading = isset( $attrs['loading'] ) ? (string) $attrs['loading'] : ( 'hero-banner' === $slot_key ? 'eager' : 'lazy' );
+		$w       = isset( $src[1] ) ? (int) $src[1] : 0;
+		$h       = isset( $src[2] ) ? (int) $src[2] : 0;
+		if ( 'hero-banner' === $slot_key ) {
+			$w = $w ? $w : 2048;
+			$h = $h ? $h : 751;
+		}
+		$fetch = '';
+		if ( 'hero-banner' === $slot_key ) {
+			$fetch_val = isset( $attrs['fetchpriority'] ) ? (string) $attrs['fetchpriority'] : 'high';
+			$fetch     = ' fetchpriority="' . esc_attr( $fetch_val ) . '"';
+		}
+		$dim = ( $w > 0 && $h > 0 ) ? sprintf( ' width="%d" height="%d"', $w, $h ) : '';
 		return sprintf(
-			'<img src="%s" alt="%s" class="%s" loading="%s" decoding="async" fetchpriority="%s" width="2048" height="751" />',
+			'<img src="%s" alt="%s" class="%s" loading="%s" decoding="async"%s%s />',
 			esc_url( $url ),
 			esc_attr( $alt ),
 			esc_attr( $class ),
 			esc_attr( $loading ),
-			esc_attr( $fetch )
+			$fetch,
+			$dim
 		);
 	}
 
@@ -340,12 +364,38 @@ function annam_limo_landing_enqueue_assets() {
 			}
 		}
 
+		$team_gallery_js = array();
+		$team_slots_js   = ( ! empty( $config['team']['slots'] ) && is_array( $config['team']['slots'] ) )
+			? $config['team']['slots']
+			: array();
+		foreach ( $team_slots_js as $team_slot_key ) {
+			$url = function_exists( 'annam_limo_landing_image_url' )
+				? annam_limo_landing_image_url( (string) $team_slot_key )
+				: '';
+			if ( '' === $url ) {
+				continue;
+			}
+			$full = '';
+			$aid  = function_exists( 'annam_limo_landing_get_image_attachment_id' )
+				? annam_limo_landing_get_image_attachment_id( (string) $team_slot_key )
+				: 0;
+			if ( $aid > 0 ) {
+				$full_src = wp_get_attachment_image_src( $aid, 'full' );
+				$full     = is_array( $full_src ) ? (string) $full_src[0] : '';
+			}
+			$team_gallery_js[] = array(
+				'src'     => $full ? $full : $url,
+				'caption' => '',
+			);
+		}
+
 		wp_localize_script(
 			'annam-limo-landing',
 			'annamLimoLanding',
 			array(
 				'formId'            => 'annam-limo-booking',
 				'gallery'           => $gallery_js,
+				'teamGallery'       => $team_gallery_js,
 				'scheduleTimes'     => annam_limo_landing_get_schedule_times_map( $route ),
 				'routeDestinations' => annam_limo_landing_get_route_destinations_map( $route ),
 				'formDefaults'      => array(

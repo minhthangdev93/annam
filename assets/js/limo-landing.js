@@ -540,22 +540,23 @@
 	}
 
 	function initGallery() {
-		var items = cfg.gallery || [];
 		var lb = $('#annam-limo-lightbox');
-		if (!lb || !items.length) {
+		if (!lb) {
 			return;
 		}
 		var img = $('.annam-limo-lightbox__img', lb);
 		var cap = $('.annam-limo-lightbox__cap', lb);
+		var activeItems = cfg.gallery || [];
 		var current = 0;
+		var boundChrome = false;
 
 		function show(index) {
-			if (!items.length) {
+			if (!activeItems.length || !img) {
 				return;
 			}
-			current = ((index % items.length) + items.length) % items.length;
-			var item = items[current];
-			if (!item || !img) {
+			current = ((index % activeItems.length) + activeItems.length) % activeItems.length;
+			var item = activeItems[current];
+			if (!item) {
 				return;
 			}
 			img.src = item.src;
@@ -574,50 +575,62 @@
 			document.body.style.overflow = '';
 		}
 
-		$$('[data-annam-gallery-open]').forEach(function (btn) {
-			btn.addEventListener('click', function () {
-				var idx = parseInt(btn.getAttribute('data-annam-gallery-open'), 10) || 0;
-				show(idx);
-			});
-		});
-
-		$$('[data-annam-lightbox-close]', lb).forEach(function (btn) {
-			btn.addEventListener('click', close);
-		});
-
-		var prev = $('[data-annam-lightbox-prev]', lb);
-		var next = $('[data-annam-lightbox-next]', lb);
-		if (prev) {
-			prev.addEventListener('click', function (e) {
-				e.stopPropagation();
-				show(current - 1);
-			});
-		}
-		if (next) {
-			next.addEventListener('click', function (e) {
-				e.stopPropagation();
-				show(current + 1);
-			});
-		}
-
-		lb.addEventListener('click', function (e) {
-			if (e.target === lb) {
-				close();
-			}
-		});
-
-		document.addEventListener('keydown', function (e) {
-			if (lb.hidden) {
+		function bindOpener(selector, attrName, items) {
+			if (!items || !items.length) {
 				return;
 			}
-			if (e.key === 'Escape') {
-				close();
-			} else if (e.key === 'ArrowLeft') {
-				show(current - 1);
-			} else if (e.key === 'ArrowRight') {
-				show(current + 1);
+			$$(selector).forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					activeItems = items;
+					var idx = parseInt(btn.getAttribute(attrName), 10) || 0;
+					show(idx);
+				});
+			});
+		}
+
+		bindOpener('[data-annam-gallery-open]', 'data-annam-gallery-open', cfg.gallery || []);
+		bindOpener('[data-annam-team-open]', 'data-annam-team-open', cfg.teamGallery || []);
+
+		if (!boundChrome) {
+			boundChrome = true;
+			$$('[data-annam-lightbox-close]', lb).forEach(function (btn) {
+				btn.addEventListener('click', close);
+			});
+
+			var prev = $('[data-annam-lightbox-prev]', lb);
+			var next = $('[data-annam-lightbox-next]', lb);
+			if (prev) {
+				prev.addEventListener('click', function (e) {
+					e.stopPropagation();
+					show(current - 1);
+				});
 			}
-		});
+			if (next) {
+				next.addEventListener('click', function (e) {
+					e.stopPropagation();
+					show(current + 1);
+				});
+			}
+
+			lb.addEventListener('click', function (e) {
+				if (e.target === lb) {
+					close();
+				}
+			});
+
+			document.addEventListener('keydown', function (e) {
+				if (lb.hidden) {
+					return;
+				}
+				if (e.key === 'Escape') {
+					close();
+				} else if (e.key === 'ArrowLeft') {
+					show(current - 1);
+				} else if (e.key === 'ArrowRight') {
+					show(current + 1);
+				}
+			});
+		}
 	}
 
 	function initFaq() {

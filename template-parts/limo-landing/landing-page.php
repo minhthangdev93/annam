@@ -570,24 +570,41 @@ if ( has_post_thumbnail() ) {
 			<?php if ( ! empty( $team_cfg['lead'] ) ) : ?>
 				<p class="annam-limo-section__lead"><?php echo esc_html( $team_cfg['lead'] ); ?></p>
 			<?php endif; ?>
-			<ul class="annam-limo-team-grid">
-				<?php foreach ( $team_slots as $team_slot ) : ?>
+			<ul class="annam-limo-team-grid" data-annam-limo-team-gallery>
+				<?php
+				$team_index = 0;
+				foreach ( $team_slots as $team_slot ) :
+					$team_url = function_exists( 'annam_limo_landing_image_url' ) ? annam_limo_landing_image_url( (string) $team_slot ) : '';
+					if ( '' === $team_url ) {
+						continue;
+					}
+					?>
 					<li class="annam-limo-team-grid__item">
-						<?php
-						if ( function_exists( 'annam_limo_landing_print_image' ) ) {
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo annam_limo_landing_print_image(
-								(string) $team_slot,
-								array(
-									'alt'     => __( 'Đội ngũ An Nam Discovery', 'generatepress_child' ),
-									'loading' => 'lazy',
-									'class'   => 'annam-limo-team-grid__img',
-								)
-							);
-						}
-						?>
+						<button
+							type="button"
+							class="annam-limo-team-grid__btn"
+							data-annam-team-open="<?php echo esc_attr( (string) $team_index ); ?>"
+							aria-label="<?php esc_attr_e( 'Xem ảnh đội ngũ', 'generatepress_child' ); ?>"
+						>
+							<?php
+							if ( function_exists( 'annam_limo_landing_print_image' ) ) {
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo annam_limo_landing_print_image(
+									(string) $team_slot,
+									array(
+										'alt'     => __( 'Đội ngũ An Nam Discovery', 'generatepress_child' ),
+										'loading' => 'lazy',
+										'class'   => 'annam-limo-team-grid__img',
+									)
+								);
+							}
+							?>
+						</button>
 					</li>
-				<?php endforeach; ?>
+					<?php
+					$team_index++;
+				endforeach;
+				?>
 			</ul>
 		</div>
 	</section>

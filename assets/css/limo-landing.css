@@ -1247,6 +1247,17 @@ body.annam-limo-landing--halong .annam-limo-section--band-orange {
 	aspect-ratio: 1 / 1;
 }
 
+.annam-limo-team-grid__btn {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	cursor: zoom-in;
+	line-height: 0;
+}
+
 .annam-limo-team-grid__img,
 .annam-limo-team-grid__item img {
 	display: block;
@@ -1254,6 +1265,9 @@ body.annam-limo-landing--halong .annam-limo-section--band-orange {
 	height: 100%;
 	object-fit: cover;
 	object-position: center top;
+	image-rendering: auto;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 
 .annam-limo-section--video:not(.annam-limo-section--band-teal):not(.annam-limo-section--band-orange) {

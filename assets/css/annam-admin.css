@@ -211,6 +211,22 @@
 	margin-left: 4px;
 }
 
+.annam-limo-team-admin__list {
+	min-height: 40px;
+}
+
+.annam-limo-team-admin__placeholder {
+	width: 120px;
+	height: 96px;
+	border: 2px dashed #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+
+.annam-limo-team-admin__count {
+	margin-left: 8px;
+}
+
 .annam-home-sliders-rows {
 	max-width: 960px;
 }
