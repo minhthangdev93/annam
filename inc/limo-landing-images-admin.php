@@ -193,6 +193,61 @@ function annam_limo_landing_get_image_attachment_id( $key, $route = '' ) {
 }
 
 /**
+ * Version bust khi lưu ảnh (tránh CDN/browser giữ file trùng tên).
+ *
+ * @param string $route Route.
+ * @return int Unix timestamp.
+ */
+function annam_limo_landing_images_cache_version( $route = '' ) {
+	$route  = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: 'sapa';
+	$option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_images_ver', $route )
+		: 'annam_limo_landing_images_ver';
+	return absint( get_option( $option, 0 ) );
+}
+
+/**
+ * Gắn ?ver=id-mtime-save để URL khác nhau dù tên file trùng.
+ *
+ * @param string $url           Absolute URL.
+ * @param int    $attachment_id Attachment ID.
+ * @param string $route         Route key.
+ * @return string
+ */
+function annam_limo_landing_cache_bust_url( $url, $attachment_id = 0, $route = '' ) {
+	if ( ! is_string( $url ) || '' === $url ) {
+		return '';
+	}
+	/* Fallback Unsplash: không bust. */
+	if ( false !== strpos( $url, 'images.unsplash.com' ) ) {
+		return $url;
+	}
+	$parts = array();
+	$aid   = absint( $attachment_id );
+	if ( $aid > 0 ) {
+		$parts[] = (string) $aid;
+		$mtime   = get_post_modified_time( 'U', true, $aid );
+		if ( $mtime ) {
+			$parts[] = (string) (int) $mtime;
+		}
+		$file = get_attached_file( $aid );
+		if ( is_string( $file ) && $file && file_exists( $file ) ) {
+			$parts[] = (string) (int) filemtime( $file );
+		}
+	}
+	$save_ver = annam_limo_landing_images_cache_version( $route );
+	if ( $save_ver > 0 ) {
+		$parts[] = (string) $save_ver;
+	}
+	if ( empty( $parts ) ) {
+		return $url;
+	}
+	return add_query_arg( 'ver', implode( '-', $parts ), $url );
+}
+
+/**
  * @param string $key Slot key.
  * @return string
  */
@@ -209,7 +264,10 @@ function annam_limo_landing_image_url( $key, $route = '' ) {
 	if ( $aid > 0 ) {
 		$size = ( 'hero-banner' === $key ) ? 'full' : 'large';
 		$url  = wp_get_attachment_image_url( $aid, $size );
-		return is_string( $url ) ? $url : '';
+		if ( ! is_string( $url ) || '' === $url ) {
+			return '';
+		}
+		return annam_limo_landing_cache_bust_url( $url, $aid, $route );
 	}
 	return isset( $slots[ $key ]['fallback'] ) ? (string) $slots[ $key ]['fallback'] : '';
 }
@@ -278,6 +336,14 @@ function annam_limo_landing_images_maybe_save() {
 		? annam_limo_landing_option_name( 'annam_limo_landing_images', $route )
 		: ANNAM_LIMO_LANDING_IMAGES_OPTION;
 	update_option( $images_option, $clean, false );
+	wp_cache_delete( $images_option, 'options' );
+
+	/* Đổi ?ver= mỗi lần lưu — tránh CDN/browser giữ file trùng tên. */
+	$ver_option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_images_ver', $route )
+		: 'annam_limo_landing_images_ver';
+	update_option( $ver_option, time(), false );
+	wp_cache_delete( $ver_option, 'options' );
 
 	$cap_input = isset( $_POST['annam_limo_landing_captions'] ) && is_array( $_POST['annam_limo_landing_captions'] )
 		? wp_unslash( $_POST['annam_limo_landing_captions'] )
@@ -294,6 +360,11 @@ function annam_limo_landing_images_maybe_save() {
 		? annam_limo_landing_option_name( 'annam_limo_landing_captions', $route )
 		: ANNAM_LIMO_LANDING_CAPTIONS_OPTION;
 	update_option( $captions_option, $cap_clean, false );
+	wp_cache_delete( $captions_option, 'options' );
+
+	if ( function_exists( 'annam_limo_landing_purge_route_caches' ) ) {
+		annam_limo_landing_purge_route_caches( $route );
+	}
 
 	wp_safe_redirect(
 		add_query_arg(
@@ -518,6 +589,18 @@ function annam_limo_landing_images_render_admin_page() {
 	if ( '' === $youtube_url && 'sapa' === $route && function_exists( 'annam_limo_landing_get_youtube_url' ) ) {
 		$youtube_url = annam_limo_landing_get_youtube_url( 'sapa' );
 	}
+
+	if ( function_exists( 'annam_limo_landing_ensure_route_page_template' ) ) {
+		annam_limo_landing_ensure_route_page_template( $route );
+	}
+	$route_pages = function_exists( 'annam_limo_landing_get_pages_for_route' )
+		? annam_limo_landing_get_pages_for_route( $route )
+		: array();
+	$profile_tpl = '';
+	if ( function_exists( 'annam_limo_landing_get_route_profile' ) ) {
+		$rp = annam_limo_landing_get_route_profile( $route );
+		$profile_tpl = isset( $rp['template'] ) ? (string) $rp['template'] : '';
+	}
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Landing Limousine (vé ghế)', 'generatepress_child' ); ?></h1>
@@ -538,8 +621,39 @@ function annam_limo_landing_images_render_admin_page() {
 		</h2>
 
 		<?php if ( ! empty( $_GET['annam_saved'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Đã lưu.', 'generatepress_child' ); ?></p></div>
+			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Đã lưu ảnh. Đã yêu cầu xóa cache trang landing của tab này.', 'generatepress_child' ); ?></p></div>
 		<?php endif; ?>
+
+		<div class="notice notice-info inline">
+			<p>
+				<strong><?php esc_html_e( 'Option lưu ảnh tab này:', 'generatepress_child' ); ?></strong>
+				<code><?php echo esc_html( $images_option ); ?></code>
+			</p>
+			<?php if ( $profile_tpl ) : ?>
+				<p>
+					<strong><?php esc_html_e( 'Page template cần gán:', 'generatepress_child' ); ?></strong>
+					<code><?php echo esc_html( $profile_tpl ); ?></code>
+				</p>
+			<?php endif; ?>
+			<?php if ( ! empty( $route_pages ) ) : ?>
+				<p><strong><?php esc_html_e( 'Trang frontend đọc ảnh tab này:', 'generatepress_child' ); ?></strong></p>
+				<ul style="list-style:disc;margin-left:1.5em;">
+					<?php foreach ( $route_pages as $route_page ) : ?>
+						<?php if ( ! ( $route_page instanceof WP_Post ) ) { continue; } ?>
+						<li>
+							<a href="<?php echo esc_url( get_permalink( $route_page ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( get_the_title( $route_page ) ); ?></a>
+							—
+							<a href="<?php echo esc_url( get_edit_post_link( (int) $route_page->ID, 'raw' ) ); ?>"><?php esc_html_e( 'Sửa trang', 'generatepress_child' ); ?></a>
+							<code><?php echo esc_html( (string) get_page_template_slug( (int) $route_page->ID ) ); ?></code>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php else : ?>
+				<p class="notice notice-warning inline" style="padding:8px 12px;">
+					<?php esc_html_e( 'Chưa có trang nào gán đúng template của tab này — frontend sẽ không lấy ảnh vừa lưu. Vào Trang → gán template landing đúng tuyến (vd. Landing Vé Limousine HN–Ninh Bình).', 'generatepress_child' ); ?>
+				</p>
+			<?php endif; ?>
+		</div>
 
 		<h2><?php esc_html_e( 'Email & video YouTube', 'generatepress_child' ); ?></h2>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=annam-limo-landing-images&route=' . rawurlencode( $route ) ) ); ?>">

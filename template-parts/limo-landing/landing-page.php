@@ -12,6 +12,13 @@ $cta     = annam_limo_landing_get_cta();
 $hero    = isset( $config['hero'] ) ? $config['hero'] : array();
 $secs    = isset( $config['sections'] ) ? $config['sections'] : array();
 $gallery = isset( $config['gallery'] ) ? $config['gallery'] : array();
+$route   = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : '';
+if ( '' === $route && function_exists( 'annam_limo_landing_route_from_page' ) ) {
+	$route = annam_limo_landing_route_from_page( (int) get_queried_object_id() );
+}
+if ( '' === $route ) {
+	$route = 'sapa';
+}
 
 $seo_html  = '';
 $seo_long  = false;
@@ -40,7 +47,8 @@ if ( has_post_thumbnail() ) {
 					'loading'       => 'eager',
 					'fetchpriority' => 'high',
 					'class'         => 'annam-limo-banner__img',
-				)
+				),
+				$route
 			);
 		}
 		?>
@@ -326,7 +334,8 @@ if ( has_post_thumbnail() ) {
 									array(
 										'alt'     => $cap,
 										'loading' => 0 === $i ? 'eager' : 'lazy',
-									)
+									),
+									$route
 								);
 							}
 							?>
@@ -595,7 +604,8 @@ if ( has_post_thumbnail() ) {
 										'alt'     => __( 'Đội ngũ An Nam Discovery', 'generatepress_child' ),
 										'loading' => 'lazy',
 										'class'   => 'annam-limo-team-grid__img',
-									)
+									),
+									$route
 								);
 							}
 							?>

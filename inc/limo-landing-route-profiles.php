@@ -276,3 +276,147 @@ function annam_limo_landing_admin_route() {
 	$profiles = annam_limo_landing_get_route_profiles();
 	return isset( $profiles[ $route ] ) ? $route : 'sapa';
 }
+
+/**
+ * Slug trang landing mặc định theo tuyến (dùng để tự gán lại template nếu bị lệch).
+ *
+ * @param string $route Route key.
+ * @return string
+ */
+function annam_limo_landing_default_page_slug( $route ) {
+	$route = sanitize_key( (string) $route );
+	$map   = array(
+		'sapa'     => 'dat-ve-xe-ha-noi-sapa',
+		'halong'   => 'xe-limousine-ha-noi-ha-long',
+		'ninhbinh' => 'xe-limousine-ha-noi-ninh-binh',
+	);
+	return isset( $map[ $route ] ) ? $map[ $route ] : '';
+}
+
+/**
+ * Các trang publish đang gán template của tuyến.
+ *
+ * @param string $route Route key.
+ * @return WP_Post[]
+ */
+function annam_limo_landing_get_pages_for_route( $route ) {
+	$route   = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: sanitize_key( (string) $route );
+	$profile = annam_limo_landing_get_route_profile( $route );
+	$tpl     = isset( $profile['template'] ) ? (string) $profile['template'] : '';
+	if ( '' === $tpl ) {
+		return array();
+	}
+	$pages = get_posts(
+		array(
+			'post_type'              => 'page',
+			'post_status'            => array( 'publish', 'draft', 'private' ),
+			'posts_per_page'         => 20,
+			'orderby'                => 'ID',
+			'order'                  => 'ASC',
+			'meta_key'               => '_wp_page_template',
+			'meta_value'             => $tpl,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		)
+	);
+	return is_array( $pages ) ? $pages : array();
+}
+
+/**
+ * Đảm bảo trang slug mặc định của tuyến đang dùng đúng page template
+ * (tránh admin lưu option _ninhbinh nhưng frontend vẫn đọc _halong / sapa).
+ *
+ * @param string $route Route key.
+ * @return int Page ID đã sửa/đảm bảo, hoặc 0.
+ */
+function annam_limo_landing_ensure_route_page_template( $route ) {
+	$route = sanitize_key( (string) $route );
+	$slug  = annam_limo_landing_default_page_slug( $route );
+	$profile = annam_limo_landing_get_route_profile( $route );
+	$tpl     = isset( $profile['template'] ) ? (string) $profile['template'] : '';
+	if ( '' === $slug || '' === $tpl ) {
+		return 0;
+	}
+	$page = get_page_by_path( $slug );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return 0;
+	}
+	$current = (string) get_page_template_slug( (int) $page->ID );
+	if ( $current !== $tpl ) {
+		update_post_meta( (int) $page->ID, '_wp_page_template', $tpl );
+		clean_post_cache( (int) $page->ID );
+	}
+	return (int) $page->ID;
+}
+
+/**
+ * Xóa cache trang landing sau khi đổi ảnh (LiteSpeed / WP Rocket / Super Cache…).
+ *
+ * @param string $route Route key.
+ */
+function annam_limo_landing_purge_route_caches( $route ) {
+	$route = sanitize_key( (string) $route );
+	annam_limo_landing_ensure_route_page_template( $route );
+
+	$pages = annam_limo_landing_get_pages_for_route( $route );
+	$slug  = annam_limo_landing_default_page_slug( $route );
+	if ( $slug ) {
+		$by_slug = get_page_by_path( $slug );
+		if ( $by_slug instanceof WP_Post ) {
+			$found = false;
+			foreach ( $pages as $p ) {
+				if ( (int) $p->ID === (int) $by_slug->ID ) {
+					$found = true;
+					break;
+				}
+			}
+			if ( ! $found ) {
+				$pages[] = $by_slug;
+			}
+		}
+	}
+
+	foreach ( $pages as $page ) {
+		if ( ! ( $page instanceof WP_Post ) ) {
+			continue;
+		}
+		$page_id = (int) $page->ID;
+		clean_post_cache( $page_id );
+		$url = get_permalink( $page_id );
+		if ( ! is_string( $url ) || '' === $url ) {
+			continue;
+		}
+
+		if ( function_exists( 'rocket_clean_post' ) ) {
+			rocket_clean_post( $page_id );
+		}
+		if ( function_exists( 'wp_cache_post_change' ) ) {
+			wp_cache_post_change( $page_id );
+		}
+		if ( function_exists( 'w3tc_flush_post' ) ) {
+			w3tc_flush_post( $page_id );
+		}
+		if ( has_action( 'litespeed_purge_post' ) ) {
+			do_action( 'litespeed_purge_post', $page_id );
+		}
+		if ( has_action( 'litespeed_purge_url' ) ) {
+			do_action( 'litespeed_purge_url', $url );
+		}
+		if ( function_exists( 'litespeed_purge_url' ) ) {
+			litespeed_purge_url( $url );
+		}
+	}
+
+	$option = function_exists( 'annam_limo_landing_option_name' )
+		? annam_limo_landing_option_name( 'annam_limo_landing_images', $route )
+		: '';
+	if ( '' !== $option ) {
+		wp_cache_delete( $option, 'options' );
+		wp_cache_delete( 'alloptions', 'options' );
+	}
+
+	do_action( 'annam_limo_landing_purge_route_caches', $route, $pages );
+}

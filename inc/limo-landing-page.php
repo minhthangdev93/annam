@@ -96,17 +96,22 @@ function annam_limo_landing_get_notice() {
 /**
  * @param string               $slot_key Slot key.
  * @param array<string,string> $attrs    Img attrs.
+ * @param string               $route    Route key (halong/ninhbinh/sapa); empty = detect.
  * @return string
  */
-function annam_limo_landing_print_image( $slot_key, array $attrs = array() ) {
+function annam_limo_landing_print_image( $slot_key, array $attrs = array(), $route = '' ) {
 	$slot_key = sanitize_key( (string) $slot_key );
 	if ( '' === $slot_key || ! function_exists( 'annam_limo_landing_get_image_attachment_id' ) ) {
 		return '';
 	}
 
-	$attachment_id = annam_limo_landing_get_image_attachment_id( $slot_key );
+	$route = function_exists( 'annam_limo_landing_storage_route' )
+		? annam_limo_landing_storage_route( $route )
+		: sanitize_key( (string) $route );
+
+	$attachment_id = annam_limo_landing_get_image_attachment_id( $slot_key, $route );
 	if ( $attachment_id <= 0 ) {
-		$url = function_exists( 'annam_limo_landing_image_url' ) ? annam_limo_landing_image_url( $slot_key ) : '';
+		$url = function_exists( 'annam_limo_landing_image_url' ) ? annam_limo_landing_image_url( $slot_key, $route ) : '';
 		if ( '' === $url ) {
 			return '';
 		}
@@ -128,79 +133,71 @@ function annam_limo_landing_print_image( $slot_key, array $attrs = array() ) {
 
 	$size = 'large';
 	if ( function_exists( 'annam_limo_landing_get_image_slots' ) ) {
-		$slots = annam_limo_landing_get_image_slots();
+		$slots = annam_limo_landing_get_image_slots( $route );
 		if ( isset( $slots[ $slot_key ]['wp_size'] ) ) {
 			$size = (string) $slots[ $slot_key ]['wp_size'];
 		}
 	}
 
-	$defaults = array(
-		'loading'  => 'lazy',
-		'decoding' => 'async',
-	);
-
 	/*
-	 * Banner / đội ngũ: 1 URL cố định (không srcset) — tránh browser chọn bản 300/768 → mờ trên lưới/retina.
+	 * Luôn 1 URL + ?ver= (id-mtime-save) — tránh srcset mờ và CDN giữ file trùng tên.
 	 */
-	$force_single_url = ( 'hero-banner' === $slot_key ) || ( 0 === strpos( $slot_key, 'team-' ) );
-	if ( $force_single_url ) {
-		$url = '';
-		if ( 'hero-banner' === $slot_key && function_exists( 'wp_get_original_image_url' ) ) {
-			$orig = wp_get_original_image_url( $attachment_id );
-			if ( is_string( $orig ) && '' !== $orig ) {
-				$url = $orig;
-			}
+	$url = '';
+	$w   = 0;
+	$h   = 0;
+	if ( 'hero-banner' === $slot_key && function_exists( 'wp_get_original_image_url' ) ) {
+		$orig = wp_get_original_image_url( $attachment_id );
+		if ( is_string( $orig ) && '' !== $orig ) {
+			$url = $orig;
 		}
-		if ( '' === $url ) {
-			/* Team: ưu tiên bản lớn (≥1536) nếu có; banner: full. */
-			$prefer = ( 'hero-banner' === $slot_key ) ? 'full' : 'large';
-			$src    = wp_get_attachment_image_src( $attachment_id, $prefer );
-			if ( ( ! is_array( $src ) || empty( $src[0] ) ) && 'large' === $prefer ) {
-				$src = wp_get_attachment_image_src( $attachment_id, 'full' );
-			}
-			/* Nếu large < 1200px ngang thì lấy full cho đội ngũ (nét trên retina). */
-			if ( 0 === strpos( $slot_key, 'team-' ) && is_array( $src ) && ! empty( $src[1] ) && (int) $src[1] < 1200 ) {
-				$full = wp_get_attachment_image_src( $attachment_id, 'full' );
-				if ( is_array( $full ) && ! empty( $full[0] ) ) {
-					$src = $full;
-				}
-			}
-			$url = ( is_array( $src ) && ! empty( $src[0] ) ) ? (string) $src[0] : '';
-		}
-		if ( '' === $url ) {
-			return '';
-		}
-		$alt     = isset( $attrs['alt'] ) ? (string) $attrs['alt'] : (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
-		$class   = isset( $attrs['class'] ) ? (string) $attrs['class'] : '';
-		$loading = isset( $attrs['loading'] ) ? (string) $attrs['loading'] : ( 'hero-banner' === $slot_key ? 'eager' : 'lazy' );
-		$w       = isset( $src[1] ) ? (int) $src[1] : 0;
-		$h       = isset( $src[2] ) ? (int) $src[2] : 0;
+	}
+	if ( '' === $url ) {
+		$prefer = $size ? $size : 'large';
 		if ( 'hero-banner' === $slot_key ) {
-			$w = $w ? $w : 2048;
-			$h = $h ? $h : 751;
+			$prefer = 'full';
 		}
-		$fetch = '';
-		if ( 'hero-banner' === $slot_key ) {
-			$fetch_val = isset( $attrs['fetchpriority'] ) ? (string) $attrs['fetchpriority'] : 'high';
-			$fetch     = ' fetchpriority="' . esc_attr( $fetch_val ) . '"';
+		$src = wp_get_attachment_image_src( $attachment_id, $prefer );
+		if ( ( ! is_array( $src ) || empty( $src[0] ) ) && 'large' === $prefer ) {
+			$src = wp_get_attachment_image_src( $attachment_id, 'full' );
 		}
-		$dim = ( $w > 0 && $h > 0 ) ? sprintf( ' width="%d" height="%d"', $w, $h ) : '';
-		return sprintf(
-			'<img src="%s" alt="%s" class="%s" loading="%s" decoding="async"%s%s />',
-			esc_url( $url ),
-			esc_attr( $alt ),
-			esc_attr( $class ),
-			esc_attr( $loading ),
-			$fetch,
-			$dim
-		);
+		if ( 0 === strpos( $slot_key, 'team-' ) && is_array( $src ) && ! empty( $src[1] ) && (int) $src[1] < 1200 ) {
+			$full = wp_get_attachment_image_src( $attachment_id, 'full' );
+			if ( is_array( $full ) && ! empty( $full[0] ) ) {
+				$src = $full;
+			}
+		}
+		$url = ( is_array( $src ) && ! empty( $src[0] ) ) ? (string) $src[0] : '';
+		$w   = isset( $src[1] ) ? (int) $src[1] : 0;
+		$h   = isset( $src[2] ) ? (int) $src[2] : 0;
+	}
+	if ( '' === $url ) {
+		return '';
+	}
+	if ( function_exists( 'annam_limo_landing_cache_bust_url' ) ) {
+		$url = annam_limo_landing_cache_bust_url( $url, $attachment_id, $route );
 	}
 
-	return wp_get_attachment_image(
-		$attachment_id,
-		$size,
-		false,
-		array_merge( $defaults, $attrs )
+	$alt     = isset( $attrs['alt'] ) ? (string) $attrs['alt'] : (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+	$class   = isset( $attrs['class'] ) ? (string) $attrs['class'] : '';
+	$loading = isset( $attrs['loading'] ) ? (string) $attrs['loading'] : ( 'hero-banner' === $slot_key ? 'eager' : 'lazy' );
+	if ( 'hero-banner' === $slot_key ) {
+		$w = $w ? $w : 2048;
+		$h = $h ? $h : 751;
+	}
+	$fetch = '';
+	if ( 'hero-banner' === $slot_key ) {
+		$fetch_val = isset( $attrs['fetchpriority'] ) ? (string) $attrs['fetchpriority'] : 'high';
+		$fetch     = ' fetchpriority="' . esc_attr( $fetch_val ) . '"';
+	}
+	$dim = ( $w > 0 && $h > 0 ) ? sprintf( ' width="%d" height="%d"', $w, $h ) : '';
+	return sprintf(
+		'<img src="%s" alt="%s" class="%s" loading="%s" decoding="async"%s%s />',
+		esc_url( $url ),
+		esc_attr( $alt ),
+		esc_attr( $class ),
+		esc_attr( $loading ),
+		$fetch,
+		$dim
 	);
 }
 
@@ -345,15 +342,19 @@ function annam_limo_landing_enqueue_assets() {
 			foreach ( $config['gallery'] as $item ) {
 				$slot = isset( $item['slot'] ) ? (string) $item['slot'] : '';
 				$url  = '';
+				$aid  = 0;
 				if ( $slot && function_exists( 'annam_limo_landing_get_image_attachment_id' ) ) {
-					$aid = annam_limo_landing_get_image_attachment_id( $slot );
+					$aid = annam_limo_landing_get_image_attachment_id( $slot, $route );
 					if ( $aid > 0 ) {
 						$src = wp_get_attachment_image_src( $aid, 'large' );
 						$url = is_array( $src ) ? (string) $src[0] : '';
+						if ( '' !== $url && function_exists( 'annam_limo_landing_cache_bust_url' ) ) {
+							$url = annam_limo_landing_cache_bust_url( $url, $aid, $route );
+						}
 					}
 				}
 				if ( '' === $url && function_exists( 'annam_limo_landing_image_url' ) ) {
-					$url = annam_limo_landing_image_url( $slot );
+					$url = annam_limo_landing_image_url( $slot, $route );
 				}
 				if ( '' !== $url ) {
 					$gallery_js[] = array(
@@ -370,18 +371,21 @@ function annam_limo_landing_enqueue_assets() {
 			: array();
 		foreach ( $team_slots_js as $team_slot_key ) {
 			$url = function_exists( 'annam_limo_landing_image_url' )
-				? annam_limo_landing_image_url( (string) $team_slot_key )
+				? annam_limo_landing_image_url( (string) $team_slot_key, $route )
 				: '';
 			if ( '' === $url ) {
 				continue;
 			}
 			$full = '';
 			$aid  = function_exists( 'annam_limo_landing_get_image_attachment_id' )
-				? annam_limo_landing_get_image_attachment_id( (string) $team_slot_key )
+				? annam_limo_landing_get_image_attachment_id( (string) $team_slot_key, $route )
 				: 0;
 			if ( $aid > 0 ) {
 				$full_src = wp_get_attachment_image_src( $aid, 'full' );
 				$full     = is_array( $full_src ) ? (string) $full_src[0] : '';
+				if ( '' !== $full && function_exists( 'annam_limo_landing_cache_bust_url' ) ) {
+					$full = annam_limo_landing_cache_bust_url( $full, $aid, $route );
+				}
 			}
 			$team_gallery_js[] = array(
 				'src'     => $full ? $full : $url,
@@ -503,19 +507,20 @@ function annam_limo_landing_save_meta_box( $post_id ) {
 add_action( 'save_post_page', 'annam_limo_landing_save_meta_box' );
 
 /**
- * Tạo trang Hạ Long một lần nếu chưa có.
+ * Tạo / sửa template trang Hạ Long.
  */
 function annam_limo_landing_maybe_create_halong_page() {
+	if ( function_exists( 'annam_limo_landing_ensure_route_page_template' ) ) {
+		$ensured = annam_limo_landing_ensure_route_page_template( 'halong' );
+		if ( $ensured > 0 ) {
+			update_option( 'annam_limo_halong_page_created', 1, false );
+			return;
+		}
+	}
 	if ( get_option( 'annam_limo_halong_page_created' ) ) {
 		return;
 	}
-	$slug     = 'xe-limousine-ha-noi-ha-long';
-	$existing = get_page_by_path( $slug );
-	if ( $existing instanceof WP_Post ) {
-		update_post_meta( (int) $existing->ID, '_wp_page_template', 'page-template-limousine-halong-landing.php' );
-		update_option( 'annam_limo_halong_page_created', 1, false );
-		return;
-	}
+	$slug    = 'xe-limousine-ha-noi-ha-long';
 	$page_id = wp_insert_post(
 		array(
 			'post_title'   => 'Vé Limousine Hà Nội – Hạ Long',
@@ -534,19 +539,20 @@ function annam_limo_landing_maybe_create_halong_page() {
 add_action( 'init', 'annam_limo_landing_maybe_create_halong_page', 30 );
 
 /**
- * Tạo trang Ninh Bình một lần nếu chưa có.
+ * Tạo / sửa template trang Ninh Bình (luôn ép lại đúng template nếu slug tồn tại).
  */
 function annam_limo_landing_maybe_create_ninhbinh_page() {
+	if ( function_exists( 'annam_limo_landing_ensure_route_page_template' ) ) {
+		$ensured = annam_limo_landing_ensure_route_page_template( 'ninhbinh' );
+		if ( $ensured > 0 ) {
+			update_option( 'annam_limo_ninhbinh_page_created', 1, false );
+			return;
+		}
+	}
 	if ( get_option( 'annam_limo_ninhbinh_page_created' ) ) {
 		return;
 	}
-	$slug     = 'xe-limousine-ha-noi-ninh-binh';
-	$existing = get_page_by_path( $slug );
-	if ( $existing instanceof WP_Post ) {
-		update_post_meta( (int) $existing->ID, '_wp_page_template', 'page-template-limousine-ninhbinh-landing.php' );
-		update_option( 'annam_limo_ninhbinh_page_created', 1, false );
-		return;
-	}
+	$slug    = 'xe-limousine-ha-noi-ninh-binh';
 	$page_id = wp_insert_post(
 		array(
 			'post_title'   => 'Vé Limousine Hà Nội – Ninh Bình',
