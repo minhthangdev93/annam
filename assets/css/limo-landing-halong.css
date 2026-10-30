@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Ha Long seat landing only. Loaded when body has .annam-limo-landing--halong.
  */
 
@@ -37,36 +37,40 @@ body.annam-limo-landing--halong.annam-limo-landing-page .annam-limo-landing a.an
 }
 
 body.annam-limo-landing--halong .annam-limo-hero {
-	background: var(--annam-limo-teal-dark);
-	color: #fff;
+	/* Cùng nền khối Lịch Xe (band-teal). */
+	background:
+		radial-gradient(ellipse 80% 55% at 12% 0%, rgba(1, 170, 144, 0.22), transparent 55%),
+		radial-gradient(ellipse 60% 45% at 88% 100%, rgba(15, 76, 76, 0.08), transparent 50%),
+		linear-gradient(180deg, #e6f8f4 0%, #f2fbf9 48%, #fafcfb 100%);
+	color: var(--annam-limo-ink);
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__eyebrow {
-	color: #b7ece3;
+	color: var(--annam-limo-teal);
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__title,
 body.annam-limo-landing--halong .annam-limo-hero__subtitle {
-	color: #fff;
+	color: var(--annam-limo-teal-dark);
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__price {
-	color: #fff;
+	color: var(--annam-limo-ink);
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__price-label,
 body.annam-limo-landing--halong .annam-limo-hero__price-unit {
-	color: #ffe0b8;
+	color: var(--annam-limo-muted);
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__price strong {
-	color: #ffb45c;
+	color: var(--annam-limo-orange);
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__badge {
-	background: rgba(255, 255, 255, 0.14);
-	color: #fff;
-	border-color: rgba(255, 255, 255, 0.4);
+	background: #fff;
+	color: var(--annam-limo-teal-dark);
+	border-color: rgba(1, 170, 144, 0.28);
 }
 
 
@@ -490,32 +494,14 @@ body.annam-limo-landing--halong .annam-limo-final .annam-limo-btn--outline:focus
 }
 
 /* —— Brand color punch (teal + orange) —— */
-body.annam-limo-landing--halong .annam-limo-hero {
-	background:
-		radial-gradient(ellipse 70% 80% at 100% 0%, rgba(245, 130, 32, 0.28), transparent 55%),
-		radial-gradient(ellipse 55% 60% at 0% 100%, rgba(1, 170, 144, 0.35), transparent 50%),
-		linear-gradient(155deg, #0b3d3d 0%, #0f4c4c 48%, #0a3636 100%);
-}
-
 body.annam-limo-landing--halong .annam-limo-hero__eyebrow {
-	color: #7fe0d0;
 	letter-spacing: 0.08em;
 	font-weight: 700;
 }
 
 body.annam-limo-landing--halong .annam-limo-hero__price strong {
-	color: #f58220;
-	text-shadow: 0 0 24px rgba(245, 130, 32, 0.35);
-}
-
-body.annam-limo-landing--halong .annam-limo-hero__price-label,
-body.annam-limo-landing--halong .annam-limo-hero__price-unit {
-	color: #ffd9a8;
-}
-
-body.annam-limo-landing--halong .annam-limo-hero__badge {
-	background: rgba(1, 170, 144, 0.22);
-	border-color: rgba(127, 224, 208, 0.45);
+	color: var(--annam-limo-orange);
+	text-shadow: none;
 }
 
 body.annam-limo-landing--halong .annam-limo-section__title {

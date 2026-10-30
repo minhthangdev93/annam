@@ -558,6 +558,42 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php
+	$team_cfg   = isset( $config['team'] ) && is_array( $config['team'] ) ? $config['team'] : array();
+	$team_slots = ( ! empty( $secs['team'] ) && ! empty( $team_cfg['slots'] ) && is_array( $team_cfg['slots'] ) )
+		? $team_cfg['slots']
+		: array();
+	?>
+	<?php if ( ! empty( $secs['team'] ) && ! empty( $team_slots ) ) : ?>
+	<section class="annam-limo-section annam-limo-section--team annam-limo-section--band-teal" id="doi-ngu">
+		<div class="annam-limo-container">
+			<h2 class="annam-limo-section__title"><?php echo esc_html( ! empty( $team_cfg['title'] ) ? $team_cfg['title'] : __( 'Đội ngũ An Nam Discovery', 'generatepress_child' ) ); ?></h2>
+			<?php if ( ! empty( $team_cfg['lead'] ) ) : ?>
+				<p class="annam-limo-section__lead"><?php echo esc_html( $team_cfg['lead'] ); ?></p>
+			<?php endif; ?>
+			<ul class="annam-limo-team-grid">
+				<?php foreach ( $team_slots as $team_slot ) : ?>
+					<li class="annam-limo-team-grid__item">
+						<?php
+						if ( function_exists( 'annam_limo_landing_print_image' ) ) {
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo annam_limo_landing_print_image(
+								(string) $team_slot,
+								array(
+									'alt'     => __( 'Đội ngũ An Nam Discovery', 'generatepress_child' ),
+									'loading' => 'lazy',
+									'class'   => 'annam-limo-team-grid__img',
+								)
+							);
+						}
+						?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php
 	$cabin_upsell = isset( $config['cabin_upsell'] ) && is_array( $config['cabin_upsell'] ) ? $config['cabin_upsell'] : array();
 	$cabin_cards  = ( ! empty( $secs['cabin_upsell'] ) && function_exists( 'annam_limo_landing_get_cabin_upsell_cards' ) )
 		? annam_limo_landing_get_cabin_upsell_cards()
@@ -628,7 +664,7 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['steps'] ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--band-teal" id="dat-ve">
+	<section class="annam-limo-section annam-limo-section--band-orange" id="dat-ve">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Đặt Vé 3 Bước', 'generatepress_child' ); ?></h2>
 			<ol class="annam-limo-steps">
@@ -650,7 +686,7 @@ if ( has_post_thumbnail() ) {
 	<?php endif; ?>
 
 	<?php if ( ! empty( $secs['faq'] ) ) : ?>
-	<section class="annam-limo-section annam-limo-section--band-orange" id="faq">
+	<section class="annam-limo-section annam-limo-section--band-teal" id="faq">
 		<div class="annam-limo-container">
 			<h2 class="annam-limo-section__title"><?php esc_html_e( 'Câu Hỏi Thường Gặp', 'generatepress_child' ); ?></h2>
 			<div class="annam-limo-faq">

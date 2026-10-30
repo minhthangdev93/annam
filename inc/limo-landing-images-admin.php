@@ -109,6 +109,34 @@ function annam_limo_landing_get_image_slots( $route = '' ) {
 		),
 	);
 
+	/* Đội ngũ — chỉ HL / Ninh Bình (không caption). */
+	if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) ) {
+		$team_fallbacks = array(
+			'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=800&q=80',
+		);
+		for ( $i = 1; $i <= 6; $i++ ) {
+			$slots[ 'team-' . $i ] = array(
+				'label'       => sprintf(
+					/* translators: %d: team photo number 1–6 */
+					__( 'Đội ngũ — ảnh %d', 'generatepress_child' ),
+					$i
+				),
+				'section'     => 'team',
+				'placement'   => __( 'Khối Đội ngũ An Nam Discovery', 'generatepress_child' ),
+				'recommended' => '800 × 800 px',
+				'ratio'       => '1 : 1',
+				'formats'     => 'JPG, WebP',
+				'wp_size'     => 'large',
+				'fallback'    => $team_fallbacks[ $i - 1 ],
+			);
+		}
+	}
+
 	return apply_filters( 'annam_limo_landing_image_slots', $slots );
 }
 

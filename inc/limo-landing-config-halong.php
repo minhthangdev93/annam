@@ -366,6 +366,11 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			'subtitle' => 'Gửi số điện thoại, Zalo hoặc WhatsApp. Sale gọi tư vấn và hướng dẫn thanh toán.',
 		),
 		'cabin_upsell'  => array(),
+		'team'          => array(
+			'title' => 'Đội ngũ An Nam Discovery',
+			'lead'  => '',
+			'slots' => array( 'team-1', 'team-2', 'team-3', 'team-4', 'team-5', 'team-6' ),
+		),
 		'anchors'       => array(
 			array( 'id' => 'gia-ve', 'label' => 'Bảng giá' ),
 			array( 'id' => 'lich-xe', 'label' => 'Lịch xe' ),
@@ -373,6 +378,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			array( 'id' => 'chinh-sach', 'label' => 'Chính sách' ),
 			array( 'id' => 'thanh-toan', 'label' => 'Thanh toán' ),
 			array( 'id' => 'anh-xe', 'label' => 'Ảnh xe' ),
+			array( 'id' => 'doi-ngu', 'label' => 'Đội ngũ' ),
 			array( 'id' => 'faq', 'label' => 'FAQ' ),
 		),
 		'sections'      => array(
@@ -387,6 +393,7 @@ function annam_limo_landing_get_halong_config( $page_id = 0 ) { // phpcs:ignore 
 			'gallery'      => true,
 			'video'        => true,
 			'why'          => true,
+			'team'         => true,
 			'cabin_upsell' => false,
 			'steps'        => true,
 			'faq'          => true,
