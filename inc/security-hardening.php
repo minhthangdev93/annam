@@ -269,24 +269,88 @@ function annam_security_authenticate_lockout( $user, $username, $password ) {
 add_filter( 'authenticate', 'annam_security_authenticate_lockout', 5, 3 );
 
 /**
- * Comment: từ khóa spam → chờ duyệt (không xóa nội dung).
+ * Bỏ URL website trên form bình luận (spam hay nhét link vào đây).
  *
- * @param int|string|float $approved Approved.
  * @param array<string,mixed> $commentdata Data.
- * @return int|string|float
+ * @return array<string,mixed>
  */
-function annam_security_comment_spam_keywords( $approved, $commentdata ) {
-	if ( 1 === (int) $approved || 'spam' === $approved ) {
-		return $approved;
+function annam_security_strip_comment_author_url( $commentdata ) {
+	$type = isset( $commentdata['comment_type'] ) ? (string) $commentdata['comment_type'] : '';
+	if ( 'review' === $type ) {
+		return $commentdata;
 	}
-	$text = '';
-	if ( isset( $commentdata['comment_content'] ) ) {
-		$text .= ' ' . $commentdata['comment_content'];
+	$commentdata['comment_author_url'] = '';
+	return $commentdata;
+}
+add_filter( 'preprocess_comment', 'annam_security_strip_comment_author_url', 5 );
+
+/**
+ * Đóng bình luận bài viết / trang cũ hơn N ngày (review Woo giữ nguyên).
+ *
+ * @param bool $open    Open.
+ * @param int  $post_id Post ID.
+ * @return bool
+ */
+function annam_security_close_old_comments( $open, $post_id ) {
+	if ( ! $open ) {
+		return false;
 	}
-	if ( isset( $commentdata['comment_author'] ) ) {
-		$text .= ' ' . $commentdata['comment_author'];
+	$post_id = (int) $post_id;
+	if ( $post_id <= 0 ) {
+		return $open;
 	}
-	$text = strtolower( wp_strip_all_tags( (string) $text ) );
+	$post = get_post( $post_id );
+	if ( ! $post instanceof WP_Post ) {
+		return $open;
+	}
+	if ( 'product' === $post->post_type ) {
+		return $open;
+	}
+	$days = (int) apply_filters( 'annam_security_close_comments_after_days', 45 );
+	if ( $days <= 0 ) {
+		return $open;
+	}
+	$created = strtotime( $post->post_date_gmt . ' UTC' );
+	if ( ! $created ) {
+		return $open;
+	}
+	if ( ( time() - $created ) > ( $days * DAY_IN_SECONDS ) ) {
+		return false;
+	}
+	return $open;
+}
+add_filter( 'comments_open', 'annam_security_close_old_comments', 20, 2 );
+
+/**
+ * Heuristic: comment có vẻ spam?
+ *
+ * @param array<string,mixed> $commentdata Data.
+ * @return bool
+ */
+function annam_security_comment_looks_like_spam( $commentdata ) {
+	$type = isset( $commentdata['comment_type'] ) ? (string) $commentdata['comment_type'] : '';
+	if ( 'review' === $type ) {
+		return false;
+	}
+
+	$content = isset( $commentdata['comment_content'] ) ? (string) $commentdata['comment_content'] : '';
+	$author  = isset( $commentdata['comment_author'] ) ? (string) $commentdata['comment_author'] : '';
+	$email   = isset( $commentdata['comment_author_email'] ) ? (string) $commentdata['comment_author_email'] : '';
+	$url     = isset( $commentdata['comment_author_url'] ) ? (string) $commentdata['comment_author_url'] : '';
+	$plain   = strtolower( wp_strip_all_tags( $content . ' ' . $author . ' ' . $email . ' ' . $url ) );
+
+	if ( '' !== trim( $url ) && ! in_array( $url, array( 'http://', 'https://' ), true ) ) {
+		return true;
+	}
+
+	/* Link trong nội dung / author kiểu domain. */
+	if ( preg_match( '/https?:\/\/|www\.\S+\.\S+/i', $content . ' ' . $author ) ) {
+		return true;
+	}
+	if ( preg_match( '/\b[a-z0-9-]+\.(com|net|org|xyz|top|click|shop|app|info|biz)\b/i', $author ) ) {
+		return true;
+	}
+
 	$keywords = apply_filters(
 		'annam_security_comment_spam_keywords',
 		array(
@@ -298,17 +362,241 @@ function annam_security_comment_spam_keywords( $approved, $commentdata ) {
 			'backlink',
 			'crypto wallet',
 			'telegram @',
+			'jackpot',
+			'betting',
+			'gambling',
+			'slot game',
+			'forex',
+			'binance',
+			'my website',
+			'check out my',
+			'stop by my',
+			'look at my web',
 		)
 	);
 	foreach ( (array) $keywords as $kw ) {
 		$kw = strtolower( trim( (string) $kw ) );
-		if ( '' !== $kw && false !== strpos( $text, $kw ) ) {
-			return 0;
+		if ( '' !== $kw && false !== strpos( $plain, $kw ) ) {
+			return true;
 		}
+	}
+
+	/* Toàn tiếng Anh dài + không dấu tiếng Việt trên site du lịch VN → nghi spam. */
+	$has_vi = (bool) preg_match( '/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/iu', $content );
+	$len    = function_exists( 'mb_strlen' ) ? mb_strlen( wp_strip_all_tags( $content ), 'UTF-8' ) : strlen( wp_strip_all_tags( $content ) );
+	if ( ! $has_vi && $len >= 80 && preg_match( '/\b(the|and|you|your|website|app|game|money|view)\b/i', $content ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Comment spam → đánh dấu spam (không publish).
+ *
+ * @param int|string|float    $approved    Approved.
+ * @param array<string,mixed> $commentdata Data.
+ * @return int|string|float
+ */
+function annam_security_comment_spam_gate( $approved, $commentdata ) {
+	if ( 'spam' === $approved || 'trash' === $approved ) {
+		return $approved;
+	}
+	if ( ! is_array( $commentdata ) ) {
+		return $approved;
+	}
+	if ( annam_security_comment_looks_like_spam( $commentdata ) ) {
+		return 'spam';
+	}
+	/* Mọi comment bài viết: chờ duyệt (review Woo không vào đây thường xuyên). */
+	$type = isset( $commentdata['comment_type'] ) ? (string) $commentdata['comment_type'] : '';
+	if ( 'review' !== $type && apply_filters( 'annam_security_force_comment_moderation', true ) ) {
+		return 0;
 	}
 	return $approved;
 }
-add_filter( 'pre_comment_approved', 'annam_security_comment_spam_keywords', 9, 2 );
+add_filter( 'pre_comment_approved', 'annam_security_comment_spam_gate', 9, 2 );
+
+/**
+ * Rate limit bình luận theo IP.
+ *
+ * @param array<string,mixed> $commentdata Data.
+ * @return array<string,mixed>
+ */
+function annam_security_comment_rate_limit( $commentdata ) {
+	$type = isset( $commentdata['comment_type'] ) ? (string) $commentdata['comment_type'] : '';
+	if ( 'review' === $type ) {
+		return $commentdata;
+	}
+	if ( ! function_exists( 'annam_check_rate_limit' ) ) {
+		return $commentdata;
+	}
+	$max = (int) apply_filters( 'annam_security_comment_rate_max', 3 );
+	$win = (int) apply_filters( 'annam_security_comment_rate_minutes', 30 );
+	if ( $max < 1 || $win < 1 ) {
+		return $commentdata;
+	}
+	if ( ! annam_check_rate_limit( 'annam_blog_comment', $max, $win ) ) {
+		wp_die(
+			esc_html__( 'Bạn gửi bình luận quá nhanh. Vui lòng thử lại sau.', 'generatepress_child' ),
+			esc_html__( 'Bị giới hạn', 'generatepress_child' ),
+			array( 'response' => 429 )
+		);
+	}
+	annam_rate_limit_increment( 'annam_blog_comment', $win );
+	return $commentdata;
+}
+add_filter( 'preprocess_comment', 'annam_security_comment_rate_limit', 8 );
+
+/**
+ * Menu: dọn bình luận spam cũ.
+ */
+function annam_security_comment_spam_menu() {
+	add_submenu_page(
+		'annam-settings',
+		__( 'Dọn comment spam', 'generatepress_child' ),
+		__( 'Dọn comment spam', 'generatepress_child' ),
+		'moderate_comments',
+		'annam-comment-spam-cleanup',
+		'annam_security_comment_spam_render_page'
+	);
+}
+add_action( 'admin_menu', 'annam_security_comment_spam_menu', 40 );
+
+/**
+ * @return int Số comment đã đánh spam.
+ */
+function annam_security_purge_suspicious_comments() {
+	$marked = 0;
+	$page   = 1;
+	do {
+		$query = new WP_Comment_Query(
+			array(
+				'status'                       => 'all',
+				'type__not_in'                 => array( 'review', 'order_note', 'webhook_delivery' ),
+				'number'                       => 100,
+				'paged'                        => $page,
+				'orderby'                      => 'comment_ID',
+				'order'                        => 'DESC',
+				'no_found_rows'                => true,
+				'update_comment_meta_cache'    => false,
+			)
+		);
+		$comments = $query->comments;
+		if ( empty( $comments ) ) {
+			break;
+		}
+		foreach ( $comments as $c ) {
+			if ( ! $c instanceof WP_Comment ) {
+				continue;
+			}
+			if ( in_array( $c->comment_approved, array( 'spam', 'trash' ), true ) ) {
+				continue;
+			}
+			$data = array(
+				'comment_content'      => $c->comment_content,
+				'comment_author'       => $c->comment_author,
+				'comment_author_email' => $c->comment_author_email,
+				'comment_author_url'   => $c->comment_author_url,
+				'comment_type'         => $c->comment_type ? $c->comment_type : 'comment',
+			);
+			if ( annam_security_comment_looks_like_spam( $data ) ) {
+				wp_spam_comment( (int) $c->comment_ID );
+				++$marked;
+			}
+		}
+		++$page;
+		if ( $page > 50 ) {
+			break;
+		}
+	} while ( ! empty( $comments ) );
+
+	return $marked;
+}
+
+/**
+ * @return int
+ */
+function annam_security_empty_spam_comments() {
+	$deleted = 0;
+	$spam    = get_comments(
+		array(
+			'status' => 'spam',
+			'number' => 500,
+			'fields' => 'ids',
+		)
+	);
+	if ( ! is_array( $spam ) ) {
+		return 0;
+	}
+	foreach ( $spam as $cid ) {
+		if ( wp_delete_comment( (int) $cid, true ) ) {
+			++$deleted;
+		}
+	}
+	return $deleted;
+}
+
+/**
+ * Admin page.
+ */
+function annam_security_comment_spam_render_page() {
+	if ( ! current_user_can( 'moderate_comments' ) ) {
+		return;
+	}
+
+	$notice = '';
+	if ( isset( $_POST['annam_spam_action'] ) && check_admin_referer( 'annam_comment_spam_cleanup' ) ) {
+		$action = sanitize_key( wp_unslash( (string) $_POST['annam_spam_action'] ) );
+		if ( 'mark' === $action ) {
+			$n      = annam_security_purge_suspicious_comments();
+			$notice = sprintf(
+				/* translators: %d: count */
+				__( 'Đã đánh dấu spam %d bình luận nghi ngờ.', 'generatepress_child' ),
+				$n
+			);
+		} elseif ( 'empty' === $action ) {
+			$n      = annam_security_empty_spam_comments();
+			$notice = sprintf(
+				/* translators: %d: count */
+				__( 'Đã xóa vĩnh viễn %d bình luận trong thùng spam.', 'generatepress_child' ),
+				$n
+			);
+		}
+	}
+
+	$hold  = (int) get_comments( array( 'status' => 'hold', 'count' => true ) );
+	$spam  = (int) get_comments( array( 'status' => 'spam', 'count' => true ) );
+	$appr  = (int) get_comments( array( 'status' => 'approve', 'count' => true, 'type' => 'comment' ) );
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Dọn comment spam', 'generatepress_child' ); ?></h1>
+		<?php if ( $notice ) : ?>
+			<div class="notice notice-success is-dismissible"><p><?php echo esc_html( $notice ); ?></p></div>
+		<?php endif; ?>
+		<p><?php esc_html_e( 'Theme tự đánh spam comment có link / từ khóa cờ bạc-SEO, đóng comment bài cũ >45 ngày, bắt buộc duyệt tay. Dùng nút dưới để dọn hàng loạt comment đã có.', 'generatepress_child' ); ?></p>
+		<ul>
+			<li><?php echo esc_html( sprintf( /* translators: %d */ __( 'Đang chờ duyệt: %d', 'generatepress_child' ), $hold ) ); ?></li>
+			<li><?php echo esc_html( sprintf( /* translators: %d */ __( 'Đã đánh spam: %d', 'generatepress_child' ), $spam ) ); ?></li>
+			<li><?php echo esc_html( sprintf( /* translators: %d */ __( 'Comment đã duyệt (không gồm review): %d', 'generatepress_child' ), $appr ) ); ?></li>
+		</ul>
+		<form method="post" action="">
+			<?php wp_nonce_field( 'annam_comment_spam_cleanup' ); ?>
+			<p>
+				<button type="submit" class="button button-primary" name="annam_spam_action" value="mark" onclick="return confirm('Đánh spam mọi comment nghi ngờ (có link, casino, tiếng Anh dài…)?');">
+					<?php esc_html_e( '1. Đánh dấu spam comment nghi ngờ', 'generatepress_child' ); ?>
+				</button>
+			</p>
+			<p>
+				<button type="submit" class="button" name="annam_spam_action" value="empty" onclick="return confirm('Xóa vĩnh viễn toàn bộ comment đang ở mục Spam?');">
+					<?php esc_html_e( '2. Xóa vĩnh viễn mục Spam', 'generatepress_child' ); ?>
+				</button>
+			</p>
+		</form>
+		<p><a href="<?php echo esc_url( admin_url( 'edit-comments.php' ) ); ?>"><?php esc_html_e( 'Mở danh sách bình luận', 'generatepress_child' ); ?></a></p>
+	</div>
+	<?php
+}
 
 /**
  * Ghi .htaccess chặn PHP trong uploads (Apache); chỉ chạy một lần nếu ghi được.
