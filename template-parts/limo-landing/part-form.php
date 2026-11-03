@@ -67,14 +67,7 @@ $seat_label   = ! empty( $form['seat_label'] )
 
 		<p class="annam-limo-form__hint" id="annam-limo-time-hint" hidden></p>
 
-		<?php if ( $phone_first ) : ?>
-			<div class="annam-limo-form__trip-bar">
-				<p class="annam-limo-form__trip-line" id="annam-limo-trip-line"></p>
-				<button type="button" class="annam-limo-form__trip-edit" id="annam-limo-trip-edit" aria-expanded="false" aria-controls="annam-limo-trip"><?php esc_html_e( 'Sửa chuyến', 'generatepress_child' ); ?></button>
-			</div>
-		<?php endif; ?>
-
-		<div class="annam-limo-form__trip" id="annam-limo-trip" <?php echo $phone_first ? 'hidden' : ''; ?>>
+		<div class="annam-limo-form__trip" id="annam-limo-trip">
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-from"><?php esc_html_e( 'Điểm đón', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>

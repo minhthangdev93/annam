@@ -155,6 +155,19 @@
 		return scheduleMap[key] || [];
 	}
 
+	function getMinLeadMinutes() {
+		var leadMins = parseInt(booking.minLeadMinutes, 10);
+		if (isNaN(leadMins)) {
+			leadMins = (booking.minLeadHours || 2) * 60;
+		}
+		return leadMins;
+	}
+
+	/** HL / NB: min_lead 0 — không ẩn giờ quá khứ, không nhảy sang ngày mai. */
+	function allowPastDepartureTimes() {
+		return getMinLeadMinutes() <= 0;
+	}
+
 	function filterTimesForToday(times, dateYmd) {
 		if (!dateYmd || !booking.dateToday) {
 			return times;
@@ -165,14 +178,11 @@
 		if (dateYmd < booking.dateToday) {
 			return [];
 		}
-		var leadMins = parseInt(booking.minLeadMinutes, 10);
-		if (isNaN(leadMins)) {
-			leadMins = (booking.minLeadHours || 2) * 60;
-		}
-		// 0 = do not hide past departure times (sale confirms; copy-only lead note).
-		if (leadMins <= 0) {
+		// 0 = không khóa giờ đã qua trong ngày (sale xác nhận).
+		if (allowPastDepartureTimes()) {
 			return times;
 		}
+		var leadMins = getMinLeadMinutes();
 		var now = new Date();
 		var thresholdMins = now.getHours() * 60 + now.getMinutes() + leadMins;
 		if (thresholdMins >= 24 * 60) {
@@ -183,6 +193,19 @@
 			var mins = parseInt(parts[0], 10) * 60 + parseInt(parts[1] || '0', 10);
 			return mins >= thresholdMins;
 		});
+	}
+
+	/** Không cho ngày quá khứ; mặc định hôm nay. Tương lai vẫn chọn được. */
+	function clampDateNotPast(forceToday) {
+		var dateEl = $('#annam-limo-date');
+		if (!dateEl || !booking.dateToday) {
+			return;
+		}
+		dateEl.min = booking.dateToday;
+		var val = dateEl.value || '';
+		if (forceToday || !val || val < booking.dateToday) {
+			dateEl.value = booking.dateToday;
+		}
 	}
 
 	function rebuildTimeSelect(preferred) {
@@ -200,6 +223,7 @@
 		var filtered = filterTimesForToday(all, dateYmd);
 
 		if (
+			!allowPastDepartureTimes() &&
 			dateYmd === booking.dateToday &&
 			filtered.length === 0 &&
 			!autoTomorrowDone &&
@@ -341,6 +365,12 @@
 				showFormNotice('error', i18n.sameRoute || 'Tuyến không hợp lệ.');
 				return;
 			}
+			var dateEl = $('#annam-limo-date', form);
+			if (dateEl && booking.dateToday && dateEl.value && dateEl.value < booking.dateToday) {
+				clampDateNotPast(true);
+				showFormNotice('error', i18n.pastDate || 'Không thể chọn ngày trong quá khứ.');
+				return;
+			}
 			if (timeEl && !timeEl.value) {
 				showFormNotice('error', i18n.pickTimeRequired || 'Vui lòng chọn giờ đi.');
 				return;
@@ -422,10 +452,9 @@
 						if (defs.seat) {
 							setField('seat', defs.seat);
 						}
-						if (defs.date && $('#annam-limo-date')) {
-							$('#annam-limo-date').value = defs.date;
-						}
+						clampDateNotPast(true);
 						rebuildTimeSelect(defs.time || '07:00');
+						updateTripSummary();
 						var ts = $('#annam-limo-ts');
 						if (ts) {
 							ts.value = String(Math.floor(Date.now() / 1000));
@@ -534,7 +563,9 @@
 		if (dateEl) {
 			dateEl.addEventListener('change', function () {
 				autoTomorrowDone = false;
+				clampDateNotPast(false);
 				rebuildTimeSelect('');
+				updateTripSummary();
 			});
 		}
 	}
@@ -806,9 +837,11 @@
 		fillAttributionFields();
 		rebuildDestinationOptions();
 		applyDirectionQuery();
+		clampDateNotPast(true);
 		rebuildTimeSelect((cfg.formDefaults && cfg.formDefaults.time) || '07:00');
 		initRouteListeners();
 		initTripEditor();
+		updateTripSummary();
 		initTabs();
 		initPickers();
 		initAjaxForm();

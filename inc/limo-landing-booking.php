@@ -117,7 +117,12 @@ function annam_limo_landing_process_booking( array $input ) {
 
 	$allowed_times = annam_limo_landing_filter_times_for_date( $from_place, $to_place, $travel_date, $route );
 	if ( '' === $dep_time || ! in_array( $dep_time, $allowed_times, true ) ) {
-		return $fail( __( 'Giờ đi không hợp lệ hoặc đã qua. Vui lòng chọn giờ khác.', 'generatepress_child' ), 'time' );
+		$lead_mins = isset( $profile['min_lead_minutes'] ) ? (int) $profile['min_lead_minutes'] : 120;
+		/* HL/NB lead 0: giờ quá khứ trong ngày vẫn hợp lệ — chỉ báo khi giờ không thuộc lịch. */
+		$time_msg  = ( $lead_mins <= 0 )
+			? __( 'Giờ đi không hợp lệ. Vui lòng chọn giờ trong lịch chạy.', 'generatepress_child' )
+			: __( 'Giờ đi không hợp lệ hoặc đã qua. Vui lòng chọn giờ khác.', 'generatepress_child' );
+		return $fail( $time_msg, 'time' );
 	}
 
 	$labels      = isset( $profile['places'] ) && is_array( $profile['places'] ) ? $profile['places'] : array();
