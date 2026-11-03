@@ -337,6 +337,12 @@ function annam_limo_landing_enqueue_assets() {
 			}
 		}
 		$today         = wp_date( 'Y-m-d' );
+		$tomorrow      = wp_date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) );
+		$hour_now      = (int) wp_date( 'G' );
+		$default_date  = $today;
+		if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) && $hour_now >= 19 ) {
+			$default_date = $tomorrow;
+		}
 		$gallery_js    = array();
 		if ( ! empty( $config['gallery'] ) ) {
 			foreach ( $config['gallery'] as $item ) {
@@ -407,7 +413,7 @@ function annam_limo_landing_enqueue_assets() {
 					'to'   => isset( $form_defaults['to'] ) ? $form_defaults['to'] : 'sapa',
 					'seat' => isset( $form_defaults['seat'] ) ? $form_defaults['seat'] : 'seat_a',
 					'time' => isset( $form_defaults['time'] ) ? $form_defaults['time'] : '07:00',
-					'date' => $today,
+					'date' => $default_date,
 				),
 				'booking'           => array(
 					'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
@@ -416,7 +422,10 @@ function annam_limo_landing_enqueue_assets() {
 					'nonce'           => wp_create_nonce( 'annam_limo_booking' ),
 					'pageUrl'         => get_permalink() ? get_permalink() : home_url( '/' ),
 					'dateToday'       => $today,
-					'dateTomorrow'    => wp_date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) ),
+					'dateTomorrow'    => $tomorrow,
+					'dateDefault'     => $default_date,
+					'hourNow'         => $hour_now,
+					'dateRolloverHour'=> 19,
 					'minLeadMinutes'  => isset( $profile['min_lead_minutes'] ) ? (int) $profile['min_lead_minutes'] : 120,
 					'timezone'        => wp_timezone_string(),
 				),

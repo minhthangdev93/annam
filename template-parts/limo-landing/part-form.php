@@ -17,9 +17,15 @@ $default_to   = isset( $defaults['to'] ) ? sanitize_key( (string) $defaults['to'
 $default_seat = isset( $defaults['seat'] ) ? sanitize_key( (string) $defaults['seat'] ) : 'seat_a';
 $default_time = isset( $defaults['time'] ) ? (string) $defaults['time'] : '07:00';
 $today        = wp_date( 'Y-m-d' );
+$tomorrow     = wp_date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) );
 $route        = function_exists( 'annam_limo_landing_current_route' ) ? annam_limo_landing_current_route() : '';
 if ( '' === $route ) {
 	$route = 'sapa';
+}
+/* HL / NB: sau 19h (giờ WP) mặc định chọn ngày mai. */
+$default_date = $today;
+if ( in_array( $route, array( 'halong', 'ninhbinh' ), true ) && (int) wp_date( 'G' ) >= 19 ) {
+	$default_date = $tomorrow;
 }
 $route_map    = annam_limo_landing_get_route_destinations_map( $route );
 $time_options = function_exists( 'annam_limo_landing_departure_times' )
@@ -93,7 +99,7 @@ $seat_label   = ! empty( $form['seat_label'] )
 		<div class="annam-limo-form__row annam-limo-form__row--2">
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-date"><?php esc_html_e( 'Ngày đi', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>
-				<input type="date" name="annam_limo_date" id="annam-limo-date" value="<?php echo esc_attr( $today ); ?>" min="<?php echo esc_attr( $today ); ?>" required data-annam-field="date" />
+				<input type="date" name="annam_limo_date" id="annam-limo-date" value="<?php echo esc_attr( $default_date ); ?>" min="<?php echo esc_attr( $today ); ?>" required data-annam-field="date" />
 			</div>
 			<div class="annam-limo-form__field">
 				<label for="annam-limo-time"><?php esc_html_e( 'Giờ đi', 'generatepress_child' ); ?> <span class="annam-limo-req">*</span></label>

@@ -195,16 +195,41 @@
 		});
 	}
 
-	/** Không cho ngày quá khứ; mặc định hôm nay. Tương lai vẫn chọn được. */
-	function clampDateNotPast(forceToday) {
+	/**
+	 * HL/NB: sau 19h (giờ server WP) mặc định ngày mai; vẫn cho chọn hôm nay.
+	 * Sapa / lead > 0: mặc định hôm nay.
+	 */
+	function getPreferredDefaultDate() {
+		if (booking.dateDefault) {
+			return booking.dateDefault;
+		}
+		if (allowPastDepartureTimes() && booking.dateTomorrow) {
+			var hour = parseInt(booking.hourNow, 10);
+			if (isNaN(hour)) {
+				hour = new Date().getHours();
+			}
+			var rollover = parseInt(booking.dateRolloverHour, 10);
+			if (isNaN(rollover)) {
+				rollover = 19;
+			}
+			if (hour >= rollover) {
+				return booking.dateTomorrow;
+			}
+		}
+		return booking.dateToday;
+	}
+
+	/** Không cho ngày quá khứ. forceDefault = set về ngày mặc định (hôm nay hoặc mai sau 19h). */
+	function clampDateNotPast(forceDefault) {
 		var dateEl = $('#annam-limo-date');
 		if (!dateEl || !booking.dateToday) {
 			return;
 		}
 		dateEl.min = booking.dateToday;
 		var val = dateEl.value || '';
-		if (forceToday || !val || val < booking.dateToday) {
-			dateEl.value = booking.dateToday;
+		var preferred = getPreferredDefaultDate();
+		if (forceDefault || !val || val < booking.dateToday) {
+			dateEl.value = preferred || booking.dateToday;
 		}
 	}
 
