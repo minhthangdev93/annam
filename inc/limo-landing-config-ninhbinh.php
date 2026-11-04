@@ -189,21 +189,21 @@ function annam_limo_landing_get_ninhbinh_config( $page_id = 0 ) { // phpcs:ignor
 		'policies'      => array(
 			array(
 				'label' => 'Hủy vé',
-				'text'  => 'Trước ít nhất 12 tiếng: hoàn 100%. Từ 12 tiếng đến 3 tiếng: hoàn 50%. Trong 3 tiếng cuối trước giờ khởi hành: không hoàn tiền.',
+				'text'  => 'Từ 12 tiếng trở lên trước giờ xe chạy: hoàn 100%. Từ 6 đến dưới 12 tiếng: hoàn 50%. Dưới 6 tiếng: không hoàn tiền.',
 				'tiers' => array(
 					array(
-						'when'   => 'Trước 12 tiếng',
-						'result' => 'Hoàn 100%',
+						'when'   => 'Từ 12 tiếng trở lên',
+						'result' => '100%',
 						'tone'   => 'full',
 					),
 					array(
-						'when'   => '12 tiếng đến 3 tiếng',
-						'result' => 'Hoàn 50%',
+						'when'   => 'Từ 6 đến dưới 12 tiếng',
+						'result' => '50%',
 						'tone'   => 'half',
 					),
 					array(
-						'when'   => '3 tiếng cuối',
-						'result' => 'Không hoàn',
+						'when'   => 'Dưới 6 tiếng',
+						'result' => 'Không hoàn tiền',
 						'tone'   => 'none',
 					),
 				),
@@ -340,7 +340,7 @@ function annam_limo_landing_get_ninhbinh_config( $page_id = 0 ) { // phpcs:ignor
 			),
 			array(
 				'question' => 'Đổi vé và hủy vé thế nào?',
-				'answer'   => 'Đổi vé miễn phí, không giới hạn, báo trước ít nhất 6 tiếng và chuyến mới còn chỗ. Hủy trước ít nhất 12 tiếng hoàn 100%; từ 12 tiếng đến 3 tiếng hoàn 50%; trong 3 tiếng cuối không hoàn tiền.',
+				'answer'   => 'Đổi vé miễn phí, không giới hạn, báo trước ít nhất 6 tiếng và chuyến mới còn chỗ. Hủy từ 12 tiếng trở lên trước giờ xe chạy hoàn 100%; từ 6 đến dưới 12 tiếng hoàn 50%; dưới 6 tiếng không hoàn tiền.',
 			),
 			array(
 				'question' => 'Có mang thú cưng được không?',
