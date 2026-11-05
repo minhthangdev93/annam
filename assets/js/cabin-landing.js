@@ -357,6 +357,37 @@
 			});
 	}
 
+	function pushBookingSuccess(detail) {
+		var payload = {
+			event: 'cabin_booking_success',
+			eventCategory: 'cabin_landing',
+			form_id: 'annam-cabin-form',
+			landing: (detail && detail.landing) || cfg.landingKey || 'cabin_hn_sapa',
+		};
+		if (detail && typeof detail === 'object') {
+			['from', 'to', 'date', 'time', 'cabin', 'guests'].forEach(function (key) {
+				if (detail[key]) {
+					payload[key] = detail[key];
+				}
+			});
+		}
+		document.body.dispatchEvent(
+			new CustomEvent('annam_cabin_track', {
+				bubbles: true,
+				detail: payload,
+			})
+		);
+		if (typeof window.gtag === 'function') {
+			window.gtag('event', 'cabin_booking_success', {
+				event_category: 'cabin_landing',
+				form_id: 'annam-cabin-form',
+				landing: payload.landing,
+			});
+		}
+		window.dataLayer = window.dataLayer || [];
+		window.dataLayer.push(payload);
+	}
+
 	function initAjaxForm() {
 		var form = $('#annam-cabin-form');
 		if (!form || !booking.ajaxUrl) {
@@ -432,6 +463,16 @@
 							(result.json.data && result.json.data.message) ||
 							'Cảm ơn quý khách.';
 						showFormNotice('success', msg);
+						var payloadData = (result.json && result.json.data) || {};
+						pushBookingSuccess({
+							from: payloadData.from || (fromEl ? fromEl.value : ''),
+							to: payloadData.to || (toEl ? toEl.value : ''),
+							date: payloadData.date || ($('#annam-cabin-date', form) ? $('#annam-cabin-date', form).value : ''),
+							time: payloadData.time || (timeEl ? timeEl.value : ''),
+							cabin: payloadData.cabin || ($('#annam-cabin-type', form) ? $('#annam-cabin-type', form).value : ''),
+							guests: payloadData.guests || ($('#annam-cabin-guests', form) ? $('#annam-cabin-guests', form).value : ''),
+							landing: payloadData.landing || cfg.landingKey || 'cabin_hn_sapa',
+						});
 						form.reset();
 						autoTomorrowDone = false;
 						var defs = cfg.formDefaults || {};
@@ -682,12 +723,12 @@
 			if (typeof window.gtag === 'function') {
 				window.gtag('event', eventName, { event_category: 'cabin_landing' });
 			}
-			if (typeof window.dataLayer !== 'undefined' && Array.isArray(window.dataLayer)) {
-				window.dataLayer.push({
-					event: eventName,
-					eventCategory: 'cabin_landing',
-				});
-			}
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({
+				event: eventName,
+				eventCategory: 'cabin_landing',
+				landing: cfg.landingKey || 'cabin_hn_sapa',
+			});
 		});
 	}
 

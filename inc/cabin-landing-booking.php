@@ -134,11 +134,13 @@ function annam_cabin_landing_process_booking( array $input ) {
 		'success' => true,
 		'message' => $success_msg,
 		'data'    => array(
-			'from'  => $from_label,
-			'to'    => $to_label,
-			'date'  => $travel_date,
-			'time'  => $dep_time,
-			'cabin' => $cabin_label,
+			'from'    => $from_label,
+			'to'      => $to_label,
+			'date'    => $travel_date,
+			'time'    => $dep_time,
+			'cabin'   => $cabin_label,
+			'guests'  => (string) $guests,
+			'landing' => 'cabin_hn_sapa',
 		),
 	);
 }
@@ -165,9 +167,17 @@ function annam_cabin_landing_ajax_booking() {
 	$result = annam_cabin_landing_process_booking( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 	if ( ! empty( $result['success'] ) ) {
+		$data = isset( $result['data'] ) && is_array( $result['data'] ) ? $result['data'] : array();
 		wp_send_json_success(
 			array(
 				'message' => $result['message'],
+				'from'    => isset( $data['from'] ) ? (string) $data['from'] : '',
+				'to'      => isset( $data['to'] ) ? (string) $data['to'] : '',
+				'date'    => isset( $data['date'] ) ? (string) $data['date'] : '',
+				'time'    => isset( $data['time'] ) ? (string) $data['time'] : '',
+				'cabin'   => isset( $data['cabin'] ) ? (string) $data['cabin'] : '',
+				'guests'  => isset( $data['guests'] ) ? (string) $data['guests'] : '',
+				'landing' => isset( $data['landing'] ) ? (string) $data['landing'] : 'cabin_hn_sapa',
 			)
 		);
 	}

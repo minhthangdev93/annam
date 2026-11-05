@@ -104,7 +104,7 @@ $place_labels  = array(
 		</div>
 
 		<div class="annam-cabin-form__actions">
-			<button type="submit" class="annam-cabin-btn annam-cabin-btn--primary" id="annam-cabin-submit" data-track="submit_booking_form">
+			<button type="submit" class="annam-cabin-btn annam-cabin-btn--primary" id="annam-cabin-submit">
 				<?php echo esc_html( ! empty( $form['submit_label'] ) ? $form['submit_label'] : __( 'Gửi Yêu Cầu Giữ Chỗ', 'generatepress_child' ) ); ?>
 			</button>
 		</div>

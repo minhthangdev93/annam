@@ -325,6 +325,7 @@ function annam_cabin_landing_enqueue_assets() {
 					'single_floor1' => 'Cabin đơn tầng 1',
 					'double'        => 'Cabin đôi',
 				),
+				'landingKey'         => 'cabin_hn_sapa',
 				'i18n'               => array(
 					'sameRoute'      => __( 'Tuyến đi không hợp lệ.', 'generatepress_child' ),
 					'pickTime'       => __( '— Chọn giờ —', 'generatepress_child' ),
